@@ -1,0 +1,8 @@
+# heavy source files — not needed for the live site
+assets/ambient.mp4
+assets/keyframe-001.png
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
