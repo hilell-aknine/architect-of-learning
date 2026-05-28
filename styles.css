@@ -41,7 +41,7 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; }
 
 body {
   font-family: var(--f-body);
@@ -49,7 +49,8 @@ body {
   color: var(--frost);
   line-height: 1.6;
   font-weight: 400;
-  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
   position: relative;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -114,7 +115,7 @@ body::before {
 /* ============ scroll-reactive canvas sequence ============ */
 #seqbg {
   position: fixed; top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  width: 100%; height: 100vh;
   object-fit: cover;
   z-index: -2; pointer-events: none;
   opacity: 0; transition: opacity 0.6s var(--ease);
@@ -309,14 +310,14 @@ body.seq-active::after {
   -webkit-mask-image: radial-gradient(circle at 50% 50%, #000, transparent 70%);
   opacity: 0.6;
 }
-/* rotating neon halo behind the frame */
+/* neon halo behind the frame — static gradient, soft opacity pulse (no rotation = no layout shift) */
 .portrait::after {
   content: ""; position: absolute; inset: -3px; z-index: -1; border-radius: 27px;
-  background: conic-gradient(from 0deg, var(--aqua), var(--gold), var(--aqua-2), var(--gold-2), var(--aqua));
-  filter: blur(16px); opacity: 0.55;
-  animation: spin 9s linear infinite;
+  background: conic-gradient(from 120deg, var(--aqua), var(--gold), var(--aqua-2), var(--gold-2), var(--aqua));
+  filter: blur(16px); opacity: 0.5;
+  animation: haloPulse 5s var(--ease) infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes haloPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.62; } }
 .portrait__frame {
   position: relative; border-radius: 24px; overflow: hidden;
   aspect-ratio: 834 / 1083;
@@ -541,7 +542,7 @@ body.seq-active::after {
 
 /* ============ responsive ============ */
 @media (max-width: 980px) {
-  .hero { grid-template-columns: 1fr; min-height: auto; padding-block: 114px 60px; gap: 48px; }
+  .hero { grid-template-columns: 1fr; min-height: auto; padding-block: 92px 56px; gap: 44px; }
   .hero__inner { max-width: 100%; }
   .portrait { width: min(300px, 72%); }
 }
@@ -553,23 +554,39 @@ body.seq-active::after {
 }
 @media (max-width: 760px) {
   .nav__links, .nav__cta { display: none; }
-  .nav__toggle { display: flex; }
+  .nav__toggle { display: flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
   .nav.open .nav__links {
     display: flex; flex-direction: column; gap: 4px;
     position: absolute; inset-block-start: 76px; inset-inline: 0;
     background: rgba(6,20,26,0.97); backdrop-filter: blur(20px);
     padding: 18px var(--pad) 26px; border-block-end: 1px solid rgba(45,245,223,0.14);
   }
-  .nav.open .nav__links a { padding: 12px 0; font-size: 1.1rem; }
+  .nav.open .nav__links a { padding: 14px 0; font-size: 1.1rem; }
   .footer__inner { flex-direction: column; gap: 30px; }
+  /* touch targets >= 44px */
+  .brand { min-height: 44px; }
+  .footer__link { padding-block: 9px; }
+  .footer__fineprint a { display: inline-block; padding: 9px 4px; }
+  .btn--sm { padding: 13px 22px; }
 }
 @media (max-width: 480px) {
+  .section { padding-block: 56px; }
   .hero__cta { flex-direction: column; align-items: stretch; }
   .hero__cta .btn { justify-content: center; }
-  .hero__metrics { gap: 14px; }
+  /* secondary CTA stays visually subordinate (not full-width like the primary) */
+  .hero__cta .btn--line { align-self: center; width: auto; }
+  .hero__metrics { display: flex; flex-direction: column; gap: 16px; }
   .metric__divider { display: none; }
-  .metric { flex: 1 1 40%; }
-  .portrait__chip { display: none; }
+  .metric { flex-direction: row; align-items: baseline; gap: 10px; min-width: 0; }
+  .metric__num { font-size: 1.5rem; flex-shrink: 0; }
+  .metric__label { max-width: none; font-size: 0.85rem; }
+  /* readable body copy >= 16px */
+  .card__text, .vs__list li { font-size: 1rem; }
+  /* keep 2 context chips on the photo instead of hiding all */
+  .portrait__chip { font-size: 0.74rem; padding: 7px 11px; }
+  .portrait__chip--a { inset-block-start: 5%; inset-inline-start: -6%; }
+  .portrait__chip--b { inset-inline-end: -6%; }
+  .portrait__chip--c { display: none; }
 }
 
 /* ============ reduced motion ============ */
