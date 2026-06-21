@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>תיבת נכנס · העוזר של הלל</title>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --ink:#06141A; --ink-2:#0A2129; --ink-3:#0E2C35; --petrol-2:#00606B;
+      --aqua:#2DF5DF; --gold:#F2C94C; --gold-2:#FFE293;
+      --frost:#EAF6F7; --dim:rgba(234,246,247,.62); --faint:rgba(234,246,247,.4);
+      --line:rgba(234,246,247,.14);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"Heebo",system-ui,sans-serif;background:var(--ink);color:var(--frost);min-height:100vh;line-height:1.6}
+    .wrap{max-width:820px;margin:0 auto;padding:28px 18px 60px}
+    header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+    h1{font-size:22px;font-weight:800}
+    h1 .accent{color:var(--gold-2)}
+    .sub{font-size:13px;color:var(--faint)}
+    .bar{display:flex;gap:8px;align-items:center}
+    input,button{font-family:inherit;font-size:14px}
+    input{background:var(--ink-3);border:1px solid var(--line);color:var(--frost);border-radius:10px;padding:10px 13px;min-width:190px}
+    input:focus{outline:none;border-color:rgba(45,245,223,.5)}
+    button{cursor:pointer;border:0;border-radius:10px;padding:10px 16px;font-weight:700;color:var(--ink);background:linear-gradient(135deg,var(--gold-2),var(--gold) 60%)}
+    button.ghost{background:transparent;color:var(--dim);border:1px solid var(--line)}
+    .stat{font-size:13px;color:var(--dim);margin:6px 0 18px}
+    .session{background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:16px 16px 8px;margin-bottom:16px;position:relative}
+    .session::before{content:"";position:absolute;inset-block-start:0;inset-inline:0;height:2px;border-radius:16px 16px 0 0;background:linear-gradient(90deg,var(--aqua),var(--gold-2),var(--gold))}
+    .session .sid{font-size:11px;color:var(--faint);margin-bottom:10px}
+    .turn{display:flex;gap:8px;margin-bottom:10px}
+    .who{flex:none;font-size:11px;font-weight:700;border-radius:8px;padding:3px 8px;height:fit-content}
+    .who.user{background:rgba(242,201,76,.16);color:var(--gold-2);border:1px solid rgba(242,201,76,.3)}
+    .who.bot{background:rgba(45,245,223,.1);color:var(--aqua);border:1px solid rgba(45,245,223,.25)}
+    .txt{font-size:14.5px;white-space:pre-wrap;word-break:break-word}
+    .time{font-size:11px;color:var(--faint);margin-top:2px}
+    .empty{text-align:center;color:var(--faint);padding:50px 0}
+    .err{color:#ff8a8a;font-size:13px;margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div>
+        <h1>תיבת נכנס · <span class="accent">העוזר של הלל</span></h1>
+        <div class="sub">כל השאלות שנשאלו בצ'אט בדף הנחיתה</div>
+      </div>
+      <div class="bar">
+        <input id="pass" type="password" placeholder="סיסמה" />
+        <button id="load">טען</button>
+        <button id="refresh" class="ghost" title="רענון">↻</button>
+      </div>
+    </header>
+    <div class="stat" id="stat"></div>
+    <div id="list"></div>
+  </div>
+
+  <script>
+    var ENDPOINT = "https://lgixufkqkwdbksbohnxu.supabase.co/functions/v1/chat";
+    var ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaXh1Zmtxa3dkYmtzYm9obnh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwMjUxNzYsImV4cCI6MjA5NzYwMTE3Nn0.ig176ITZQfuodxSfktIHEqOxpb4a_dFEt1KsvWr823g";
+    var passEl = document.getElementById("pass");
+    var listEl = document.getElementById("list");
+    var statEl = document.getElementById("stat");
+
+    try { passEl.value = localStorage.getItem("hak_inbox_pass") || ""; } catch (e) {}
+
+    function load() {
+      var pass = passEl.value.trim();
+      if (!pass) { statEl.innerHTML = '<span class="err">צריך סיסמה</span>'; return; }
+      try { localStorage.setItem("hak_inbox_pass", pass); } catch (e) {}
+      statEl.textContent = "טוען...";
+      listEl.innerHTML = "";
+      fetch(ENDPOINT + "?inbox=" + encodeURIComponent(pass) + "&limit=300", {
+        headers: { "apikey": ANON, "Authorization": "Bearer " + ANON }
+      })
+        .then(function (r) { if (r.status === 401) throw new Error("סיסמה שגויה"); return r.json(); })
+        .then(function (d) { render(d.logs || []); })
+        .catch(function (e) { statEl.innerHTML = '<span class="err">' + (e.message || "תקלה") + '</span>'; });
+    }
+
+    function render(logs) {
+      if (!logs.length) { statEl.textContent = ""; listEl.innerHTML = '<div class="empty">עדיין אין שיחות.</div>'; return; }
+      // קיבוץ לפי שיחה, סדר כרונולוגי בתוך כל שיחה
+      var byS = {};
+      logs.forEach(function (l) { (byS[l.session_id] = byS[l.session_id] || []).push(l); });
+      var sessions = Object.keys(byS).map(function (sid) {
+        var turns = byS[sid].slice().sort(function (a, b) { return new Date(a.created_at) - new Date(b.created_at); });
+        return { sid: sid, turns: turns, last: turns[turns.length - 1].created_at };
+      }).sort(function (a, b) { return new Date(b.last) - new Date(a.last); });
+
+      statEl.textContent = sessions.length + " שיחות · " + logs.length + " הודעות";
+      listEl.innerHTML = "";
+      sessions.forEach(function (s) {
+        var card = document.createElement("div");
+        card.className = "session";
+        var html = '<div class="sid">שיחה ' + esc(s.sid) + ' · ' + fmt(s.last) + '</div>';
+        s.turns.forEach(function (t) {
+          var isUser = t.role === "user";
+          html += '<div class="turn">' +
+            '<span class="who ' + (isUser ? "user" : "bot") + '">' + (isUser ? "מבקר" : "עוזר") + '</span>' +
+            '<div><div class="txt">' + esc(t.content) + '</div><div class="time">' + fmt(t.created_at) + '</div></div>' +
+            '</div>';
+        });
+        card.innerHTML = html;
+        listEl.appendChild(card);
+      });
+    }
+
+    function esc(s) { return String(s == null ? "" : s).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
+    function fmt(t) { try { return new Date(t).toLocaleString("he-IL"); } catch (e) { return t; } }
+
+    document.getElementById("load").addEventListener("click", load);
+    document.getElementById("refresh").addEventListener("click", load);
+    passEl.addEventListener("keydown", function (e) { if (e.key === "Enter") load(); });
+    if (passEl.value) load();
+  </script>
+</body>
+</html>
