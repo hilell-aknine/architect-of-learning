@@ -60,6 +60,8 @@
 
   // ---------- אירועים ----------
   launch.addEventListener("click", openPanel);
+  // חשיפה גלובלית כדי שכפתורים בדף (כמו "הדגמת מורה AI") יוכלו לפתוח את הצ'אט
+  window.HAK_openChat = openPanel;
   panel.querySelector(".hak-head__close").addEventListener("click", closePanel);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && state.open) closePanel(); });
 
