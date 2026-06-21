@@ -18,6 +18,16 @@
 
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="chat-widget.css" />
+  <style>
+    .features .feat-group { margin-block-start: 38px; }
+    .feat-group__title { font-family: var(--f-display); font-weight: 700; font-size: clamp(19px, 3vw, 25px); color: var(--frost); margin-block-end: 18px; display: flex; align-items: center; gap: 12px; }
+    .feat-group__title::before { content: ""; width: 34px; height: 2px; background: linear-gradient(90deg, var(--aqua), var(--gold)); border-radius: 2px; }
+    .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 14px; }
+    .feat { background: var(--ink-2); border: 1px solid var(--line); border-radius: 14px; padding: 16px 17px; transition: transform .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease); }
+    .feat:hover { transform: translateY(-4px); border-color: rgba(45,245,223,.35); box-shadow: 0 16px 40px rgba(0,0,0,.4), var(--glow-aqua); }
+    .feat strong { display: block; color: var(--gold-2); font-size: 15.5px; margin-block-end: 6px; }
+    .feat span { color: var(--frost-dim); font-size: 14px; line-height: 1.55; }
+  </style>
 </head>
 <body>
 
@@ -237,11 +247,50 @@
       </div>
     </section>
 
+    <!-- ============ FEATURES ============ -->
+    <section class="section features" id="features">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">03</span>
+          <h2 class="sec-title">מה יש בתוך המערכת</h2>
+          <p class="sec-lead">
+            לא תוסף ולא תבנית. מערכת למידה שלמה שבנויה משני צדדים: צד אחד שגורם ללומד
+            להישאר ולסיים, וצד שני שנותן לך שליטה מלאה על מי נכנס, מי מתקדם ומי קונה.
+          </p>
+        </div>
+
+        <div class="feat-group reveal">
+          <h3 class="feat-group__title">מה שהלומד שלך מקבל</h3>
+          <div class="feat-grid">
+            <div class="feat"><strong>נגן שזוכר אותו</strong><span>השיעור ממשיך בדיוק מהשנייה שעצר, גם במעבר מהנייד למחשב, עם "השיעור הבא" שמוביל אותו הלאה.</span></div>
+            <div class="feat"><strong>דפי סיכום לכל מודול</strong><span>סיכום מעוצב וברור לכל מודול, חינם ומאסטר, שהופך כל שיעור לחומר שחוזרים אליו ולא רק צופים בו.</span></div>
+            <div class="feat"><strong>מחברת הערות אישית</strong><span>מחברת צמודה לכל שיעור שמסונכרנת לכל המכשירים, כך שההערות תמיד איתו.</span></div>
+            <div class="feat"><strong>משחק תרגול אינטראקטיבי</strong><span>שמונה סוגי תרגילים, נקודות XP עם קומבו, רמות, תגי הישג, רצף ואתגר יומי שהופכים חזרה על החומר להרגל.</span></div>
+            <div class="feat"><strong>מנטור AI בשם רם</strong><span>ליווי חכם בתוך המשחק שנותן טיפים ועונה על שאלות בזמן התרגול, כמו מורה פרטי לצידו.</span></div>
+            <div class="feat"><strong>עוזר AI אישי בקורס</strong><span>עוזר חכם בקורס המאסטר שמבין בדיוק על איזה שיעור הוא נמצא ועונה לפי ההקשר.</span></div>
+            <div class="feat"><strong>מעקב התקדמות וחוברות</strong><span>סרגלי התקדמות, זמן למידה, חוברות עבודה נעולות וקליפי תרגול קצרים, עם חגיגות שבונות הרגל.</span></div>
+          </div>
+        </div>
+
+        <div class="feat-group reveal">
+          <h3 class="feat-group__title">מה שאתה, בעל הקורס, מקבל</h3>
+          <div class="feat-grid">
+            <div class="feat"><strong>מנוע תזכורות חכם</strong><span>כללי הנעה שרצים לבד ומחזירים תלמידים פנימה לפי כמות שיעורים, ימים מהרשמה ומילוי שאלון, כולל תזכורת שבועית מותאמת-AI לפי החזון שהתלמיד כתב. עם מצב בדיקה, מכסה יומית וצינון.</span></div>
+            <div class="feat"><strong>דשבורד תלמידים</strong><span>תמונה חיה של מי התקדם, כמה זמן צפה ומי פעיל, עם ייצוא מלא לכל נתון.</span></div>
+            <div class="feat"><strong>צינור לידים וניהול מכירות</strong><span>שלבי מכירה, שאלונים ודירוג חום לכל ליד, כדי שתדע בדיוק במי להשקיע ומתי לסגור.</span></div>
+            <div class="feat"><strong>אנליטיקס בזמן אמת</strong><span>מי נמצא באתר עכשיו ומאיפה הגיע, עם מנהל פופאפים שמודד המרה על כל הודעה.</span></div>
+            <div class="feat"><strong>תוכנית שגרירים</strong><span>לינק שיתוף אישי לכל תלמיד וטבלת מובילים שהופכת את הלומדים שלך למנוע הפצה.</span></div>
+            <div class="feat"><strong>חוזה דיגיטלי ושליטה מלאה</strong><span>חתימה דיגיטלית עם אימות, ניהול תשלום והרשאות, גיבוי יומי מלא עם התראת כשל וקישורים חתומים שמגנים על התוכן.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ PROOF ============ -->
     <section class="section proof" id="proof">
       <div class="container">
         <div class="sec-head reveal">
-          <span class="sec-num">03</span>
+          <span class="sec-num">04</span>
           <h2 class="sec-title">ראו את זה בשטח</h2>
         </div>
 
