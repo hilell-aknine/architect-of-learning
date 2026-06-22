@@ -38,14 +38,29 @@
     .time{font-size:11px;color:var(--faint);margin-top:2px}
     .empty{text-align:center;color:var(--faint);padding:50px 0}
     .err{color:#ff8a8a;font-size:13px;margin-top:8px}
+    .tabs{display:flex;gap:8px;margin-bottom:16px}
+    .tab{background:transparent;color:var(--dim);border:1px solid var(--line);font-weight:700;padding:9px 18px}
+    .tab.active{background:linear-gradient(135deg,var(--gold-2),var(--gold) 60%);color:var(--ink);border-color:transparent}
+    .lead{background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-bottom:12px;position:relative}
+    .lead::before{content:"";position:absolute;inset-block-start:0;inset-inline:0;height:2px;border-radius:14px 14px 0 0;background:linear-gradient(90deg,var(--aqua),var(--gold-2))}
+    .lead .row1{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+    .lead .name{font-weight:800;font-size:16px}
+    .badge{font-size:11px;font-weight:700;border-radius:8px;padding:3px 9px}
+    .badge.diagnostic{background:rgba(242,201,76,.16);color:var(--gold-2);border:1px solid rgba(242,201,76,.3)}
+    .badge.bot{background:rgba(45,245,223,.1);color:var(--aqua);border:1px solid rgba(45,245,223,.25)}
+    .lead .meta{font-size:13.5px;color:var(--dim);display:flex;flex-direction:column;gap:3px}
+    .lead .meta b{color:var(--frost);font-weight:600}
+    .lead .money{color:var(--gold-2);font-weight:700}
+    .lead .src{font-size:12px;color:var(--faint)}
+    .lead a{color:var(--aqua);text-decoration:none}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header class="top">
       <div>
-        <h1>תיבת נכנס · <span class="accent">העוזר של הלל</span></h1>
-        <div class="sub">כל השאלות שנשאלו בצ'אט בדף הנחיתה</div>
+        <h1>מרכז לידים · <span class="accent">הלל אקנין</span></h1>
+        <div class="sub">כל הלידים והשיחות במקום אחד · מאיפה הגיע, מי הוא</div>
       </div>
       <div class="bar">
         <input id="pass" type="password" placeholder="סיסמה" />
@@ -53,16 +68,22 @@
         <button id="refresh" class="ghost" title="רענון">↻</button>
       </div>
     </header>
+    <div class="tabs">
+      <button class="tab active" id="tab-leads" data-view="leads">לידים</button>
+      <button class="tab" id="tab-chats" data-view="chats">שיחות</button>
+    </div>
     <div class="stat" id="stat"></div>
     <div id="list"></div>
   </div>
 
   <script>
-    var ENDPOINT = "https://lgixufkqkwdbksbohnxu.supabase.co/functions/v1/chat";
+    var CHAT_ENDPOINT = "https://lgixufkqkwdbksbohnxu.supabase.co/functions/v1/chat";
+    var LEAD_ENDPOINT = "https://lgixufkqkwdbksbohnxu.supabase.co/functions/v1/lead";
     var ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaXh1Zmtxa3dkYmtzYm9obnh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwMjUxNzYsImV4cCI6MjA5NzYwMTE3Nn0.ig176ITZQfuodxSfktIHEqOxpb4a_dFEt1KsvWr823g";
     var passEl = document.getElementById("pass");
     var listEl = document.getElementById("list");
     var statEl = document.getElementById("stat");
+    var view = "leads";
 
     try { passEl.value = localStorage.getItem("hak_inbox_pass") || ""; } catch (e) {}
 
@@ -72,12 +93,56 @@
       try { localStorage.setItem("hak_inbox_pass", pass); } catch (e) {}
       statEl.textContent = "טוען...";
       listEl.innerHTML = "";
-      fetch(ENDPOINT + "?inbox=" + encodeURIComponent(pass) + "&limit=300", {
+      if (view === "leads") loadLeads(pass); else loadChats(pass);
+    }
+
+    function loadChats(pass) {
+      fetch(CHAT_ENDPOINT + "?inbox=" + encodeURIComponent(pass) + "&limit=300", {
         headers: { "apikey": ANON, "Authorization": "Bearer " + ANON }
       })
         .then(function (r) { if (r.status === 401) throw new Error("סיסמה שגויה"); return r.json(); })
         .then(function (d) { render(d.logs || []); })
         .catch(function (e) { statEl.innerHTML = '<span class="err">' + (e.message || "תקלה") + '</span>'; });
+    }
+
+    function loadLeads(pass) {
+      fetch(LEAD_ENDPOINT + "?inbox=" + encodeURIComponent(pass) + "&limit=500", {
+        headers: { "apikey": ANON, "Authorization": "Bearer " + ANON }
+      })
+        .then(function (r) { if (r.status === 401) throw new Error("סיסמה שגויה"); return r.json(); })
+        .then(function (d) { renderLeads(d.leads || []); })
+        .catch(function (e) { statEl.innerHTML = '<span class="err">' + (e.message || "תקלה") + '</span>'; });
+    }
+
+    function renderLeads(leads) {
+      if (!leads.length) { statEl.textContent = ""; listEl.innerHTML = '<div class="empty">עדיין אין לידים.</div>'; return; }
+      var diag = leads.filter(function (l) { return l.source === "diagnostic"; }).length;
+      var bot = leads.length - diag;
+      statEl.textContent = leads.length + " לידים · " + diag + " מהשאלון · " + bot + " מהדף";
+      listEl.innerHTML = "";
+      leads.forEach(function (l) {
+        var isDiag = l.source === "diagnostic";
+        var srcLabel = isDiag ? "שאלון אבחון" : (l.source === "landing-bot" ? "דף נחיתה" : esc(l.source));
+        var phoneClean = String(l.phone || "").replace(/[^0-9]/g, "");
+        var card = document.createElement("div");
+        card.className = "lead";
+        var html = '<div class="row1">' +
+          '<span class="name">' + esc(l.name || "ללא שם") + '</span>' +
+          '<span class="badge ' + (isDiag ? "diagnostic" : "bot") + '">' + srcLabel + '</span>' +
+          '<span class="src" style="margin-inline-start:auto">' + fmt(l.created_at) + '</span>' +
+          '</div><div class="meta">';
+        if (l.phone) html += '<div>📱 <a href="https://wa.me/' + phoneClean + '" target="_blank" rel="noopener"><b>' + esc(l.phone) + '</b></a></div>';
+        if (l.email) html += '<div>✉️ <b>' + esc(l.email) + '</b></div>';
+        if (l.course) html += '<div>📚 ' + esc(l.course) + '</div>';
+        if (l.money_lost) html += '<div class="money">💸 כסף שאבד (לפי האבחון): ' + Number(l.money_lost).toLocaleString("he-IL") + ' ₪</div>';
+        if (l.diagnoses) html += '<div>🔎 ' + esc(l.diagnoses) + '</div>';
+        var um = l.utm || {};
+        var umSrc = um.utm_source || um.referrer;
+        if (umSrc) html += '<div class="src">מקור תנועה: ' + esc(umSrc) + (um.utm_campaign ? " · " + esc(um.utm_campaign) : "") + '</div>';
+        html += '</div>';
+        card.innerHTML = html;
+        listEl.appendChild(card);
+      });
     }
 
     function render(logs) {
@@ -114,6 +179,15 @@
     document.getElementById("load").addEventListener("click", load);
     document.getElementById("refresh").addEventListener("click", load);
     passEl.addEventListener("keydown", function (e) { if (e.key === "Enter") load(); });
+
+    document.querySelectorAll(".tab").forEach(function (t) {
+      t.addEventListener("click", function () {
+        view = t.dataset.view;
+        document.querySelectorAll(".tab").forEach(function (x) { x.classList.toggle("active", x === t); });
+        if (passEl.value.trim()) load();
+      });
+    });
+
     if (passEl.value) load();
   </script>
 </body>
