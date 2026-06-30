@@ -27,10 +27,12 @@ export default async function handler(req, res) {
     const token = process.env.GREEN_API_TOKEN;
     const chatId = process.env.LEAD_NOTIFY_CHAT || '972549116092@c.us';
 
+    const dbg = { hasUrl: !!base, hasInstance: !!instance, hasToken: !!token };
+
     if (!base || !instance || !token) {
       // Don't fail the user — log server-side so the lead isn't lost silently.
       console.error('[lead] Green API env vars missing — lead NOT delivered:', { name, phone, source });
-      return res.status(200).json({ ok: true, delivered: false });
+      return res.status(200).json({ ok: true, delivered: false, _debug: dbg });
     }
 
     const url = `${base.replace(/\/$/, '')}/waInstance${instance}/sendMessage/${token}`;
@@ -49,12 +51,12 @@ export default async function handler(req, res) {
 
     if (!gr.ok) {
       console.error('[lead] Green API send failed', gr.status, await gr.text().catch(() => ''));
-      return res.status(200).json({ ok: true, delivered: false });
+      return res.status(200).json({ ok: true, delivered: false, _debug: { ...dbg, greenStatus: gr.status } });
     }
 
-    return res.status(200).json({ ok: true, delivered: true });
+    return res.status(200).json({ ok: true, delivered: true, _debug: { ...dbg, greenStatus: gr.status } });
   } catch (e) {
     console.error('[lead] handler error', e);
-    return res.status(200).json({ ok: true, delivered: false });
+    return res.status(200).json({ ok: true, delivered: false, _debug: { stage: 'exception', msg: String(e && e.message || e).slice(0, 120) } });
   }
 }
