@@ -22,9 +22,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'missing_or_invalid' });
     }
 
-    const base = process.env.GREEN_API_URL;
-    const instance = process.env.GREEN_API_INSTANCE;
-    const token = process.env.GREEN_API_TOKEN;
+    // Defensive: strip stray leading '=' and surrounding whitespace that can sneak in via dashboard paste.
+    const clean = (v) => (v || '').trim().replace(/^=+/, '').trim();
+    const base = clean(process.env.GREEN_API_URL).replace(/\/+$/, '');
+    const instance = clean(process.env.GREEN_API_INSTANCE);
+    const token = clean(process.env.GREEN_API_TOKEN);
     const chatId = process.env.LEAD_NOTIFY_CHAT || '972549116092@c.us';
 
     const dbg = { hasUrl: !!base, hasInstance: !!instance, hasToken: !!token };
@@ -35,7 +37,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, delivered: false, _debug: dbg });
     }
 
-    const url = `${base.replace(/\/$/, '')}/waInstance${instance}/sendMessage/${token}`;
+    const url = `${base}/waInstance${instance}/sendMessage/${token}`;
     const message =
       `🟢 ליד חדש — דף בניית פורטלים\n` +
       `שם: ${name}\n` +
@@ -57,6 +59,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, delivered: true, _debug: { ...dbg, greenStatus: gr.status } });
   } catch (e) {
     console.error('[lead] handler error', e);
-    return res.status(200).json({ ok: true, delivered: false, _debug: { stage: 'exception', msg: String(e && e.message || e).slice(0, 120) } });
+    return res.status(200).json({ ok: true, delivered: false, _debug: { stage: 'exception' } });
   }
 }
