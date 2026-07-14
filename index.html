@@ -7,10 +7,17 @@
   <meta name="description" content="בונים לבעלי קורסים דיגיטליים פורטל למידה שמחזיק את התלמידים בפנים ומביא אותם לסיים וליישם, דרך מבנה, משחוק ותזכורות אישיות. לא טכנולוגיה לשמה." />
   <meta name="theme-color" content="#0B0A08" />
 
-  <meta property="og:title" content="הקורס שלך יתחיל לעבוד · כשתלמידים מסיימים, לא רק קונים" />
+  <meta property="og:title" content="מכרת את הקורס. אז למה רוב מי ששילם בקושי פתח אותו?" />
   <meta property="og:description" content="פורטל למידה שגורם לתלמידים שלך לסיים וליישם את הקורס, דרך חוויה ופסיכולוגיה. בית המטפלים נבנה בדיוק כך." />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="he_IL" />
+  <meta property="og:url" content="https://architect-of-learning.vercel.app/" />
+  <meta property="og:image" content="https://architect-of-learning.vercel.app/assets/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="מכרת את הקורס. אז למה רוב מי ששילם בקושי פתח אותו?" />
+  <meta name="twitter:image" content="https://architect-of-learning.vercel.app/assets/og.jpg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -642,6 +649,60 @@
     .vsl__placeholder svg { color: var(--ember); }
     .vsl__hint { color: var(--ink-faint); }
     .vsl__corner { color: var(--ink-faint); }
+    /* ---- image slots (a missing file simply removes itself · never a broken box) ---- */
+    .col__fig {
+      margin-block-end: 18px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--rule);
+      background: var(--paper-2);
+    }
+    .col__fig img {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    /* anchor icons · engraved illustrations replacing the generic svgs */
+    .anchor__icon img {
+      display: block;
+      inline-size: clamp(76px, 8vw, 104px);
+      block-size: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+    }
+
+    /* objections · thought bubbles as a watermark behind the text */
+    .objections { position: relative; overflow: hidden; }
+    .objections__bg {
+      position: absolute;
+      inset: 0;
+      background-image: url("assets/objections-bg.webp");
+      background-size: cover;
+      background-position: center;
+      opacity: 0.45;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+    .objections > .container { position: relative; z-index: 1; }
+
+    /* hero paper texture · harmless if the file is not there yet */
+    .hero__paper {
+      position: absolute;
+      inset: 0;
+      background-image: url("assets/hero-texture.webp");
+      background-size: cover;
+      background-position: center;
+      opacity: 0.5;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero__inner, .hero__cue { position: relative; z-index: 1; }
+
     /* ---- VSL player + watch gate ---- */
     .vsl__player { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
     .vsl__player iframe { inline-size: 100%; block-size: 100%; border: 0; display: block; }
@@ -793,6 +854,7 @@
     <!-- ============ HERO ============ -->
     <section class="hero" id="hero">
       <div class="hero__atmos" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="hero__paper" aria-hidden="true"></div>
       <div class="container hero__inner">
         <h1 class="hero__title reveal" data-d="2">
           מכרת את הקורס. אז למה רוב מי ששילם בקושי פתח אותו?
@@ -997,6 +1059,10 @@
         <div class="ledger">
           <article class="col col--old reveal" data-d="1">
             <span class="col__tag">הדרך הישנה</span>
+            <figure class="col__fig">
+              <img src="assets/old-way.webp" alt="ספריית וידאו נטושה שאוספת אבק" loading="lazy"
+                   onerror="this.closest('.col__fig').remove()" />
+            </figure>
             <h3>ספריית וידאו שאוספת אבק</h3>
             <ul class="col__list">
               <li><span class="tick" aria-hidden="true">✕</span> רק 3 מתוך 20 תלמידים מסיימים, גם כשהתוכן מצוין</li>
@@ -1012,6 +1078,10 @@
 
           <article class="col col--new reveal" data-d="2">
             <span class="col__tag">הדרך החדשה</span>
+            <figure class="col__fig">
+              <img src="assets/new-way.webp" alt="מסלול למידה חי שמחזיר את הלומד לנקודה שבה עצר" loading="lazy"
+                   onerror="this.closest('.col__fig').remove()" />
+            </figure>
             <h3>מערכת למידה חיה ונושמת</h3>
             <ul class="col__list">
               <li><span class="tick" aria-hidden="true">✓</span> כל תלמיד יודע תמיד מה הצעד הבא, וממשיך בדיוק מאיפה שעצר</li>
@@ -1050,7 +1120,7 @@
             <div class="anchor__no" aria-hidden="true">01</div>
             <div>
               <span class="anchor__icon" aria-hidden="true">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="10" y="14" width="28" height="20" rx="4"/><circle cx="19" cy="24" r="2.4" fill="currentColor" stroke="none"/><circle cx="29" cy="24" r="2.4" fill="currentColor" stroke="none"/><path d="M24 14V8M21 8h6"/><path d="M10 22H6M42 22h-4"/></svg>
+                <img src="assets/anchor-1.webp" alt="מדרגות עולות שהשלב העליון בהן מואר" loading="lazy" onerror="this.parentElement.remove()" />
               </span>
               <h3>זינוק בהשלמת הקורס</h3>
               <p>
@@ -1065,7 +1135,7 @@
             <div class="anchor__no" aria-hidden="true">02</div>
             <div>
               <span class="anchor__icon" aria-hidden="true">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 7l4.6 9.3 10.3 1.5-7.4 7.3 1.7 10.2L24 40.7l-9.2 4.9 1.7-10.2-7.4-7.3 10.3-1.5z"/></svg>
+                <img src="assets/anchor-2.webp" alt="זרע שמתפצל לשורשים מסתעפים" loading="lazy" onerror="this.parentElement.remove()" />
               </span>
               <h3>מנוע צמיחה אורגני</h3>
               <p>
@@ -1079,7 +1149,7 @@
             <div class="anchor__no" aria-hidden="true">03</div>
             <div>
               <span class="anchor__icon" aria-hidden="true">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 32V20M18 32V12M28 32V24M38 32V16"/><path d="M6 38h36"/></svg>
+                <img src="assets/anchor-3.webp" alt="פעמון זכוכית שמתרומם ומשחרר עומס עבודה" loading="lazy" onerror="this.parentElement.remove()" />
               </span>
               <h3>סוף לתפקיד הגננת</h3>
               <p>
@@ -1225,7 +1295,8 @@
     </section>
 
     <!-- ============ OBJECTIONS (handles A2 · the two thoughts in his head) ============ -->
-    <section class="chapter" id="objections">
+    <section class="chapter objections" id="objections">
+      <div class="objections__bg" aria-hidden="true"></div>
       <div class="container">
         <div class="chapter__head reveal">
           <div class="chapter__folio"><span class="folio">05</span></div>
