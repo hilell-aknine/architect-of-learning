@@ -6,3 +6,12 @@ assets/keyframe-001.png
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# internal — never ship to the public site
+leads-dashboard.html
+bot-inbox.html
+supabase/.temp/
+.playwright-mcp/
+redesign/
+index-chani-v2.html
+index-legacy.html
