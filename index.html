@@ -649,6 +649,79 @@
     .vsl__placeholder svg { color: var(--ember); }
     .vsl__hint { color: var(--ink-faint); }
     .vsl__corner { color: var(--ink-faint); }
+    /* ---- panel review v3 additions ---- */
+    .hero__micro {
+      margin-block-start: 14px;
+      font-size: 0.84rem;
+      opacity: 0.7;
+      max-inline-size: 460px;
+      line-height: 1.55;
+    }
+    .hero__micro.is-hidden { display: none; }
+
+    .creds__intro {
+      margin-block-end: 12px;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+
+    .finale__filter {
+      max-inline-size: 560px;
+      margin: -22px auto 34px;
+      font-size: 0.9rem;
+      color: rgba(244,239,230,0.6);
+      line-height: 1.55;
+    }
+
+    /* the math · the reader plugs in his own numbers */
+    .themath { background: var(--ink); color: var(--paper); }
+    .themath__inner { max-inline-size: var(--measure); margin-inline: auto; }
+    .themath h2 {
+      font-family: var(--f-mast);
+      font-size: clamp(1.5rem, 3.4vw, 2.3rem);
+      line-height: 1.2;
+      margin-block-end: 22px;
+    }
+    .themath p {
+      font-size: clamp(1.02rem, 1.7vw, 1.22rem);
+      color: rgba(244,239,230,0.82);
+      line-height: 1.7;
+      margin-block-end: 16px;
+    }
+    .themath__punch {
+      margin-block-start: 26px;
+      padding-inline-start: 18px;
+      border-inline-start: 3px solid var(--ember-2);
+      color: var(--paper) !important;
+      font-weight: 700;
+    }
+
+    /* what happens next */
+    .steps { list-style: none; display: grid; gap: 18px; margin: 0; padding: 0; }
+    .steps li {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+      padding-block-end: 18px;
+      border-block-end: 1px solid var(--rule);
+    }
+    .steps li:last-child { border-block-end: 0; }
+    .steps__no {
+      font-family: var(--f-mast);
+      font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1.4px var(--gold);
+    }
+    .steps p {
+      font-size: clamp(1rem, 1.6vw, 1.16rem);
+      color: var(--ink-soft);
+      line-height: 1.65;
+      font-weight: 600;
+    }
+
     /* ---- image slots (a missing file simply removes itself · never a broken box) ---- */
     .col__fig {
       margin-block-end: 18px;
@@ -867,6 +940,7 @@
             בוא נראה איפה התלמידים שלך נופלים
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
           </a>
+          <p class="hero__micro" id="heroMicro">מתחיל בקייס סטאדי מפורטל חי (12:45). טופס תיאום השיחה נפתח באמצע הצפייה.</p>
         </div>
       </div>
       <a href="#scrub" class="hero__cue reveal" data-d="5" aria-label="גלול להמשך">
@@ -893,7 +967,7 @@
       <div class="scrub__sticky">
 
         <div class="scrub__head-fixed">
-          <p class="scrub__title">ארבעה מנגנונים שעובדים בשבילך, גם כשאתה לא שם</p>
+          <p class="scrub__title">אני לא מוסיף לקורס שלך פיצ'רים. אני מהנדס את השנייה שבה התלמיד שלך מחליט אם לחזור.</p>
         </div>
 
         <div class="scrub__deck">
@@ -929,7 +1003,7 @@
                 <span class="lb__pts">910</span>
               </div>
             </div>
-            <p class="scene__cap">תחרות ידידותית שמחזירה אותם לתרגל שוב ושוב.</p>
+            <p class="scene__cap">הוא לא חזר מחר כי לא הייתה לו סיבה לחזור. טבלת המובילים נותנת לו סיבה.</p>
           </div>
 
           <!-- scene 2: personal reminder -->
@@ -944,7 +1018,7 @@
                 <span class="bubble__time">09:14</span>
               </div>
             </div>
-            <p class="scene__cap">תזכורת אישית שמחזירה בדיוק ברגע הנכון.</p>
+            <p class="scene__cap">הוא לא נטש, הוא שכח. תזכורת אישית תופסת אותו לפני שהשכחה הופכת לנטישה.</p>
           </div>
 
           <!-- scene 3: practice game -->
@@ -970,7 +1044,7 @@
                 </span>
               </div>
             </div>
-            <p class="scene__cap">משחק תרגול שהופך חזרה על החומר להרגל ממכר.</p>
+            <p class="scene__cap">שיעור שנצפה ולא תורגל לא נשאר. משחק התרגול הופך צפייה פסיבית ליישום.</p>
           </div>
 
           <!-- scene 4: AI teacher Ram -->
@@ -986,7 +1060,7 @@
               <p class="chat__q">איך אני מיישם את התרגיל מהשיעור הקודם?</p>
               <p class="chat__a">אני זוכר את המטרה שהצבת לעצמך — בוא נפרק את התרגיל לשלושה צעדים שמקדמים אותך אליה, ואלווה אותך ביישום.</p>
             </div>
-            <p class="scene__cap">מורה AI אישי שזוכר כל שיחה ואת המטרות של כל לומד בנפרד, ומלווה אותו ביישום בדיוק כשצריך.</p>
+            <p class="scene__cap">הוא נתקע, מתבייש לשאול, ונעלם בשקט. מורה AI עונה לו ברגע שהוא נתקע.</p>
           </div>
 
         </div>
@@ -1025,8 +1099,9 @@
         </div>
         <div class="vsl__after reveal">
           <p class="vsl__afterline" id="vslAfterline">
-            הטופס נפתח אחרי שתראה את רוב הסרטון. אני לא רוצה לדבר עם מי שלא מבין קודם
-            מה בדיוק אני בונה.
+            בסרטון אני פותח את הפורטל החי ואת המספרים שמאחוריו. מי שמגיע לשיחה אחרי שראה
+            אותו לא מבזבז את עשרים הדקות על הסברים, אלא על הקורס שלו. בגלל זה הטופס נפתח
+            בסוף הסרטון, לא לפניו.
           </p>
           <a href="#contact" data-cta class="btn btn--solid" data-cta data-magnetic>
             בוא נמפה את נקודות הנשירה שלי
@@ -1044,9 +1119,12 @@
           <div class="chapter__lede">
             <h2 class="chapter__title">הכסף נכנס. התלמידים נעלמים.</h2>
             <p class="chapter__lead dropcap">
-              התלמידים שלך לא עצלנים. פשוט יש להם אפשרויות אחרות. אתה מתחרה על הקשב שלהם
-              מול טיקטוק ואינסטגרם, ואם בכל כניסה הם צריכים לחפש מחדש איפה עצרו, הם פשוט
-              יוותרו. לא בגלל שהתוכן חלש. בגלל שהחוויה לא נבנתה כדי להחזיר אותם.
+              התלמיד שלך סיים אתמול בערב שלושה פרקים ברצף בסדרה, ולא פתח שיעור אחד שהוא שילם
+              עליו אלפי שקלים. אותו כיסא, אותו טלפון, אותה עייפות. אם זו הייתה עצלנות, היא
+              הייתה מנצחת גם את הסדרה. ההבדל היחיד הוא שהסדרה יודעת בדיוק איפה הוא עצר
+              ומחזירה אותו לשם בלחיצה אחת, ובקורס שלך הוא צריך להיזכר לבד, לגלול, לחפש,
+              ולהחליט מחדש להתחיל. זו לא בעיה של תוכן ולא בעיה של אופי. זו בעיה של עיצוב,
+              והיא נופלת בנקודות קבועות שאפשר להצביע עליהן אחת אחת.
             </p>
             <p class="chapter__lead" style="margin-block-start:18px">
               אתה מכיר את התסכול: השקעת עשרות שעות בצילום, בעריכה ובבניית תוכן זהב. הלקוחות
@@ -1101,6 +1179,26 @@
       </div>
     </section>
 
+    <!-- ============ THE MATH (turns dropout into money · reader plugs in his own numbers) ============ -->
+    <section class="chapter themath">
+      <div class="container">
+        <div class="themath__inner reveal">
+          <h2>תעשה את החשבון הזה איתי. שלושים שניות.</h2>
+          <p>
+            קח את מספר האנשים ששילמו לך על הקורס האחרון. עכשיו קח את מספר מי שבאמת סיים אותו.
+          </p>
+          <p>
+            ההפרש הוא לא אחוז בדוח. אלה אנשים שכבר גבית מהם כסף, ואין להם מה לספר עליך.
+            הם לא יקנו ממך את המוצר הבא, כי הראשון לא עשה להם כלום. ובינתיים אתה חוזר
+            לפייסבוק ומשלם שוב על ליד קר.
+          </p>
+          <p class="themath__punch">
+            הכסף הגדול הבא שלך לא נמצא במודול הבא שתצלם. הוא נמצא בהפרש הזה.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ SOLUTION ============ -->
     <section class="chapter" id="solution">
       <div class="container">
@@ -1109,8 +1207,9 @@
           <div class="chapter__lede">
             <h2 class="chapter__title">שלושה עוגנים שהופכים קונה לתלמיד שמסיים</h2>
             <p class="chapter__lead">
-              יש דרך אחרת. במקום עוד מחסן תוכן או בית קברות דיגיטלי, נבנה לתלמידים שלך
-              מגרש משחקים של ממש.
+              לומד נעלם בשלוש נקודות: כשהוא לא זוכר איפה עצר, כשהוא נתקע במכשול הראשון,
+              וכשאף אחד לא שם לב שהוא הפסיק. שלושת העוגנים בנויים בדיוק מול שלוש הנקודות
+              האלה.
             </p>
           </div>
         </div>
@@ -1124,9 +1223,10 @@
               </span>
               <h3>זינוק בהשלמת הקורס</h3>
               <p>
-                במקום שרק עשרה עד ארבעים אחוז יסיימו, חוויה אינטראקטיבית שמושכת אותם חזרה
-                ומקפיצה את אחוזי הסיום לעד 70%. המערכת מחזירה אותם תמיד בדיוק לנקודה שבה
-                עצרו, כמו בנטפליקס.
+                רוב מי שקונה קורס דיגיטלי לא מסיים אותו, וזה קורה בנקודות קבועות וצפויות.
+                הפורטל מחזיר את הלומד בדיוק לנקודה שבה עצר, כמו בנטפליקס, ודוחף אותו לשיעור
+                הבא. בפורטל החי שבניתי זה הקפיץ פי 3.4 את מספר השיעורים שהתלמיד באמת מסיים.
+                אותו תוכן, אותם אנשים. ההבדל הוא בחוויה.
               </p>
             </div>
           </article>
@@ -1137,10 +1237,12 @@
               <span class="anchor__icon" aria-hidden="true">
                 <img src="assets/anchor-2.webp" alt="זרע שמתפצל לשורשים מסתעפים" loading="lazy" onerror="this.parentElement.remove()" />
               </span>
-              <h3>מנוע צמיחה אורגני</h3>
+              <h3>עדויות שמגיעות מעצמן</h3>
               <p>
-                כל תלמיד הופך לשגריר. מערכת תגמולים ולינקים אישיים שנטמיע בפורטל גורמת
-                ללקוחות המרוצים להביא חברים חדשים לקורס, בלי שתוציא שקל נוסף על פרסום.
+                תלמיד שלא סיים את הקורס לא ייתן לך עדות, ובטח לא ימליץ עליך לחבר. תלמיד
+                שסיים ויישם, כן. ברגע שאחוזי הסיום עולים, העדויות מפסיקות להיות משהו שאתה
+                רודף אחריו והופכות למשהו שנצבר אצלך מעצמו, יחד עם קהל שכבר מוכן לקנות ממך
+                את המוצר הבא.
               </p>
             </div>
           </article>
@@ -1175,7 +1277,7 @@
           <div class="teaser__pills">
             <span>פורטל למידה ממכר</span>
             <span>מנוע שמחזיר תלמידים אוטומטית</span>
-            <span>מנוע צמיחה שמביא לך לקוחות חדשים</span>
+            <span>אחוז סיום שמייצר לך עדויות</span>
           </div>
           <div class="teaser__cta">
             <a href="#contact" data-cta class="btn btn--ghost-paper" data-magnetic>
@@ -1193,25 +1295,14 @@
         <div class="chapter__head reveal">
           <div class="chapter__folio"><span class="folio">04</span></div>
           <div class="chapter__lede">
-            <span class="kicker">הוכחה</span>
-            <h2 class="chapter__title">ראו את זה בשטח</h2>
+            <h2 class="chapter__title">לא הדגמה. פורטל שרץ עכשיו.</h2>
+            <p class="chapter__lead">
+              את הפורטל של בית המטפלים בניתי מאפס: הקורס, מנגנוני ההתמדה והדאטה שמאחוריהם.
+              אין לי כאן קיר של עדויות, יש לי מערכת חיה אחת. כל נתון שאתה רואה בפס הזה נשלף
+              ממנה, לא נכתב בדף מכירה. בשיחה אני נכנס איתך פנימה ואתה רואה אותם מבפנים.
+            </p>
           </div>
         </div>
-
-        <figure class="quote reveal">
-          <span class="quote__mark" aria-hidden="true">&rdquo;</span>
-          <blockquote>
-            בית המטפלים בנה את הפורטל הזה מאפס, עם המערכת המלאה. לא הדגמה ולא פיילוט.
-            קורס חי, לומדים אמיתיים, וכל הכלים פעילים.
-          </blockquote>
-          <figcaption class="quote__by">
-            <span class="quote__avatar" aria-hidden="true">ב</span>
-            <span>
-              <strong>בית המטפלים</strong>
-              <em>פורטל לימוד חי ופעיל</em>
-            </span>
-          </figcaption>
-        </figure>
 
         <div class="stats">
           <div class="stat reveal" data-d="1">
@@ -1267,7 +1358,8 @@
           </p>
 
           <div class="creds">
-            <span class="creds__label">עם מי עבדתי</span>
+            <span class="creds__label">מה בניתי לפני זה</span>
+            <p class="creds__intro">שמות לקוחות אני לא מפרסם בלי אישור מהם, אז הנה מה שכן מותר לומר:</p>
             <ul class="creds__list">
               <li>חברות בתחום הייעוץ העסקי</li>
               <li>מכללה מובילה בתחום ההתפתחות האישית</li>
@@ -1283,16 +1375,6 @@
       </div>
     </section>
 
-    <!-- ============ GROWTH ENGINE (אפיליאציה) ============ -->
-    <section class="chapter growth" id="growth">
-      <div class="container growth__inner reveal">
-        <h2>התלמידים שלך מביאים לך לקוחות חדשים</h2>
-        <p>
-          כל תלמיד מרוצה מקבל קישור אישי, וטבלת מובילים הופכת את זה למשחק. התוצאה:
-          עוד נרשמים מגיעים מהתלמידים הקיימים שלך, בלי שתוציא שקל אחד על פרסום.
-        </p>
-      </div>
-    </section>
 
     <!-- ============ OBJECTIONS (handles A2 · the two thoughts in his head) ============ -->
     <section class="chapter objections" id="objections">
@@ -1301,7 +1383,7 @@
         <div class="chapter__head reveal">
           <div class="chapter__folio"><span class="folio">05</span></div>
           <div class="chapter__lede">
-            <h2 class="chapter__title">שתי מחשבות שעוברות לך בראש עכשיו. שתיהן לגיטימיות.</h2>
+            <h2 class="chapter__title">המחשבות שעוברות לך בראש עכשיו. כולן לגיטימיות.</h2>
           </div>
         </div>
 
@@ -1330,7 +1412,57 @@
               </p>
             </div>
           </article>
+
+          <article class="anchor reveal" data-d="3">
+            <div class="anchor__no" aria-hidden="true">03</div>
+            <div>
+              <h3>"כבר יש לי פלטפורמה. אני חייב לעבור?"</h3>
+              <p>
+                לא בהכרח. קודם מסתכלים איפה הלומדים שלך נופלים היום. לפעמים המנגנונים
+                נבנים על מה שכבר יש לך, ולפעמים הפלטפורמה עצמה היא מה שמפיל אותם. את זה
+                אפשר לדעת רק אחרי שמסתכלים על הנתונים שלך.
+              </p>
+            </div>
+          </article>
+
+          <article class="anchor reveal" data-d="4">
+            <div class="anchor__no" aria-hidden="true">04</div>
+            <div>
+              <h3>"מי מזין את כל התוכן? אין לי זמן לעוד פרויקט."</h3>
+              <p>
+                אתה נותן את החומר שכבר צילמת. את המבנה, ההעלאה, הסיכומים ומנגנוני ההתמדה
+                אני בונה. מה שנדרש ממך זה החלטות, לא הקלדה.
+              </p>
+            </div>
+          </article>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ WHAT HAPPENS NEXT (removes the uncertainty that stops the lead) ============ -->
+    <section class="chapter nextsteps" id="next">
+      <div class="container">
+        <div class="chapter__head reveal">
+          <div class="chapter__folio"><span class="folio">06</span></div>
+          <div class="chapter__lede">
+            <h2 class="chapter__title">מה קורה אחרי שאתה משאיר טלפון</h2>
+          </div>
+        </div>
+
+        <ol class="steps">
+          <li class="reveal" data-d="1">
+            <span class="steps__no" aria-hidden="true">01</span>
+            <p>אני חוזר אליך אישית בוואטסאפ תוך 24 שעות. לא מוקד, לא נציג, לא רצף מיילים אוטומטי.</p>
+          </li>
+          <li class="reveal" data-d="2">
+            <span class="steps__no" aria-hidden="true">02</span>
+            <p>עשרים דקות בזום, בלי עלות. פותחים את המספרים שכבר יש לך: כמה נרשמו, כמה בכלל נכנסו, כמה סיימו.</p>
+          </li>
+          <li class="reveal" data-d="3">
+            <span class="steps__no" aria-hidden="true">03</span>
+            <p>אם יש התאמה, תקבל הצעה עם היקף, לוח זמנים ומחיר. אם אין התאמה, אני אומר לך את זה בשיחה עצמה.</p>
+          </li>
+        </ol>
       </div>
     </section>
 
@@ -1341,13 +1473,17 @@
           <div class="finale__grid" aria-hidden="true"></div>
           <h2 style="margin-block-start:18px">אז מה עושים עכשיו?</h2>
           <p class="finale__sub">
-            עשרים דקות בזום. נעבור על הקורס שלך, ואראה לך את הנקודות שבהן אתה מאבד הכי
-            הרבה תלמידים. גם אם לא נעבוד יחד, תצא עם המפה הזאת ביד.
+            עשרים דקות בזום. נעבור על הקורס שלך ואראה לך בדיוק איפה אתה מאבד תלמידים, ומה
+            זה עולה לך: עדויות שלא תקבל, הפניות שלא יגיעו, ומוצר המשך שקשה למכור למי שלא
+            סיים. גם אם לא נעבוד יחד, תצא עם המפה הזאת ביד.
+          </p>
+          <p class="finale__filter">
+            השיחה מיועדת למי שכבר מוכר קורס. אם עוד לא מכרת, זה מוקדם מדי בשבילך.
           </p>
           <div class="lead__lock" id="leadLock">
             <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
             <strong>הטופס נפתח אחרי צפייה בסרטון</strong>
-            <span id="leadLockNote">צפית ב-0% מהסרטון. אני נפגש רק עם מי שכבר ראה מה אני בונה, כדי שהשיחה תתחיל מהמקום הנכון.</span>
+            <span id="leadLockNote">עשרים הדקות שוות משהו רק אחרי שראית איך המערכת עובדת. הטופס נפתח בסוף הסרטון.</span>
             <a href="#vsl" class="btn btn--ghost-paper">לצפייה בסרטון</a>
           </div>
           <form class="lead" id="leadForm" novalidate hidden>
@@ -1410,7 +1546,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M9 14l2 2 4-4"/></svg>
       בוא נמפה את נקודות הנשירה שלי
     </a>
-    <span class="stickycta__sub">20 דק׳ בזום · ללא עלות · בלי התחייבות</span>
+    <span class="stickycta__sub" id="stickySub">קייס סטאדי 12:45 · הטופס נפתח תוך כדי הצפייה</span>
   </div>
 
   <!-- ============ VSL WATCH GATE · form unlocks at 60% watched ============ -->
@@ -1436,6 +1572,11 @@
         if (lock) lock.hidden = true;
         if (form) form.hidden = false;
         if (fill) fill.style.width = '100%';
+        /* the buttons now really do lead to the form · say so */
+        var micro = document.getElementById('heroMicro');
+        if (micro) micro.classList.add('is-hidden');
+        var sticky = document.getElementById('stickySub');
+        if (sticky) sticky.textContent = '20 דקות בזום · בלי עלות';
         if (afterline) {
           afterline.innerHTML = '<span class="vsl__unlocked">הטופס נפתח ✓</span><br>ראית איך זה עובד. עכשיו בוא נסתכל על הקורס שלך.';
         }
