@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>הקורס שלך יתחיל לעבוד · פורטל למידה שגורם לתלמידים לסיים וליישם | הלל אקנין</title>
+  <meta name="description" content="בונים לבעלי קורסים דיגיטליים פורטל למידה שמחזיק את התלמידים בפנים ומביא אותם לסיים וליישם, דרך מבנה, משחוק ותזכורות אישיות. לא טכנולוגיה לשמה." />
+  <meta name="theme-color" content="#070B12" />
+
+  <meta property="og:title" content="הקורס שלך יתחיל לעבוד · כשתלמידים מסיימים, לא רק קונים" />
+  <meta property="og:description" content="פורטל למידה שגורם לתלמידים שלך לסיים וליישם את הקורס, דרך חוויה ופסיכולוגיה. בית המטפלים נבנה בדיוק כך." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="he_IL" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       GRADIENT MESH PREMIUM · Architect of Learning
+       Soft mesh gradients (teal + amber on deep ink),
+       rounded cards, glassy polish, surgical playful beat.
+       ============================================================ */
+
+    :root {
+      --ink:        #070B12;
+      --ink-1:      #0A1019;
+      --ink-2:      #0E1622;
+      --ink-3:      #131F2E;
+      --line:       rgba(255, 255, 255, 0.08);
+      --line-2:     rgba(255, 255, 255, 0.14);
+
+      --teal:       #2FE6C8;
+      --teal-2:     #19C7B4;
+      --teal-deep:  #0E8E8A;
+      --amber:      #FFC65C;
+      --amber-2:    #FFD98A;
+      --amber-deep: #E0A23A;
+      --violet:     #8A7CFF;   /* mesh accent only, never text */
+
+      --txt:        #EEF4F6;
+      --txt-dim:    rgba(238, 244, 246, 0.72);
+      --txt-faint:  rgba(238, 244, 246, 0.46);
+
+      --glow-teal:  0 0 40px rgba(47, 230, 200, 0.30);
+      --glow-amber: 0 0 40px rgba(255, 198, 92, 0.28);
+
+      --maxw: 1160px;
+      --pad: clamp(20px, 5vw, 60px);
+      --r: 22px;
+      --r-sm: 15px;
+
+      --f-display: "Fraunces", Georgia, serif;
+      --f-body: "Assistant", system-ui, sans-serif;
+      --f-ui: "Rubik", system-ui, sans-serif;
+
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-2: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; }
+
+    body {
+      font-family: var(--f-body);
+      background: var(--ink);
+      color: var(--txt);
+      line-height: 1.65;
+      font-weight: 400;
+      overflow-x: clip;
+      position: relative;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    ::selection { background: rgba(47, 230, 200, 0.28); color: #fff; }
+
+    .container {
+      width: 100%;
+      max-width: var(--maxw);
+      margin-inline: auto;
+      padding-inline: var(--pad);
+    }
+
+    /* ============ mesh-gradient backdrop ============ */
+    .mesh {
+      position: fixed; inset: 0; z-index: -3; pointer-events: none;
+      background:
+        radial-gradient(48% 42% at 18% 14%, rgba(47, 230, 200, 0.20), transparent 62%),
+        radial-gradient(45% 40% at 86% 8%, rgba(255, 198, 92, 0.16), transparent 60%),
+        radial-gradient(55% 50% at 90% 78%, rgba(138, 124, 255, 0.14), transparent 64%),
+        radial-gradient(50% 45% at 8% 86%, rgba(25, 199, 180, 0.14), transparent 62%);
+      filter: saturate(1.15);
+      animation: meshDrift 26s var(--ease) infinite alternate;
+    }
+    @keyframes meshDrift {
+      to { transform: translate3d(0, -2.5%, 0) scale(1.06); }
+    }
+    .mesh-fine {
+      position: fixed; inset: 0; z-index: -2; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 25%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 25%, transparent 80%);
+      opacity: 0.6;
+    }
+    .grain {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      opacity: 0.035; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ============ reusable bits ============ */
+    .eyebrow {
+      font-family: var(--f-ui);
+      font-size: 12.5px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: inline-flex; align-items: center; gap: 9px;
+    }
+    .eyebrow::before {
+      content: ""; width: 26px; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--amber));
+    }
+
+    .sec-num {
+      font-family: var(--f-ui); font-weight: 700; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--amber);
+      display: inline-block; margin-block-end: 14px;
+      padding: 5px 12px; border-radius: 999px;
+      border: 1px solid var(--line-2);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .sec-title {
+      font-family: var(--f-display);
+      font-weight: 600;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--txt);
+    }
+    .sec-lead {
+      margin-block-start: 18px;
+      max-width: 62ch;
+      font-size: clamp(16px, 2.2vw, 18.5px);
+      color: var(--txt-dim);
+      line-height: 1.75;
+    }
+    .sec-head--center { text-align: center; }
+    .sec-head--center .sec-lead { margin-inline: auto; }
+
+    .section { padding-block: clamp(72px, 11vw, 130px); position: relative; }
+
+    /* ============ buttons ============ */
+    .btn {
+      --btn-bg: var(--ink-2);
+      font-family: var(--f-ui);
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 15px 26px;
+      border-radius: 14px;
+      font-size: 15.5px; font-weight: 600; letter-spacing: 0.005em;
+      cursor: pointer; border: 1px solid transparent;
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease),
+                  background-color .3s var(--ease), border-color .3s var(--ease);
+      position: relative; overflow: hidden;
+      will-change: transform;
+    }
+    .btn svg { flex-shrink: 0; }
+
+    .btn--gold {
+      color: #1A1206;
+      background: linear-gradient(135deg, var(--amber-2), var(--amber) 55%, var(--amber-deep));
+      box-shadow: 0 12px 34px rgba(255, 198, 92, 0.28), inset 0 1px 0 rgba(255,255,255,0.4);
+    }
+    .btn--gold::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.55) 50%, transparent 65%);
+      transform: translateX(-130%); transition: transform .8s var(--ease);
+    }
+    .btn--gold:hover { transform: translateY(-3px); box-shadow: 0 18px 44px rgba(255, 198, 92, 0.42), inset 0 1px 0 rgba(255,255,255,0.4); }
+    .btn--gold:hover::after { transform: translateX(130%); }
+
+    .btn--line {
+      color: var(--txt);
+      background: rgba(255,255,255,0.035);
+      border-color: var(--line-2);
+      backdrop-filter: blur(8px);
+    }
+    .btn--line:hover { transform: translateY(-3px); border-color: rgba(47,230,200,0.5); box-shadow: var(--glow-teal); color: #fff; }
+
+    .btn--ghost {
+      color: var(--txt);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line-2);
+      padding: 11px 20px; border-radius: 12px;
+      font-size: 14.5px;
+      backdrop-filter: blur(10px);
+    }
+    .btn--ghost:hover { border-color: rgba(47,230,200,0.55); color: #fff; box-shadow: var(--glow-teal); transform: translateY(-2px); }
+
+    .btn--lg { padding: 18px 34px; font-size: 17px; border-radius: 16px; }
+    .btn--sm { padding: 10px 18px; font-size: 14px; }
+
+    /* ============ NAV ============ */
+    .nav {
+      position: fixed; inset-block-start: 0; inset-inline: 0; z-index: 100;
+      transition: background-color .4s var(--ease), box-shadow .4s var(--ease), backdrop-filter .4s var(--ease);
+    }
+    .nav.scrolled {
+      background: rgba(7, 11, 18, 0.72);
+      backdrop-filter: blur(18px) saturate(1.2);
+      box-shadow: 0 1px 0 var(--line), 0 10px 40px rgba(0,0,0,0.4);
+    }
+    .nav__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-block: 16px;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: var(--txt); }
+    .brand__mark {
+      display: grid; place-items: center;
+      width: 42px; height: 42px; border-radius: 13px;
+      color: var(--ink);
+      background: linear-gradient(135deg, var(--teal), var(--teal-2) 60%, var(--amber));
+      box-shadow: var(--glow-teal);
+      transition: transform .5s var(--ease-2);
+    }
+    .brand:hover .brand__mark { transform: rotate(-12deg) scale(1.05); }
+    .brand__text { font-family: var(--f-display); font-weight: 600; font-size: 19px; letter-spacing: -0.01em; }
+    .brand__thin { color: var(--txt-faint); font-weight: 400; }
+
+    /* ============ HERO ============ */
+    .hero {
+      min-height: 100svh;
+      display: grid; place-items: center;
+      text-align: center;
+      padding-block: clamp(110px, 16vh, 180px) clamp(60px, 9vh, 110px);
+      position: relative;
+    }
+    .hero__inner { max-width: 940px; position: relative; z-index: 2; }
+
+    .hero__pill {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-family: var(--f-ui); font-size: 13px; font-weight: 500;
+      color: var(--txt-dim);
+      padding: 8px 16px; border-radius: 999px;
+      border: 1px solid var(--line-2);
+      background: rgba(255,255,255,0.035);
+      backdrop-filter: blur(10px);
+      margin-block-end: 30px;
+    }
+    .hero__pill .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--teal); box-shadow: var(--glow-teal);
+      animation: pulse 2.4s var(--ease) infinite;
+    }
+    @keyframes pulse { 50% { opacity: 0.4; transform: scale(0.78); } }
+
+    .hero__title {
+      font-family: var(--f-display);
+      font-weight: 600;
+      font-size: clamp(34px, 7vw, 70px);
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      color: var(--txt);
+    }
+    .hero__accent {
+      display: block; margin-block-start: 12px;
+      font-size: clamp(20px, 3.6vw, 34px);
+      font-weight: 500;
+      background: linear-gradient(100deg, var(--teal) 10%, var(--amber-2) 90%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    .hero__sub {
+      margin-block-start: 26px; margin-inline: auto;
+      max-width: 60ch;
+      font-size: clamp(16px, 2.4vw, 20px);
+      color: var(--txt-dim);
+      line-height: 1.75;
+    }
+    .hero__cta {
+      margin-block-start: 38px;
+      display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+    }
+
+    /* ============ scroll-frame canvas beat (single dramatic moment) ============ */
+    .scrub {
+      position: relative;
+      height: 280vh;             /* scroll length that drives the sequence */
+      margin-block: clamp(20px, 5vw, 60px) 0;
+    }
+    .scrub__sticky {
+      position: sticky; top: 0;
+      height: 100svh;
+      display: grid; place-items: center;
+      overflow: hidden;
+    }
+    .scrub__stage {
+      position: relative;
+      width: min(92vw, 1080px);
+      aspect-ratio: 16 / 9;
+      border-radius: clamp(16px, 3vw, 28px);
+      overflow: hidden;
+      border: 1px solid var(--line-2);
+      background: var(--ink-1);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
+    .scrub__canvas { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .scrub__static { /* reduced-motion fallback */
+      width: 100%; height: 100%; object-fit: cover; display: none;
+    }
+    .scrub__vignette {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        linear-gradient(to top, rgba(7,11,18,0.85), transparent 38%),
+        radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(7,11,18,0.5));
+    }
+    .scrub__overlay {
+      position: absolute; inset-inline: 0; inset-block-end: 0;
+      padding: clamp(22px, 4vw, 46px);
+      text-align: center;
+    }
+    .scrub__kicker {
+      font-family: var(--f-ui); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--teal); margin-block-end: 10px;
+    }
+    .scrub__head {
+      font-family: var(--f-display); font-weight: 600;
+      font-size: clamp(22px, 4vw, 40px); line-height: 1.12;
+      color: #fff; letter-spacing: -0.01em;
+    }
+    .scrub__progress {
+      position: absolute; inset-block-start: 0; inset-inline-start: 0;
+      height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--amber));
+      box-shadow: var(--glow-teal);
+      z-index: 3;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .scrub { height: auto; }
+      .scrub__sticky { position: static; height: auto; padding-block: 40px; }
+      .scrub__canvas { display: none; }
+      .scrub__static { display: block; }
+    }
+
+    /* ============ VSL ============ */
+    .vsl__frame {
+      margin-block-start: 40px;
+      border-radius: clamp(16px, 3vw, 26px);
+      padding: 12px;
+      background: linear-gradient(135deg, rgba(47,230,200,0.16), rgba(255,198,92,0.12));
+      border: 1px solid var(--line-2);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    }
+    .vsl__placeholder {
+      aspect-ratio: 16/9;
+      border-radius: clamp(12px, 2.4vw, 20px);
+      background:
+        radial-gradient(80% 80% at 50% 30%, rgba(47,230,200,0.10), transparent 70%),
+        var(--ink-1);
+      border: 1px dashed var(--line-2);
+      display: grid; place-content: center; gap: 14px; justify-items: center;
+      color: var(--txt-dim); text-align: center;
+      transition: border-color .3s var(--ease);
+    }
+    .vsl__placeholder:hover { border-color: rgba(47,230,200,0.5); }
+    .vsl__placeholder svg { color: var(--teal); filter: drop-shadow(var(--glow-teal)); }
+    .vsl__placeholder > span:first-of-type { font-family: var(--f-ui); font-weight: 600; font-size: 17px; color: var(--txt); }
+    .vsl__hint { font-size: 14px; color: var(--txt-faint); }
+
+    /* ============ PROBLEM / VS ============ */
+    .vs {
+      margin-block-start: 54px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 22px; align-items: stretch;
+    }
+    .vs__col {
+      border-radius: var(--r);
+      padding: 30px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--ink-2), var(--ink-1));
+      transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
+    }
+    .vs__col--old { opacity: 0.92; }
+    .vs__col--old:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.16); }
+    .vs__col--new {
+      border-color: rgba(47,230,200,0.28);
+      background:
+        radial-gradient(120% 100% at 100% 0%, rgba(47,230,200,0.10), transparent 60%),
+        linear-gradient(180deg, var(--ink-3), var(--ink-1));
+    }
+    .vs__col--new:hover { transform: translateY(-6px); border-color: rgba(47,230,200,0.5); box-shadow: var(--glow-teal); }
+
+    .vs__top { margin-block-end: 20px; }
+    .vs__tag {
+      font-family: var(--f-ui); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 999px; display: inline-block;
+      margin-block-end: 14px;
+    }
+    .vs__tag--old { color: var(--txt-faint); border: 1px solid var(--line-2); }
+    .vs__tag--new { color: var(--ink); background: linear-gradient(135deg, var(--teal), var(--teal-2)); }
+    .vs__top h3 { font-family: var(--f-display); font-weight: 600; font-size: clamp(19px, 3vw, 24px); color: var(--txt); }
+
+    .vs__list { display: grid; gap: 14px; }
+    .vs__list li { display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; color: var(--txt-dim); line-height: 1.6; }
+    .vs__ico {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 8px;
+      display: grid; place-items: center; font-size: 13px; font-weight: 700;
+      color: var(--txt-faint); background: rgba(255,255,255,0.05); margin-block-start: 1px;
+    }
+    .vs__ico--ok { color: var(--ink); background: linear-gradient(135deg, var(--teal), var(--teal-2)); box-shadow: 0 4px 14px rgba(47,230,200,0.4); }
+
+    .vs__arrow {
+      display: grid; place-items: center; color: var(--amber);
+      filter: drop-shadow(var(--glow-amber));
+    }
+    .vs__arrow svg { width: 56px; animation: arrowSlide 2.4s var(--ease) infinite; }
+    @keyframes arrowSlide { 50% { transform: translateX(-7px); } }
+
+    /* ============ SOLUTION CARDS ============ */
+    .cards {
+      margin-block-start: 54px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 22px;
+    }
+    .card {
+      position: relative; overflow: hidden;
+      border-radius: var(--r);
+      padding: 32px 30px 56px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--ink-2), var(--ink-1));
+      transition: transform .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease);
+    }
+    .card::before {
+      content: ""; position: absolute; inset-block-start: 0; inset-inline: 0; height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--amber));
+      transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease);
+    }
+    .card:hover { transform: translateY(-8px); border-color: var(--line-2); box-shadow: 0 30px 70px rgba(0,0,0,0.45); }
+    .card:hover::before { transform: scaleX(1); }
+    .card__ico {
+      width: 60px; height: 60px; border-radius: 16px;
+      display: grid; place-items: center; color: var(--teal);
+      background: radial-gradient(120% 120% at 30% 20%, rgba(47,230,200,0.18), rgba(255,255,255,0.02));
+      border: 1px solid var(--line-2);
+      margin-block-end: 22px;
+      transition: transform .5s var(--ease-2);
+    }
+    .card:hover .card__ico { transform: translateY(-3px) rotate(-6deg); color: var(--amber); }
+    .card__title { font-family: var(--f-display); font-weight: 600; font-size: clamp(19px, 3vw, 23px); color: var(--txt); margin-block-end: 12px; line-height: 1.25; }
+    .card__text { font-size: 15.5px; color: var(--txt-dim); line-height: 1.7; }
+    .card__idx {
+      position: absolute; inset-block-end: 18px; inset-inline-start: 28px;
+      font-family: var(--f-display); font-weight: 700; font-size: 46px;
+      color: rgba(255,255,255,0.05); line-height: 1;
+    }
+
+    /* ============ FEATURES teaser ============ */
+    .features__inner {
+      text-align: center;
+      border-radius: clamp(20px, 4vw, 34px);
+      padding: clamp(40px, 6vw, 72px) clamp(24px, 5vw, 64px);
+      border: 1px solid var(--line-2);
+      background:
+        radial-gradient(80% 120% at 50% 0%, rgba(47,230,200,0.10), transparent 60%),
+        radial-gradient(80% 120% at 50% 100%, rgba(255,198,92,0.08), transparent 60%),
+        linear-gradient(180deg, var(--ink-2), var(--ink-1));
+      box-shadow: 0 40px 100px rgba(0,0,0,0.4);
+    }
+    .features__pills {
+      margin-block: 26px 30px;
+      display: inline-block;
+      font-family: var(--f-ui); font-weight: 500;
+      font-size: clamp(14px, 2vw, 16px); color: var(--amber-2);
+      line-height: 1.9;
+    }
+
+    /* ============ PROOF ============ */
+    .quote {
+      margin-block-start: 44px;
+      position: relative;
+      border-radius: var(--r);
+      padding: clamp(34px, 5vw, 54px);
+      border: 1px solid var(--line-2);
+      background:
+        radial-gradient(100% 140% at 0% 0%, rgba(255,198,92,0.08), transparent 55%),
+        linear-gradient(180deg, var(--ink-3), var(--ink-1));
+    }
+    .quote__mark {
+      font-family: var(--f-display); font-weight: 700;
+      font-size: clamp(70px, 12vw, 120px); line-height: 0.7;
+      color: rgba(47,230,200,0.25);
+      position: absolute; inset-block-start: 26px; inset-inline-end: 32px;
+    }
+    .quote blockquote {
+      font-family: var(--f-display); font-weight: 500;
+      font-size: clamp(20px, 3.4vw, 30px); line-height: 1.45;
+      color: var(--txt); max-width: 50ch; position: relative; z-index: 1;
+    }
+    .quote__by { margin-block-start: 28px; display: flex; align-items: center; gap: 14px; }
+    .quote__avatar {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: grid; place-items: center;
+      font-family: var(--f-display); font-weight: 700; font-size: 22px; color: var(--ink);
+      background: linear-gradient(135deg, var(--teal), var(--amber));
+      box-shadow: var(--glow-teal);
+    }
+    .quote__by strong { display: block; color: var(--txt); font-size: 17px; font-family: var(--f-ui); }
+    .quote__by em { font-style: normal; color: var(--txt-faint); font-size: 14px; }
+
+    .proof__stats {
+      margin-block-start: 30px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px;
+    }
+    .pstat {
+      border-radius: var(--r-sm);
+      padding: 28px 26px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--ink-2), var(--ink-1));
+      transition: transform .35s var(--ease), border-color .35s var(--ease);
+    }
+    .pstat:hover { transform: translateY(-4px); border-color: rgba(47,230,200,0.3); }
+    .pstat__num {
+      font-family: var(--f-display); font-weight: 700;
+      font-size: clamp(38px, 6vw, 56px); line-height: 1;
+      background: linear-gradient(120deg, var(--teal), var(--amber-2));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      display: block; margin-block-end: 10px;
+    }
+    .pstat__label { font-size: 14.5px; color: var(--txt-dim); line-height: 1.55; }
+
+    /* ============ ABOUT ============ */
+    .about__inner {
+      display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(36px, 6vw, 72px);
+      align-items: center;
+    }
+    .portrait { position: relative; }
+    .portrait__frame {
+      position: relative; border-radius: 26px; overflow: hidden;
+      border: 1px solid var(--line-2);
+      box-shadow: 0 40px 90px rgba(0,0,0,0.5);
+    }
+    .portrait__frame img { width: 100%; aspect-ratio: 834/1083; object-fit: cover; }
+    .portrait__frame::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(7,11,18,0.9), transparent 45%);
+    }
+    .portrait__badge {
+      position: absolute; inset-block-end: 22px; inset-inline-start: 22px; z-index: 2;
+    }
+    .portrait__badge strong { display: block; font-family: var(--f-display); font-weight: 600; font-size: 22px; color: #fff; }
+    .portrait__badge span { font-size: 14px; color: var(--teal); font-family: var(--f-ui); font-weight: 500; }
+    .portrait__chip {
+      position: absolute; z-index: 3;
+      font-family: var(--f-ui); font-size: 13px; font-weight: 600;
+      padding: 9px 15px; border-radius: 12px;
+      color: var(--txt); background: rgba(14, 22, 34, 0.82);
+      border: 1px solid var(--line-2);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.4);
+      animation: floatChip 5s var(--ease) infinite;
+    }
+    .portrait__chip--a { inset-block-start: 22px; inset-inline-start: -18px; animation-delay: 0s; }
+    .portrait__chip--b { inset-block-start: 44%; inset-inline-end: -22px; animation-delay: 1.1s; }
+    .portrait__chip--c { inset-block-end: 26%; inset-inline-start: -22px; animation-delay: 2.2s; }
+    @keyframes floatChip { 50% { transform: translateY(-9px); } }
+
+    .about__body .sec-num { margin-block-start: 0; }
+    .about__note { margin-block-start: 16px; font-size: 13px; color: var(--txt-faint); font-style: italic; }
+
+    /* ============ GROWTH ============ */
+    .growth__inner {
+      text-align: center;
+      border-radius: clamp(20px, 4vw, 34px);
+      padding: clamp(48px, 7vw, 90px) clamp(24px, 5vw, 64px);
+      border: 1px solid var(--line-2);
+      background:
+        radial-gradient(70% 130% at 50% -10%, rgba(138,124,255,0.16), transparent 60%),
+        radial-gradient(90% 120% at 50% 120%, rgba(47,230,200,0.10), transparent 60%),
+        linear-gradient(180deg, var(--ink-3), var(--ink-1));
+      box-shadow: 0 40px 110px rgba(0,0,0,0.45);
+      position: relative; overflow: hidden;
+    }
+    .growth__eyebrow {
+      font-family: var(--f-ui); font-size: 12.5px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal);
+    }
+    .growth__title {
+      font-family: var(--f-display); font-weight: 600;
+      font-size: clamp(26px, 5vw, 46px); line-height: 1.12;
+      color: var(--txt); margin-block-start: 16px; letter-spacing: -0.01em;
+    }
+    .growth__sub {
+      margin-block-start: 20px; margin-inline: auto; max-width: 58ch;
+      font-size: clamp(16px, 2.2vw, 18.5px); color: var(--txt-dim); line-height: 1.75;
+    }
+
+    /* ============ FINAL CTA ============ */
+    .cta-band__inner {
+      position: relative; overflow: hidden;
+      text-align: center;
+      border-radius: clamp(20px, 4vw, 36px);
+      padding: clamp(54px, 9vw, 110px) clamp(24px, 5vw, 64px);
+      border: 1px solid rgba(255,198,92,0.3);
+      background:
+        radial-gradient(70% 110% at 50% 0%, rgba(255,198,92,0.18), transparent 60%),
+        radial-gradient(80% 120% at 50% 120%, rgba(47,230,200,0.14), transparent 60%),
+        linear-gradient(180deg, var(--ink-2), var(--ink));
+      box-shadow: 0 50px 130px rgba(0,0,0,0.55);
+    }
+    .cta-band__grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000, transparent 75%);
+    }
+    .cta-band__title {
+      position: relative; z-index: 1;
+      font-family: var(--f-display); font-weight: 600;
+      font-size: clamp(28px, 5.5vw, 54px); line-height: 1.12;
+      color: var(--txt); letter-spacing: -0.01em;
+    }
+    .cta-band__sub {
+      position: relative; z-index: 1;
+      margin-block: 22px 36px; margin-inline: auto; max-width: 56ch;
+      font-size: clamp(16px, 2.4vw, 19px); color: var(--txt-dim); line-height: 1.75;
+    }
+    .cta-band .btn { position: relative; z-index: 1; }
+
+    /* ============ FOOTER ============ */
+    .footer { border-block-start: 1px solid var(--line); padding-block-start: clamp(50px, 7vw, 80px); }
+    .footer__inner {
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px;
+      padding-block-end: 40px;
+    }
+    .brand--footer .brand__mark { width: 36px; height: 36px; border-radius: 11px; }
+    .brand--footer .brand__text { font-size: 17px; }
+    .footer__tag { margin-block-start: 16px; color: var(--txt-dim); font-size: 15px; max-width: 42ch; line-height: 1.7; }
+    .footer__contact { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+    .footer__label { font-family: var(--f-ui); font-size: 12.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .footer__link { display: inline-flex; align-items: center; gap: 10px; color: var(--txt); font-size: 16px; transition: color .25s var(--ease); }
+    .footer__link svg { color: var(--teal); }
+    .footer__link:hover { color: var(--teal); }
+    .footer__bottom { border-block-start: 1px solid var(--line); padding-block: 24px; }
+    .footer__bottom .container { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
+    .footer__bottom span { font-size: 13.5px; color: var(--txt-faint); }
+    .footer__fineprint a { color: var(--teal); transition: opacity .25s var(--ease); }
+    .footer__fineprint a:hover { opacity: 0.75; }
+
+    /* ============ reveal animation ============ */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal[data-d="1"] { transition-delay: .08s; }
+    .reveal[data-d="2"] { transition-delay: .16s; }
+    .reveal[data-d="3"] { transition-delay: .24s; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .mesh, .hero__pill .dot, .vs__arrow svg, .portrait__chip { animation: none !important; }
+    }
+
+    /* ============ responsive ============ */
+    @media (max-width: 860px) {
+      .vs { grid-template-columns: 1fr; }
+      .vs__arrow { transform: rotate(-90deg); }
+      .vs__arrow svg { animation: arrowSlideV 2.4s var(--ease) infinite; }
+      @keyframes arrowSlideV { 50% { transform: translateX(-7px); } }
+      .about__inner { grid-template-columns: 1fr; }
+      .portrait { max-width: 420px; margin-inline: auto; }
+      .portrait__chip--a { inset-inline-start: 8px; }
+      .portrait__chip--b { inset-inline-end: 8px; }
+      .portrait__chip--c { inset-inline-start: 8px; }
+      .footer__inner { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .hero__cta { flex-direction: column; }
+      .hero__cta .btn { width: 100%; justify-content: center; }
+      .scrub { height: 220vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- mesh-gradient backdrop -->
+  <div class="mesh" aria-hidden="true"></div>
+  <div class="mesh-fine" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="#top" class="brand" aria-label="הלל אקנין · דף הבית">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M16 3 L28 10 L28 22 L16 29 L4 22 L4 10 Z" />
+            <path d="M16 3 L16 16 M16 16 L28 10 M16 16 L4 10 M16 16 L16 29" opacity="0.55" />
+          </svg>
+        </span>
+      </a>
+
+      <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F%20%D7%9C%D7%92%D7%91%D7%99%20%D7%94%D7%A4%D7%99%D7%9B%D7%AA%20%D7%94%D7%A7%D7%95%D7%A8%D7%A1%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA%20%D7%9C%D7%9E%D7%99%D7%93%D7%94%20%D7%97%D7%9B%D7%9E%D7%94" class="btn btn--ghost nav__cta" target="_blank" rel="noopener">תיאום שיחה</a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+      <div class="container hero__inner">
+        <span class="hero__pill reveal"><span class="dot"></span> בונים מערכות למידה שגורמות לתלמידים לסיים</span>
+
+        <h1 class="hero__title reveal" data-d="1">
+          הקורס שלך יתחיל לעבוד
+          <span class="hero__accent">כשתלמידים מסיימים ומיישמים, לא רק קונים</span>
+        </h1>
+
+        <p class="hero__sub reveal" data-d="2">
+          רוב התלמידים נרשמים, צופים בשניים-שלושה שיעורים ונעלמים. אני בונה לבעלי קורסים
+          פורטל למידה שמחזיר אותם פנימה, עד שהם מסיימים, מיישמים, וממליצים עליך הלאה.
+        </p>
+
+        <div class="hero__cta reveal" data-d="3">
+          <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F%20%D7%9C%D7%92%D7%91%D7%99%20%D7%94%D7%A4%D7%99%D7%9B%D7%AA%20%D7%94%D7%A7%D7%95%D7%A8%D7%A1%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA%20%D7%9C%D7%9E%D7%99%D7%93%D7%94%20%D7%97%D7%9B%D7%9E%D7%94" class="btn btn--gold" target="_blank" rel="noopener" data-magnetic>
+            בואו נדבר על הקורס שלכם (15 דק׳, ללא עלות)
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6" /></svg>
+          </a>
+          <a href="#vsl" class="btn btn--line">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor" stroke="none"/></svg>
+            צפו בסרטון קצר · איך זה עובד ↓
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCROLL-FRAME BEAT (single dramatic playful moment) ============ -->
+    <section class="scrub" id="scrub" aria-label="הדגמה ויזואלית של מסע התלמיד">
+      <div class="scrub__sticky">
+        <div class="scrub__stage">
+          <span class="scrub__progress" id="scrubProgress"></span>
+          <canvas class="scrub__canvas" id="scrubCanvas" aria-hidden="true"></canvas>
+          <img class="scrub__static" src="../assets/frames/frame_001.webp" alt="הדגמת מסע התלמיד בפורטל הלמידה" />
+          <div class="scrub__vignette" aria-hidden="true"></div>
+          <div class="scrub__overlay">
+            <div class="scrub__kicker">מקונה לתלמיד שמסיים</div>
+            <div class="scrub__head">גלול, וראה את המסע מתעורר לחיים</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VSL ============ -->
+    <section class="section vsl" id="vsl">
+      <div class="container">
+        <div class="sec-head sec-head--center reveal">
+          <h2 class="sec-title">תראה איך זה עובד, ב-5 דקות</h2>
+        </div>
+        <div class="vsl__frame reveal">
+          <!-- TODO: להחליף בקוד ההטמעה של Loom כשהסרטון מוכן -->
+          <div class="vsl__placeholder">
+            <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4z" fill="currentColor" stroke="none"/></svg>
+            <span>כאן ייכנס סרטון ה-VSL</span>
+            <span class="vsl__hint">שלח לי קישור Loom ואטמיע אותו</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROBLEM ============ -->
+    <section class="section problem" id="problem">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">01</span>
+          <h2 class="sec-title">הכסף נכנס. התלמידים נעלמים.</h2>
+          <p class="sec-lead">
+            בנית קורס שעובד. השקעת בתוכן, בצילום, בידע. ואז הרוב המכריע נושר כבר אחרי
+            השיעורים הראשונים. הבעיה לא הייתה אף פעם התוכן. היא שמכרת גישה לתוכן,
+            לא חוויה שמחזיקה בן אדם בפנים.
+          </p>
+        </div>
+
+        <div class="vs">
+          <article class="vs__col vs__col--old reveal" data-d="1">
+            <header class="vs__top">
+              <span class="vs__tag vs__tag--old">הדרך הישנה</span>
+              <h3>ספריית וידאו שאוספת אבק</h3>
+            </header>
+            <ul class="vs__list">
+              <li><span class="vs__ico" aria-hidden="true">✕</span> רק 3 מתוך 20 תלמידים מסיימים, גם כשהתוכן מצוין</li>
+              <li><span class="vs__ico" aria-hidden="true">✕</span> צפייה פסיבית שלא הופכת לשינוי אמיתי בחיים שלהם</li>
+              <li><span class="vs__ico" aria-hidden="true">✕</span> אתה עיוור, לא יודע מי תקוע, מי ממשיך, מי כבר ויתר</li>
+              <li><span class="vs__ico" aria-hidden="true">✕</span> כל שאלה חוזרת נופלת עליך, שוב ושוב</li>
+            </ul>
+          </article>
+
+          <div class="vs__arrow" aria-hidden="true">
+            <svg viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M58 12H4M14 4 4 12l10 8"/></svg>
+          </div>
+
+          <article class="vs__col vs__col--new reveal" data-d="2">
+            <header class="vs__top">
+              <span class="vs__tag vs__tag--new">הדרך החדשה</span>
+              <h3>מערכת למידה חיה ונושמת</h3>
+            </header>
+            <ul class="vs__list">
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> כל תלמיד יודע תמיד מה הצעד הבא, וממשיך בדיוק מאיפה שעצר</li>
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> הלמידה ממכרת כמו משחק בטלפון, הם חוזרים בעצמם, יום אחרי יום</li>
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> תזכורת אישית מחזירה אותם פנימה ברגע שהם מתחילים להיעלם</li>
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> אתה רואה הכול במבט אחד, ומגיע לתלמיד עוד לפני שהוא נושר</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SOLUTION ============ -->
+    <section class="section solution" id="solution">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">02</span>
+          <h2 class="sec-title">שלושה עוגנים שהופכים קונה לתלמיד שמסיים</h2>
+          <p class="sec-lead">
+            רוב התלמידים נושרים לא כי התוכן חלש, אלא כי שום דבר לא מחזיק אותם בפנים.
+            אלה שלושת המנגנונים שבונים את ההתמדה דרך חוויה ופסיכולוגיה.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card reveal" data-d="1">
+            <div class="card__ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6">
+                <rect x="10" y="14" width="28" height="20" rx="4"/>
+                <circle cx="19" cy="24" r="2.4" fill="currentColor" stroke="none"/>
+                <circle cx="29" cy="24" r="2.4" fill="currentColor" stroke="none"/>
+                <path d="M24 14V8M21 8h6"/>
+                <path d="M10 22H6M42 22h-4"/>
+              </svg>
+            </div>
+            <h3 class="card__title">מ"מחסן תוכן" למסלול ברור</h3>
+            <p class="card__text">
+              במקום ספרייה שהתלמיד קובר ושוכח, הוא נכנס למסלול אחד ברור שמוביל אותו
+              צעד צעד עד הסוף. תמיד יודע מה הלאה, אף פעם לא הולך לאיבוד.
+            </p>
+            <span class="card__idx" aria-hidden="true">01</span>
+          </article>
+
+          <article class="card reveal" data-d="2">
+            <div class="card__ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M24 7l4.6 9.3 10.3 1.5-7.4 7.3 1.7 10.2L24 40.7l-9.2 4.9 1.7-10.2-7.4-7.3 10.3-1.5z"/>
+              </svg>
+            </div>
+            <h3 class="card__title">מ"בית קברות" ל"מגרש משחקים"</h3>
+            <p class="card__text">
+              נקודות, רמות ורצף יומי הופכים את הלמידה למשהו ממכר. התלמיד חוזר כי בא לו,
+              לא כי הזכרת לו. וככל שהוא חוזר, ככה הוא מסיים.
+            </p>
+            <span class="card__idx" aria-hidden="true">02</span>
+          </article>
+
+          <article class="card reveal" data-d="3">
+            <div class="card__ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M8 32V20M18 32V12M28 32V24M38 32V16"/>
+                <path d="M6 38h36"/>
+              </svg>
+            </div>
+            <h3 class="card__title">אתה משוחרר מתפקיד הגננת</h3>
+            <p class="card__text">
+              הפורטל עונה על השאלות החוזרות במקומך, ומראה לך בדיוק מי מתקדם ומי נתקע.
+              אתה מתפנה לעשות את מה שבאמת חשוב, במקום לכבות שריפות.
+            </p>
+            <span class="card__idx" aria-hidden="true">03</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES (teaser) ============ -->
+    <section class="section features" id="features">
+      <div class="container">
+        <div class="features__inner reveal">
+          <span class="sec-num">03</span>
+          <h2 class="sec-title">מה בדיוק תקבל? את זה נתפור יחד.</h2>
+          <p class="sec-lead" style="margin-inline:auto;">
+            לכל קורס יש נקודת נשירה משלו. בשיחה קצרה נמפה איפה התלמידים שלך נופלים,
+            ונבנה לך תוכנית מדויקת להחזיר אותם. בלי מונחים טכניים, בלי התחייבות.
+          </p>
+          <p class="features__pills">פורטל למידה ממכר · מנוע שמחזיר תלמידים אוטומטית · מנוע צמיחה שמביא לך לקוחות חדשים</p>
+          <br />
+          <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F" class="btn btn--gold" target="_blank" rel="noopener" data-magnetic>
+            לתיאום שיחת אפיון ללא עלות
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROOF ============ -->
+    <section class="section proof" id="proof">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">04</span>
+          <h2 class="sec-title">ראו את זה בשטח</h2>
+        </div>
+
+        <figure class="quote reveal">
+          <span class="quote__mark" aria-hidden="true">&rdquo;</span>
+          <blockquote>
+            בית המטפלים בנה את הפורטל הזה מאפס, עם המערכת המלאה. לא הדגמה ולא פיילוט.
+            קורס חי, לומדים אמיתיים, וכל הכלים פעילים.
+          </blockquote>
+          <figcaption class="quote__by">
+            <span class="quote__avatar" aria-hidden="true">ב</span>
+            <span>
+              <strong>בית המטפלים</strong>
+              <em>פורטל לימוד חי ופעיל</em>
+            </span>
+          </figcaption>
+        </figure>
+
+        <div class="proof__stats">
+          <div class="pstat reveal" data-d="1">
+            <span class="pstat__num">51</span>
+            <span class="pstat__label">שיעורים ב-7 מודולים בקורס המלא</span>
+          </div>
+          <div class="pstat reveal" data-d="2">
+            <span class="pstat__num">3-15%</span>
+            <span class="pstat__label">סיום ממוצע ללא מבנה (MIT/HBS)</span>
+          </div>
+          <div class="pstat reveal" data-d="3">
+            <span class="pstat__num">6</span>
+            <span class="pstat__label">חוברות + דפי סיכום, נעולים לפי הרשאה</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT / מי אני ============ -->
+    <section class="section about" id="about">
+      <div class="container about__inner">
+        <div class="about__portrait reveal" data-d="1">
+          <div class="portrait">
+            <div class="portrait__frame">
+              <img src="../assets/hillel.jpg" alt="הלל אקנין, מהנדס התמדה לבעלי קורסים" width="834" height="1083" loading="lazy" />
+              <div class="portrait__badge">
+                <strong>הלל אקנין</strong>
+                <span>מהנדס התמדה לבעלי קורסים</span>
+              </div>
+            </div>
+            <span class="portrait__chip portrait__chip--a">מעקב התקדמות</span>
+            <span class="portrait__chip portrait__chip--b">משחוק אמיתי</span>
+            <span class="portrait__chip portrait__chip--c">דשבורד בעלים</span>
+          </div>
+        </div>
+
+        <div class="about__body reveal" data-d="2">
+          <span class="sec-num">05</span>
+          <h2 class="sec-title">מי אני</h2>
+          <p class="sec-lead">
+            אני הלל אקנין. אני בונה לבעלי קורסים דיגיטליים מערכת למידה שלמה, פורטל,
+            ניהול לקוחות ואוטומציות, שגורמת לתלמידים להישאר בפנים, לסיים וליישם.
+            לא טכנולוגיה לשמה. אני מתמקד בדבר אחד: המנגנון הפסיכולוגי והחווייתי שמחזיר
+            אדם ללמוד שוב ושוב, כמו שהוא חוזר לאינסטגרם. את בית המטפלים בניתי בדיוק כך,
+            מאפס, עם המערכת המלאה.
+          </p>
+          <p class="about__note">[טקסט זמני · נחדד קופי]</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GROWTH ENGINE (אפיליאציה) ============ -->
+    <section class="section growth" id="growth">
+      <div class="container">
+        <div class="growth__inner reveal">
+          <span class="growth__eyebrow">מנוע צמיחה אורגני</span>
+          <h2 class="growth__title">התלמידים שלך מביאים לך לקוחות חדשים</h2>
+          <p class="growth__sub">
+            כל תלמיד מרוצה מקבל קישור אישי, וטבלת מובילים הופכת את זה למשחק. התוצאה:
+            עוד נרשמים מגיעים מהתלמידים הקיימים שלך, בלי שתוציא שקל אחד על פרסום.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="section cta-band" id="contact">
+      <div class="container">
+        <div class="cta-band__inner reveal">
+          <div class="cta-band__grid" aria-hidden="true"></div>
+          <h2 class="cta-band__title">הקורס שלך טוב.<br />התלמידים שלך פשוט לא מסיימים אותו.</h2>
+          <p class="cta-band__sub">
+            בשיחה קצרה נמפה יחד בדיוק איפה הם נופלים ומה המנגנון שיחזיר אותם פנימה.
+            אתה יוצא עם תובנה ברורה, בלי התחייבות.
+          </p>
+          <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F" class="btn btn--gold btn--lg" target="_blank" rel="noopener" data-magnetic>
+            לתיאום שיחת אפיון ללא עלות
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="#top" class="brand brand--footer">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M16 3 L28 10 L28 22 L16 29 L4 22 L4 10 Z" />
+              <path d="M16 3 L16 16 M16 16 L28 10 M16 16 L4 10 M16 16 L16 29" opacity="0.55" />
+            </svg>
+          </span>
+          <span class="brand__text">הלל אקנין</span>
+        </a>
+        <p class="footer__tag">בונים מערכות למידה שגורמות לתלמידים לסיים וליישם, לא רק להירשם.</p>
+      </div>
+
+      <div class="footer__contact">
+        <span class="footer__label">דברו איתי</span>
+        <a href="https://wa.me/972549116092" target="_blank" rel="noopener" class="footer__link">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 .9-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7s.7 1.2 1.6 1.9c1.1.9 1.9 1.2 2.2 1.3.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.8.9c.2.1.4.2.4.3.1.2.1.8-.1 1.4z"/></svg>
+          וואטסאפ · 054-911-6092
+        </a>
+        <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F" target="_blank" rel="noopener" class="btn btn--line btn--sm">תיאום שיחת אפיון</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <span>© <span id="year">2026</span> · הלל אקנין</span>
+        <span class="footer__fineprint">
+          נבנה ועוצב על ידי
+          <a href="https://wa.me/972549116092" target="_blank" rel="noopener">הלל אקנין</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    "use strict";
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* ----- year ----- */
+    var yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    /* ----- nav scrolled state ----- */
+    var nav = document.getElementById("nav");
+    function onNav() { nav.classList.toggle("scrolled", window.scrollY > 24); }
+    onNav();
+    window.addEventListener("scroll", onNav, { passive: true });
+
+    /* ----- reveal on scroll ----- */
+    var reveals = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window && !reduceMotion) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+      reveals.forEach(function (el) { io.observe(el); });
+    } else {
+      reveals.forEach(function (el) { el.classList.add("in"); });
+    }
+
+    /* ----- magnetic buttons (playful, subtle) ----- */
+    if (!reduceMotion && window.matchMedia("(pointer:fine)").matches) {
+      document.querySelectorAll("[data-magnetic]").forEach(function (btn) {
+        btn.addEventListener("mousemove", function (e) {
+          var r = btn.getBoundingClientRect();
+          var mx = e.clientX - r.left - r.width / 2;
+          var my = e.clientY - r.top - r.height / 2;
+          btn.style.transform = "translate(" + mx * 0.16 + "px," + (my * 0.16 - 3) + "px)";
+        });
+        btn.addEventListener("mouseleave", function () { btn.style.transform = ""; });
+      });
+    }
+
+    /* ----- scroll-frame canvas sequence (single dramatic beat) ----- */
+    var TOTAL = 150;
+    var pad = function (n) { return String(n).padStart(3, "0"); };
+    var srcFor = function (i) { return "../assets/frames/frame_" + pad(i) + ".webp"; };
+
+    var canvas = document.getElementById("scrubCanvas");
+    var section = document.getElementById("scrub");
+    var progressBar = document.getElementById("scrubProgress");
+
+    if (canvas && section && !reduceMotion) {
+      var ctx = canvas.getContext("2d");
+      var images = new Array(TOTAL + 1);
+      var loadedFirst = false;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      function sizeCanvas() {
+        var rect = canvas.getBoundingClientRect();
+        canvas.width = Math.round(rect.width * dpr);
+        canvas.height = Math.round(rect.height * dpr);
+      }
+
+      function drawImage(img) {
+        if (!img || !img.complete || !img.naturalWidth) return;
+        var cw = canvas.width, ch = canvas.height;
+        var ir = img.naturalWidth / img.naturalHeight;
+        var cr = cw / ch;
+        var dw, dh, dx, dy;
+        if (ir > cr) { dh = ch; dw = ch * ir; dx = (cw - dw) / 2; dy = 0; }
+        else { dw = cw; dh = cw / ir; dx = 0; dy = (ch - dh) / 2; }
+        ctx.clearRect(0, 0, cw, ch);
+        ctx.drawImage(img, dx, dy, dw, dh);
+      }
+
+      /* load frame 1 immediately */
+      var first = new Image();
+      first.onload = function () {
+        loadedFirst = true;
+        images[1] = first;
+        sizeCanvas();
+        drawImage(first);
+        update();
+        preloadRest();
+      };
+      first.src = srcFor(1);
+
+      function preloadRest() {
+        for (var i = 2; i <= TOTAL; i++) {
+          (function (idx) {
+            var im = new Image();
+            im.src = srcFor(idx);
+            images[idx] = im;
+          })(i);
+        }
+      }
+
+      var targetFrame = 1, rendered = 0, ticking = false;
+
+      function computeProgress() {
+        var rect = section.getBoundingClientRect();
+        var vh = window.innerHeight;
+        var total = rect.height - vh;        /* scrollable distance inside the sticky section */
+        if (total <= 0) return 0;
+        var p = (-rect.top) / total;
+        return Math.max(0, Math.min(1, p));
+      }
+
+      function render() {
+        ticking = false;
+        var p = computeProgress();
+        if (progressBar) progressBar.style.width = (p * 100).toFixed(1) + "%";
+        targetFrame = Math.min(TOTAL, Math.max(1, Math.round(p * (TOTAL - 1)) + 1));
+        var img = images[targetFrame];
+        if (img && img.complete && img.naturalWidth) {
+          drawImage(img);
+          rendered = targetFrame;
+        } else if (images[rendered]) {
+          drawImage(images[rendered]);   /* keep last good frame until target loads */
+          if (img) img.addEventListener("load", function () {
+            if (targetFrame === this._idx) drawImage(this);
+          });
+        }
+      }
+
+      function update() {
+        if (!ticking) { ticking = true; requestAnimationFrame(render); }
+      }
+
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", function () {
+        sizeCanvas();
+        if (loadedFirst) { rendered = 0; update(); }
+      }, { passive: true });
+    }
+  })();
+  </script>
+</body>
+</html>

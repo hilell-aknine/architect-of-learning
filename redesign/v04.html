@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>הקורס שלך יתחיל לעבוד · פורטל למידה שגורם לתלמידים לסיים וליישם | הלל אקנין</title>
+  <meta name="description" content="בונים לבעלי קורסים דיגיטליים פורטל למידה שמחזיק את התלמידים בפנים ומביא אותם לסיים וליישם, דרך מבנה, משחוק ותזכורות אישיות. לא טכנולוגיה לשמה." />
+  <meta name="theme-color" content="#0A0A0A" />
+
+  <meta property="og:title" content="הקורס שלך יתחיל לעבוד · כשתלמידים מסיימים, לא רק קונים" />
+  <meta property="og:description" content="פורטל למידה שגורם לתלמידים שלך לסיים וליישם את הקורס, דרך חוויה ופסיכולוגיה. בית המטפלים נבנה בדיוק כך." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="he_IL" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Suez+One&family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       BRUTALIST BOLD · Architect of Learning
+       Black / Bone-white + one loud accent (signal orange).
+       Massive type, raw grid, hard borders, grid-breaking.
+       ============================================================ */
+
+    :root {
+      --ink:    #0A0A0A;   /* near black */
+      --ink-2:  #141414;
+      --bone:   #F4F1EA;   /* bone white */
+      --bone-2: #E7E2D6;
+      --signal: #FF4D00;   /* the one loud accent */
+      --signal-d:#E03F00;
+      --teal:   #00C4A7;   /* tiny secondary nod to brand */
+      --line-w: 3px;
+
+      --f-display: "Suez One", Georgia, serif;
+      --f-body: "Heebo", system-ui, sans-serif;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --maxw: 1280px;
+      --pad: clamp(18px, 5vw, 56px);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; }
+    body {
+      font-family: var(--f-body);
+      background: var(--bone);
+      color: var(--ink);
+      line-height: 1.55;
+      font-weight: 400;
+      overflow-x: clip;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    ::selection { background: var(--signal); color: var(--bone); }
+
+    .container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--pad); }
+
+    /* ---- buttons (hard, blocky, no rounding) ---- */
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--f-body); font-weight: 800; font-size: 16px;
+      padding: 16px 26px; border: var(--line-w) solid var(--ink);
+      background: var(--ink); color: var(--bone);
+      cursor: pointer; position: relative;
+      transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s, color .18s;
+      box-shadow: 6px 6px 0 0 var(--signal);
+      letter-spacing: -0.01em;
+    }
+    .btn svg { transition: transform .25s var(--ease); }
+    .btn:hover { transform: translate(3px, 3px); box-shadow: 2px 2px 0 0 var(--signal); }
+    .btn:hover svg { transform: translateX(-5px); }
+    .btn--signal { background: var(--signal); color: var(--bone); border-color: var(--ink); box-shadow: 6px 6px 0 0 var(--ink); }
+    .btn--signal:hover { box-shadow: 2px 2px 0 0 var(--ink); }
+    .btn--line { background: transparent; color: var(--ink); box-shadow: 6px 6px 0 0 var(--ink); }
+    .btn--line:hover { background: var(--ink); color: var(--bone); box-shadow: 2px 2px 0 0 var(--ink); }
+    .btn--lg { font-size: clamp(17px, 2.4vw, 22px); padding: 22px 38px; box-shadow: 8px 8px 0 0 var(--ink); }
+    .btn--lg:hover { box-shadow: 3px 3px 0 0 var(--ink); }
+    .btn--sm { font-size: 14px; padding: 11px 18px; box-shadow: 4px 4px 0 0 var(--ink); }
+    .btn--sm:hover { box-shadow: 1px 1px 0 0 var(--ink); }
+
+    /* ============ NAV ============ */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--bone);
+      border-block-end: var(--line-w) solid var(--ink);
+    }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand__mark {
+      width: 44px; height: 44px; display: grid; place-items: center;
+      background: var(--ink); color: var(--signal);
+      border: var(--line-w) solid var(--ink);
+    }
+    .brand__text {
+      font-family: var(--f-display); font-size: 19px; color: var(--ink);
+      letter-spacing: -0.02em; line-height: 1;
+    }
+    .brand__text .thin { color: var(--signal); }
+
+    /* ============ HERO ============ */
+    .hero {
+      border-block-end: var(--line-w) solid var(--ink);
+      position: relative; overflow: hidden;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 55px, rgba(10,10,10,.05) 55px, rgba(10,10,10,.05) 56px),
+        repeating-linear-gradient(90deg, transparent, transparent 55px, rgba(10,10,10,.05) 55px, rgba(10,10,10,.05) 56px);
+    }
+    .hero__inner { padding-block: clamp(56px, 9vw, 110px); text-align: center; position: relative; }
+    .hero__kicker {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-weight: 800; font-size: 13px; letter-spacing: 0.16em;
+      text-transform: uppercase; padding: 8px 16px;
+      background: var(--ink); color: var(--bone); margin-block-end: 28px;
+    }
+    .hero__kicker b { color: var(--signal); }
+    .hero__title {
+      font-family: var(--f-display);
+      font-size: clamp(42px, 8.5vw, 116px);
+      line-height: 0.96; letter-spacing: -0.03em;
+      color: var(--ink); margin-inline: auto; max-width: 16ch;
+    }
+    .hero__accent {
+      display: block; margin-block-start: 14px;
+      font-size: clamp(20px, 3.4vw, 40px);
+      font-family: var(--f-body); font-weight: 800;
+      letter-spacing: -0.02em; line-height: 1.12;
+      color: var(--ink); max-width: 24ch; margin-inline: auto;
+    }
+    .hero__accent mark { background: var(--signal); color: var(--bone); padding: 0 .14em; }
+    .hero__sub {
+      margin: 30px auto 0; max-width: 56ch;
+      font-size: clamp(16px, 2vw, 20px); font-weight: 400;
+      color: #2a2a2a; line-height: 1.6;
+    }
+    .hero__cta { margin-block-start: 40px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+
+    /* ============ section scaffolding ============ */
+    .section { border-block-end: var(--line-w) solid var(--ink); }
+    .section--dark { background: var(--ink); color: var(--bone); }
+    .pad { padding-block: clamp(56px, 8vw, 104px); }
+    .sec-head { max-width: 70ch; }
+    .sec-head--center { margin-inline: auto; text-align: center; }
+    .sec-num {
+      font-family: var(--f-display); font-size: clamp(48px, 9vw, 120px);
+      line-height: 0.8; color: transparent;
+      -webkit-text-stroke: 2px var(--signal); text-stroke: 2px var(--signal);
+      display: block; margin-block-end: 6px;
+    }
+    .section--dark .sec-num { -webkit-text-stroke-color: var(--signal); }
+    .sec-title {
+      font-family: var(--f-display);
+      font-size: clamp(30px, 5.4vw, 64px);
+      line-height: 1.0; letter-spacing: -0.025em; color: inherit;
+    }
+    .sec-lead { margin-block-start: 22px; font-size: clamp(16px, 2vw, 20px); line-height: 1.65; max-width: 60ch; color: inherit; opacity: .92; }
+
+    /* ============ VSL ============ */
+    .vsl__frame {
+      margin-block-start: 36px; aspect-ratio: 16 / 9; width: 100%;
+      border: var(--line-w) solid var(--ink); background: var(--ink);
+      box-shadow: 12px 12px 0 0 var(--signal);
+      display: grid; place-items: center; overflow: hidden; position: relative;
+    }
+    .vsl__placeholder { display: grid; place-items: center; gap: 12px; text-align: center; color: var(--bone); padding: 30px; }
+    .vsl__placeholder svg { color: var(--signal); }
+    .vsl__placeholder span { font-weight: 700; font-size: 17px; }
+    .vsl__hint { font-weight: 400 !important; font-size: 14px !important; color: rgba(244,241,234,.55); }
+
+    /* ============ PROBLEM (split + scroll scrub canvas) ============ */
+    .scrub {
+      position: relative;
+      height: 320vh; /* scroll runway for the sequence */
+      background: var(--ink);
+    }
+    .scrub__sticky {
+      position: sticky; top: 0; height: 100vh; overflow: hidden;
+      display: grid; place-items: center;
+    }
+    #seqCanvas { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .scrub__overlay {
+      position: absolute; inset: 0; pointer-events: none;
+      display: flex; flex-direction: column; justify-content: center;
+      padding-inline: var(--pad);
+      background: linear-gradient(90deg, rgba(10,10,10,.82) 0%, rgba(10,10,10,.35) 55%, transparent 100%);
+    }
+    [dir="rtl"] .scrub__overlay { background: linear-gradient(270deg, rgba(10,10,10,.82) 0%, rgba(10,10,10,.35) 55%, transparent 100%); }
+    .scrub__overlay .container { max-width: var(--maxw); }
+    .scrub__tag {
+      display: inline-block; font-weight: 800; font-size: 13px; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--ink); background: var(--signal);
+      padding: 7px 14px; margin-block-end: 18px; align-self: flex-start; pointer-events: auto;
+    }
+    .scrub__title {
+      font-family: var(--f-display); color: var(--bone);
+      font-size: clamp(30px, 6vw, 78px); line-height: 0.98; letter-spacing: -0.025em;
+      max-width: 18ch;
+    }
+    .scrub__title mark { background: var(--signal); color: var(--bone); padding: 0 .1em; }
+    .scrub__sub { margin-block-start: 20px; color: rgba(244,241,234,.85); max-width: 46ch; font-size: clamp(15px, 1.9vw, 19px); }
+    .scrub__progress {
+      position: absolute; inset-block-end: 0; inset-inline-start: 0;
+      height: 6px; width: 0%; background: var(--signal); transition: width .1s linear;
+    }
+    .scrub__static { display: none; }
+
+    /* ============ VS (old vs new) ============ */
+    .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-block-start: 44px; border: var(--line-w) solid var(--ink); }
+    .vs__col { padding: clamp(24px, 4vw, 44px); }
+    .vs__col--old { background: var(--bone); border-inline-end: var(--line-w) solid var(--ink); }
+    .vs__col--new { background: var(--ink); color: var(--bone); }
+    .vs__tag {
+      display: inline-block; font-weight: 800; font-size: 12px; letter-spacing: .14em;
+      text-transform: uppercase; padding: 6px 12px; margin-block-end: 16px;
+    }
+    .vs__tag--old { background: transparent; color: var(--ink); border: 2px solid var(--ink); }
+    .vs__tag--new { background: var(--signal); color: var(--bone); }
+    .vs__col h3 { font-family: var(--f-display); font-size: clamp(20px, 3vw, 30px); line-height: 1.05; margin-block-end: 20px; letter-spacing: -0.02em; }
+    .vs__list li { display: flex; gap: 12px; align-items: flex-start; padding-block: 12px; border-block-start: 2px solid rgba(10,10,10,.12); font-size: clamp(14.5px, 1.7vw, 16.5px); line-height: 1.5; }
+    .vs__col--new .vs__list li { border-block-start-color: rgba(244,241,234,.16); }
+    .vs__list li:first-child { border-block-start: none; }
+    .vs__ico { flex: none; width: 26px; height: 26px; display: grid; place-items: center; font-weight: 900; font-size: 15px; border: 2px solid var(--ink); }
+    .vs__ico--ok { border-color: var(--signal); color: var(--signal); }
+
+    /* ============ SOLUTION cards ============ */
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-block-start: 44px; border: var(--line-w) solid var(--ink); background: var(--ink); }
+    .card {
+      background: var(--bone); padding: clamp(24px, 3vw, 38px) clamp(20px, 2.6vw, 32px);
+      border-inline-end: var(--line-w) solid var(--ink); position: relative; overflow: hidden;
+      transition: background .25s var(--ease), color .25s var(--ease);
+    }
+    .card:last-child { border-inline-end: none; }
+    .card:hover { background: var(--signal); color: var(--bone); }
+    .card__ico { width: 56px; height: 56px; color: var(--ink); margin-block-end: 18px; transition: color .25s; }
+    .card:hover .card__ico { color: var(--bone); }
+    .card__title { font-family: var(--f-display); font-size: clamp(19px, 2.5vw, 26px); line-height: 1.08; letter-spacing: -0.02em; margin-block-end: 12px; }
+    .card__text { font-size: 15.5px; line-height: 1.6; color: #2a2a2a; transition: color .25s; }
+    .card:hover .card__text { color: var(--bone); }
+    .card__idx { position: absolute; inset-block-start: 14px; inset-inline-end: 18px; font-family: var(--f-display); font-size: 56px; line-height: 1; color: transparent; -webkit-text-stroke: 1.5px rgba(10,10,10,.18); transition: -webkit-text-stroke-color .25s; }
+    .card:hover .card__idx { -webkit-text-stroke-color: rgba(244,241,234,.4); }
+
+    /* ============ FEATURES teaser ============ */
+    .features__pills {
+      margin-block-start: 24px; font-weight: 800; font-size: clamp(15px, 2vw, 19px);
+      line-height: 1.7; color: var(--ink);
+    }
+    .features__pills .dot { color: var(--signal); margin-inline: 6px; }
+    .features .btn { margin-block-start: 30px; }
+
+    /* ============ PROOF ============ */
+    .quote { margin-block-start: 36px; padding: clamp(28px, 4vw, 52px); border: var(--line-w) solid var(--bone); position: relative; }
+    .quote__mark { font-family: var(--f-display); font-size: clamp(80px, 12vw, 150px); line-height: 0.5; color: var(--signal); display: block; height: .5em; }
+    .quote blockquote { font-family: var(--f-display); font-size: clamp(22px, 3.6vw, 40px); line-height: 1.18; letter-spacing: -0.02em; color: var(--bone); margin-block: 18px 28px; max-width: 26ch; }
+    .quote__by { display: flex; align-items: center; gap: 14px; }
+    .quote__avatar { width: 50px; height: 50px; display: grid; place-items: center; background: var(--signal); color: var(--ink); font-family: var(--f-display); font-size: 24px; flex: none; }
+    .quote__by strong { display: block; font-weight: 800; color: var(--bone); }
+    .quote__by em { font-style: normal; color: rgba(244,241,234,.6); font-size: 14px; }
+
+    .proof__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-block-start: 44px; border: var(--line-w) solid var(--bone); }
+    .pstat { padding: clamp(26px, 4vw, 44px) 24px; border-inline-end: var(--line-w) solid var(--bone); text-align: center; }
+    .pstat:last-child { border-inline-end: none; }
+    .pstat__num { display: block; font-family: var(--f-display); font-size: clamp(40px, 7vw, 78px); line-height: 1; color: var(--signal); letter-spacing: -0.02em; }
+    .pstat__label { display: block; margin-block-start: 12px; font-size: 14.5px; color: rgba(244,241,234,.78); line-height: 1.45; }
+
+    /* ============ ABOUT ============ */
+    .about__inner { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 0; }
+    .about__portrait { border-inline-end: var(--line-w) solid var(--ink); padding: clamp(28px, 4vw, 56px); display: grid; place-items: center; }
+    .portrait { position: relative; width: 100%; max-width: 360px; }
+    .portrait__frame { position: relative; border: var(--line-w) solid var(--ink); box-shadow: 14px 14px 0 0 var(--signal); overflow: hidden; }
+    .portrait__frame img { width: 100%; height: auto; display: block; filter: grayscale(1) contrast(1.05); transition: filter .4s var(--ease); }
+    .portrait:hover .portrait__frame img { filter: grayscale(0) contrast(1); }
+    .portrait__badge { position: absolute; inset-block-end: 0; inset-inline-start: 0; right: 0; background: var(--ink); color: var(--bone); padding: 14px 18px; border-block-start: var(--line-w) solid var(--signal); }
+    .portrait__badge strong { display: block; font-family: var(--f-display); font-size: 18px; }
+    .portrait__badge span { font-size: 13px; color: rgba(244,241,234,.7); }
+    .portrait__chip { position: absolute; font-weight: 800; font-size: 12.5px; padding: 8px 13px; background: var(--bone); border: 2px solid var(--ink); white-space: nowrap; }
+    .portrait__chip--a { top: -14px; inset-inline-start: -14px; background: var(--signal); color: var(--bone); border-color: var(--ink); }
+    .portrait__chip--b { top: 38%; inset-inline-end: -22px; }
+    .portrait__chip--c { inset-block-end: 30%; inset-inline-start: -22px; }
+    .about__body { padding: clamp(28px, 4vw, 56px); display: flex; flex-direction: column; justify-content: center; }
+    .about__body .sec-num { margin-block-end: 0; }
+    .about__note { margin-block-start: 16px; font-size: 13px; color: #888; font-style: italic; }
+
+    /* ============ GROWTH ============ */
+    .growth__inner { text-align: center; max-width: 70ch; margin-inline: auto; }
+    .growth__eyebrow { display: inline-block; font-weight: 800; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; background: var(--signal); color: var(--bone); padding: 8px 16px; margin-block-end: 22px; }
+    .growth__title { font-family: var(--f-display); font-size: clamp(28px, 5vw, 60px); line-height: 1.02; letter-spacing: -0.025em; color: var(--bone); }
+    .growth__sub { margin-block-start: 22px; font-size: clamp(16px, 2vw, 20px); line-height: 1.6; color: rgba(244,241,234,.85); }
+
+    /* ============ FINAL CTA ============ */
+    .cta-band__inner { text-align: center; position: relative; }
+    .cta-band__title { font-family: var(--f-display); font-size: clamp(32px, 6.5vw, 86px); line-height: 0.98; letter-spacing: -0.03em; color: var(--bone); }
+    .cta-band__title mark { background: var(--signal); color: var(--bone); padding: 0 .08em; }
+    .cta-band__sub { margin: 26px auto 0; max-width: 52ch; font-size: clamp(16px, 2vw, 20px); line-height: 1.6; color: rgba(244,241,234,.85); }
+    .cta-band .btn { margin-block-start: 38px; }
+
+    /* ============ FOOTER ============ */
+    .footer { background: var(--bone); }
+    .footer__inner { display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; align-items: flex-start; padding-block: clamp(40px, 5vw, 64px); }
+    .footer__brand { max-width: 42ch; }
+    .footer__tag { margin-block-start: 14px; color: #333; font-size: 15px; line-height: 1.55; }
+    .footer__contact { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+    .footer__label { font-weight: 800; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--signal); }
+    .footer__link { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; }
+    .footer__link svg { color: var(--signal); }
+    .footer__bottom { border-block-start: var(--line-w) solid var(--ink); }
+    .footer__bottom .container { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; padding-block: 20px; font-size: 13.5px; color: #444; }
+    .footer__fineprint a { font-weight: 800; color: var(--ink); border-block-end: 2px solid var(--signal); }
+
+    /* ============ reveal animation ============ */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal[data-d="1"] { transition-delay: .08s; }
+    .reveal[data-d="2"] { transition-delay: .16s; }
+    .reveal[data-d="3"] { transition-delay: .24s; }
+
+    /* ============ responsive ============ */
+    @media (max-width: 880px) {
+      .vs, .cards, .proof__stats, .about__inner { grid-template-columns: 1fr; }
+      .vs__col--old, .card, .pstat, .about__portrait { border-inline-end: none; }
+      .vs__col--old, .card:not(:last-child), .pstat:not(:last-child) { border-block-end: var(--line-w) solid var(--ink); }
+      .pstat:not(:last-child) { border-block-end-color: var(--bone); }
+      .about__portrait { border-block-end: var(--line-w) solid var(--ink); }
+      .portrait__chip--b, .portrait__chip--c { display: none; }
+      .scrub { height: 260vh; }
+    }
+    @media (max-width: 520px) {
+      .btn { width: 100%; justify-content: center; }
+      .hero__cta { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .scrub { height: auto; }
+      .scrub__sticky { position: static; height: auto; min-height: 70vh; }
+      #seqCanvas { display: none; }
+      .scrub__static { display: block; width: 100%; height: 100%; min-height: 70vh; object-fit: cover; filter: grayscale(.4); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="#top" class="brand" aria-label="הלל אקנין · דף הבית">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 3 L28 10 L28 22 L16 29 L4 22 L4 10 Z" />
+            <path d="M16 3 L16 16 M16 16 L28 10 M16 16 L4 10 M16 16 L16 29" opacity="0.6" />
+          </svg>
+        </span>
+      </a>
+
+      <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F%20%D7%9C%D7%92%D7%91%D7%99%20%D7%94%D7%A4%D7%99%D7%9B%D7%AA%20%D7%94%D7%A7%D7%95%D7%A8%D7%A1%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA%20%D7%9C%D7%9E%D7%99%D7%93%D7%94%20%D7%97%D7%9B%D7%9E%D7%94" class="btn btn--sm" target="_blank" rel="noopener">תיאום שיחה</a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+      <div class="container hero__inner">
+        <h1 class="hero__title reveal" data-d="1">
+          הקורס שלך יתחיל לעבוד
+          <span class="hero__accent">כשתלמידים <mark>מסיימים ומיישמים</mark>, לא רק קונים</span>
+        </h1>
+
+        <p class="hero__sub reveal" data-d="2">
+          רוב התלמידים נרשמים, צופים בשניים-שלושה שיעורים ונעלמים. אני בונה לבעלי קורסים
+          פורטל למידה שמחזיר אותם פנימה, עד שהם מסיימים, מיישמים, וממליצים עליך הלאה.
+        </p>
+
+        <div class="hero__cta reveal" data-d="3">
+          <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F%20%D7%9C%D7%92%D7%91%D7%99%20%D7%94%D7%A4%D7%99%D7%9B%D7%AA%20%D7%94%D7%A7%D7%95%D7%A8%D7%A1%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA%20%D7%9C%D7%9E%D7%99%D7%93%D7%94%20%D7%97%D7%9B%D7%9E%D7%94" class="btn btn--signal" target="_blank" rel="noopener">
+            בואו נדבר על הקורס שלכם (15 דק׳, ללא עלות)
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M14 6l-6 6 6 6" /></svg>
+          </a>
+          <a href="#vsl" class="btn btn--line">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor" stroke="none"/></svg>
+            צפו בסרטון קצר · איך זה עובד ↓
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VSL ============ -->
+    <section class="section pad vsl" id="vsl">
+      <div class="container">
+        <div class="sec-head sec-head--center reveal">
+          <h2 class="sec-title">תראה איך זה עובד, ב-5 דקות</h2>
+        </div>
+        <div class="vsl__frame reveal" data-d="1">
+          <!-- TODO: להחליף בקוד ההטמעה של Loom כשהסרטון מוכן -->
+          <div class="vsl__placeholder">
+            <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4z" fill="currentColor" stroke="none"/></svg>
+            <span>כאן ייכנס סרטון ה-VSL</span>
+            <span class="vsl__hint">שלח לי קישור Loom ואטמיע אותו</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROBLEM · scroll-scrub canvas (the one "wow") ============ -->
+    <section class="scrub" id="problem" aria-label="הכסף נכנס, התלמידים נעלמים">
+      <div class="scrub__sticky">
+        <canvas id="seqCanvas" aria-hidden="true"></canvas>
+        <img class="scrub__static" src="../assets/frames/frame_001.webp" alt="" aria-hidden="true" />
+        <div class="scrub__overlay">
+          <div class="container">
+            <span class="scrub__tag">01</span>
+            <h2 class="scrub__title">הכסף נכנס. <mark>התלמידים נעלמים.</mark></h2>
+            <p class="scrub__sub">
+              בנית קורס שעובד. השקעת בתוכן, בצילום, בידע. ואז הרוב המכריע נושר כבר אחרי
+              השיעורים הראשונים. הבעיה לא הייתה אף פעם התוכן. היא שמכרת גישה לתוכן,
+              לא חוויה שמחזיקה בן אדם בפנים.
+            </p>
+          </div>
+        </div>
+        <span class="scrub__progress" id="scrubBar"></span>
+      </div>
+    </section>
+
+    <!-- ============ VS (old vs new) ============ -->
+    <section class="section pad">
+      <div class="container">
+        <div class="vs">
+          <article class="vs__col vs__col--old reveal">
+            <span class="vs__tag vs__tag--old">הדרך הישנה</span>
+            <h3>ספריית וידאו שאוספת אבק</h3>
+            <ul class="vs__list">
+              <li><span class="vs__ico" aria-hidden="true">✕</span> רק 3 מתוך 20 תלמידים מסיימים, גם כשהתוכן מצוין</li>
+              <li><span class="vs__ico" aria-hidden="true">✕</span> צפייה פסיבית שלא הופכת לשינוי אמיתי בחיים שלהם</li>
+              <li><span class="vs__ico" aria-hidden="true">✕</span> אתה עיוור, לא יודע מי תקוע, מי ממשיך, מי כבר ויתר</li>
+              <li><span class="vs__ico" aria-hidden="true">✕</span> כל שאלה חוזרת נופלת עליך, שוב ושוב</li>
+            </ul>
+          </article>
+
+          <article class="vs__col vs__col--new reveal" data-d="1">
+            <span class="vs__tag vs__tag--new">הדרך החדשה</span>
+            <h3>מערכת למידה חיה ונושמת</h3>
+            <ul class="vs__list">
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> כל תלמיד יודע תמיד מה הצעד הבא, וממשיך בדיוק מאיפה שעצר</li>
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> הלמידה ממכרת כמו משחק בטלפון, הם חוזרים בעצמם, יום אחרי יום</li>
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> תזכורת אישית מחזירה אותם פנימה ברגע שהם מתחילים להיעלם</li>
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> אתה רואה הכול במבט אחד, ומגיע לתלמיד עוד לפני שהוא נושר</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SOLUTION ============ -->
+    <section class="section pad solution" id="solution">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">02</span>
+          <h2 class="sec-title">שלושה עוגנים שהופכים קונה לתלמיד שמסיים</h2>
+          <p class="sec-lead">
+            רוב התלמידים נושרים לא כי התוכן חלש, אלא כי שום דבר לא מחזיק אותם בפנים.
+            אלה שלושת המנגנונים שבונים את ההתמדה דרך חוויה ופסיכולוגיה.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card reveal">
+            <div class="card__ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="10" y="14" width="28" height="20" rx="2"/>
+                <circle cx="19" cy="24" r="2.4" fill="currentColor" stroke="none"/>
+                <circle cx="29" cy="24" r="2.4" fill="currentColor" stroke="none"/>
+                <path d="M24 14V8M21 8h6"/>
+                <path d="M10 22H6M42 22h-4"/>
+              </svg>
+            </div>
+            <h3 class="card__title">מ"מחסן תוכן" למסלול ברור</h3>
+            <p class="card__text">
+              במקום ספרייה שהתלמיד קובר ושוכח, הוא נכנס למסלול אחד ברור שמוביל אותו
+              צעד צעד עד הסוף. תמיד יודע מה הלאה, אף פעם לא הולך לאיבוד.
+            </p>
+            <span class="card__idx" aria-hidden="true">01</span>
+          </article>
+
+          <article class="card reveal" data-d="1">
+            <div class="card__ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M24 7l4.6 9.3 10.3 1.5-7.4 7.3 1.7 10.2L24 40.7l-9.2 4.9 1.7-10.2-7.4-7.3 10.3-1.5z"/>
+              </svg>
+            </div>
+            <h3 class="card__title">מ"בית קברות" ל"מגרש משחקים"</h3>
+            <p class="card__text">
+              נקודות, רמות ורצף יומי הופכים את הלמידה למשהו ממכר. התלמיד חוזר כי בא לו,
+              לא כי הזכרת לו. וככל שהוא חוזר, ככה הוא מסיים.
+            </p>
+            <span class="card__idx" aria-hidden="true">02</span>
+          </article>
+
+          <article class="card reveal" data-d="2">
+            <div class="card__ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M8 32V20M18 32V12M28 32V24M38 32V16"/>
+                <path d="M6 38h36"/>
+              </svg>
+            </div>
+            <h3 class="card__title">אתה משוחרר מתפקיד הגננת</h3>
+            <p class="card__text">
+              הפורטל עונה על השאלות החוזרות במקומך, ומראה לך בדיוק מי מתקדם ומי נתקע.
+              אתה מתפנה לעשות את מה שבאמת חשוב, במקום לכבות שריפות.
+            </p>
+            <span class="card__idx" aria-hidden="true">03</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES (teaser) ============ -->
+    <section class="section pad features" id="features">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">03</span>
+          <h2 class="sec-title">מה בדיוק תקבל? את זה נתפור יחד.</h2>
+          <p class="sec-lead">
+            לכל קורס יש נקודת נשירה משלו. בשיחה קצרה נמפה איפה התלמידים שלך נופלים,
+            ונבנה לך תוכנית מדויקת להחזיר אותם. בלי מונחים טכניים, בלי התחייבות.
+          </p>
+          <p class="features__pills">פורטל למידה ממכר <span class="dot">·</span> מנוע שמחזיר תלמידים אוטומטית <span class="dot">·</span> מנוע צמיחה שמביא לך לקוחות חדשים</p>
+          <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F" class="btn btn--signal" target="_blank" rel="noopener">
+            לתיאום שיחת אפיון ללא עלות
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M14 6l-6 6 6 6" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROOF ============ -->
+    <section class="section section--dark pad proof" id="proof">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">04</span>
+          <h2 class="sec-title">ראו את זה בשטח</h2>
+        </div>
+
+        <figure class="quote reveal" data-d="1">
+          <span class="quote__mark" aria-hidden="true">&rdquo;</span>
+          <blockquote>
+            בית המטפלים בנה את הפורטל הזה מאפס, עם המערכת המלאה. לא הדגמה ולא פיילוט.
+            קורס חי, לומדים אמיתיים, וכל הכלים פעילים.
+          </blockquote>
+          <figcaption class="quote__by">
+            <span class="quote__avatar" aria-hidden="true">ב</span>
+            <span>
+              <strong>בית המטפלים</strong>
+              <em>פורטל לימוד חי ופעיל</em>
+            </span>
+          </figcaption>
+        </figure>
+
+        <div class="proof__stats">
+          <div class="pstat reveal">
+            <span class="pstat__num">51</span>
+            <span class="pstat__label">שיעורים ב-7 מודולים בקורס המלא</span>
+          </div>
+          <div class="pstat reveal" data-d="1">
+            <span class="pstat__num">3-15%</span>
+            <span class="pstat__label">סיום ממוצע ללא מבנה (MIT/HBS)</span>
+          </div>
+          <div class="pstat reveal" data-d="2">
+            <span class="pstat__num">6</span>
+            <span class="pstat__label">חוברות + דפי סיכום, נעולים לפי הרשאה</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT / מי אני ============ -->
+    <section class="section about" id="about">
+      <div class="about__inner">
+        <div class="about__portrait reveal">
+          <div class="portrait">
+            <div class="portrait__frame">
+              <img src="../assets/hillel.jpg" alt="הלל אקנין, מהנדס התמדה לבעלי קורסים" width="834" height="1083" loading="lazy" />
+              <div class="portrait__badge">
+                <strong>הלל אקנין</strong>
+                <span>מהנדס התמדה לבעלי קורסים</span>
+              </div>
+            </div>
+            <span class="portrait__chip portrait__chip--a">מעקב התקדמות</span>
+            <span class="portrait__chip portrait__chip--b">משחוק אמיתי</span>
+            <span class="portrait__chip portrait__chip--c">דשבורד בעלים</span>
+          </div>
+        </div>
+
+        <div class="about__body reveal" data-d="1">
+          <span class="sec-num">05</span>
+          <h2 class="sec-title">מי אני</h2>
+          <p class="sec-lead">
+            אני הלל אקנין. אני בונה לבעלי קורסים דיגיטליים מערכת למידה שלמה, פורטל,
+            ניהול לקוחות ואוטומציות, שגורמת לתלמידים להישאר בפנים, לסיים וליישם.
+            לא טכנולוגיה לשמה. אני מתמקד בדבר אחד: המנגנון הפסיכולוגי והחווייתי שמחזיר
+            אדם ללמוד שוב ושוב, כמו שהוא חוזר לאינסטגרם. את בית המטפלים בניתי בדיוק כך,
+            מאפס, עם המערכת המלאה.
+          </p>
+          <p class="about__note">[טקסט זמני · נחדד קופי]</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GROWTH ENGINE (אפיליאציה) ============ -->
+    <section class="section section--dark pad growth" id="growth">
+      <div class="container growth__inner reveal">
+        <span class="growth__eyebrow">מנוע צמיחה אורגני</span>
+        <h2 class="growth__title">התלמידים שלך מביאים לך לקוחות חדשים</h2>
+        <p class="growth__sub">
+          כל תלמיד מרוצה מקבל קישור אישי, וטבלת מובילים הופכת את זה למשחק. התוצאה:
+          עוד נרשמים מגיעים מהתלמידים הקיימים שלך, בלי שתוציא שקל אחד על פרסום.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="section section--dark pad cta-band" id="contact">
+      <div class="container cta-band__inner reveal">
+        <h2 class="cta-band__title">הקורס שלך טוב.<br /><mark>התלמידים שלך פשוט לא מסיימים אותו.</mark></h2>
+        <p class="cta-band__sub">
+          בשיחה קצרה נמפה יחד בדיוק איפה הם נופלים ומה המנגנון שיחזיר אותם פנימה.
+          אתה יוצא עם תובנה ברורה, בלי התחייבות.
+        </p>
+        <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F" class="btn btn--signal btn--lg" target="_blank" rel="noopener">
+          לתיאום שיחת אפיון ללא עלות
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M14 6l-6 6 6 6" /></svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="#top" class="brand">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 3 L28 10 L28 22 L16 29 L4 22 L4 10 Z" />
+              <path d="M16 3 L16 16 M16 16 L28 10 M16 16 L4 10 M16 16 L16 29" opacity="0.6" />
+            </svg>
+          </span>
+          <span class="brand__text">הלל אקנין</span>
+        </a>
+        <p class="footer__tag">בונים מערכות למידה שגורמות לתלמידים לסיים וליישם, לא רק להירשם.</p>
+      </div>
+
+      <div class="footer__contact">
+        <span class="footer__label">דברו איתי</span>
+        <a href="https://wa.me/972549116092" target="_blank" rel="noopener" class="footer__link">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 .9-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7s.7 1.2 1.6 1.9c1.1.9 1.9 1.2 2.2 1.3.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.8.9c.2.1.4.2.4.3.1.2.1.8-.1 1.4z"/></svg>
+          וואטסאפ · 054-911-6092
+        </a>
+        <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F" target="_blank" rel="noopener" class="btn btn--line btn--sm">תיאום שיחת אפיון</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <span>© <span id="year">2026</span> · הלל אקנין</span>
+        <span class="footer__fineprint">
+          נבנה ועוצב על ידי
+          <a href="https://wa.me/972549116092" target="_blank" rel="noopener">הלל אקנין</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---- reveal on scroll ----
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var els = document.querySelectorAll('.reveal');
+      if (reduce || !('IntersectionObserver' in window)) {
+        els.forEach(function (e) { e.classList.add('in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
+      els.forEach(function (e) { io.observe(e); });
+    })();
+
+    // ---- scroll-scrub frame sequence (the one "wow") ----
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return; // static fallback image handles it
+
+      var FRAME_COUNT = 150;
+      var pad = function (n) { return ('000' + n).slice(-3); };
+      var src = function (n) { return '../assets/frames/frame_' + pad(n) + '.webp'; };
+
+      var canvas = document.getElementById('seqCanvas');
+      var section = document.getElementById('problem');
+      var bar = document.getElementById('scrubBar');
+      if (!canvas || !section) return;
+      var ctx = canvas.getContext('2d');
+
+      var images = new Array(FRAME_COUNT + 1);
+      var loaded = 0;
+      var currentDrawn = -1;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      function sizeCanvas() {
+        var r = canvas.getBoundingClientRect();
+        canvas.width = Math.round(r.width * dpr);
+        canvas.height = Math.round(r.height * dpr);
+        currentDrawn = -1; // force redraw
+      }
+
+      // draw frame "cover" style
+      function drawFrame(n) {
+        var img = images[n];
+        if (!img || !img.complete || !img.naturalWidth) return;
+        if (n === currentDrawn) return;
+        currentDrawn = n;
+        var cw = canvas.width, ch = canvas.height;
+        var iw = img.naturalWidth, ih = img.naturalHeight;
+        var scale = Math.max(cw / iw, ch / ih);
+        var w = iw * scale, h = ih * scale;
+        var x = (cw - w) / 2, y = (ch - h) / 2;
+        ctx.clearRect(0, 0, cw, ch);
+        ctx.drawImage(img, x, y, w, h);
+      }
+
+      // load frame 1 immediately
+      var first = new Image();
+      first.onload = function () { loaded++; sizeCanvas(); drawFrame(1); };
+      first.src = src(1);
+      images[1] = first;
+
+      // preload the rest after window load
+      function preloadRest() {
+        for (var i = 2; i <= FRAME_COUNT; i++) {
+          (function (i) {
+            var im = new Image();
+            im.onload = function () { loaded++; };
+            im.src = src(i);
+            images[i] = im;
+          })(i);
+        }
+      }
+      if (document.readyState === 'complete') { preloadRest(); }
+      else { window.addEventListener('load', preloadRest); }
+
+      // map scroll progress of the section to a frame index, in rAF
+      var targetFrame = 1;
+      var ticking = false;
+
+      function onScroll() {
+        var rect = section.getBoundingClientRect();
+        var vh = window.innerHeight;
+        // progress: 0 when section top hits top of viewport, 1 when bottom reaches bottom
+        var total = rect.height - vh;
+        var scrolled = Math.min(Math.max(-rect.top, 0), total);
+        var p = total > 0 ? scrolled / total : 0;
+        targetFrame = Math.min(FRAME_COUNT, Math.max(1, Math.round(p * (FRAME_COUNT - 1)) + 1));
+        if (bar) bar.style.width = (p * 100).toFixed(1) + '%';
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(function () {
+            // draw nearest loaded frame at/below target to avoid blanks
+            var n = targetFrame;
+            while (n > 1 && (!images[n] || !images[n].complete || !images[n].naturalWidth)) n--;
+            drawFrame(n);
+            ticking = false;
+          });
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', function () { sizeCanvas(); onScroll(); });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>

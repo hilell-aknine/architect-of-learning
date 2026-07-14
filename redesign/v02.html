@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>הקורס שלך יתחיל לעבוד · פורטל למידה שגורם לתלמידים לסיים וליישם | הלל אקנין</title>
+  <meta name="description" content="בונים לבעלי קורסים דיגיטליים פורטל למידה שמחזיק את התלמידים בפנים ומביא אותם לסיים וליישם, דרך מבנה, משחוק ותזכורות אישיות. לא טכנולוגיה לשמה." />
+  <meta name="theme-color" content="#000000" />
+
+  <meta property="og:title" content="הקורס שלך יתחיל לעבוד · כשתלמידים מסיימים, לא רק קונים" />
+  <meta property="og:description" content="פורטל למידה שגורם לתלמידים שלך לסיים וליישם את הקורס, דרך חוויה ופסיכולוגיה. בית המטפלים נבנה בדיוק כך." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="he_IL" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+  /* =========================================================
+     NEON TERMINAL · pure black + neon orange + electric cyan
+     monospace data labels · glow · tech grid · digital energy
+     ========================================================= */
+  :root{
+    --black:      #000000;
+    --black-2:    #060809;
+    --panel:      #0A0D0F;
+    --panel-2:    #0E1316;
+    --line:       rgba(255,106,0,0.14);
+    --line-cy:    rgba(0,229,255,0.16);
+    --line-soft:  rgba(255,255,255,0.07);
+
+    --orange:     #FF6A00;
+    --orange-hi:  #FF8A33;
+    --orange-deep:#C24300;
+    --cyan:       #00E5FF;
+    --cyan-hi:    #66F0FF;
+    --cyan-deep:  #0094A8;
+
+    --ink:        #EAF2F4;
+    --ink-dim:    rgba(234,242,244,0.66);
+    --ink-faint:  rgba(234,242,244,0.40);
+
+    --glow-or:    0 0 28px rgba(255,106,0,0.45);
+    --glow-or-s:  0 0 14px rgba(255,106,0,0.55);
+    --glow-cy:    0 0 28px rgba(0,229,255,0.45);
+    --glow-cy-s:  0 0 14px rgba(0,229,255,0.55);
+
+    --maxw: 1180px;
+    --pad: clamp(20px, 5vw, 64px);
+    --r: 6px;
+
+    --f-display:"Space Grotesk","Heebo",sans-serif;
+    --f-body:"Heebo",system-ui,sans-serif;
+    --f-mono:"JetBrains Mono","Space Grotesk",monospace;
+    --ease: cubic-bezier(0.22,1,0.36,1);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; overflow-x:clip; }
+  body{
+    font-family:var(--f-body);
+    background:var(--black);
+    color:var(--ink);
+    line-height:1.62;
+    font-weight:400;
+    overflow-x:clip;
+    position:relative;
+    text-rendering:optimizeLegibility;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  img{ max-width:100%; display:block; }
+  ::selection{ background:rgba(255,106,0,0.30); color:#fff; }
+
+  .container{
+    width:100%; max-width:var(--maxw);
+    margin-inline:auto; padding-inline:var(--pad);
+  }
+
+  /* ===== ambient backdrop: tech grid + scanline + drift glows ===== */
+  .bg-grid{
+    position:fixed; inset:0; z-index:-4; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,106,0,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.05) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 100% 85% at 50% 0%, #000 30%, transparent 82%);
+    -webkit-mask-image:radial-gradient(ellipse 100% 85% at 50% 0%, #000 30%, transparent 82%);
+    animation:gridShift 26s linear infinite;
+  }
+  @keyframes gridShift{ to{ background-position:48px 48px; } }
+  .bg-glow-or, .bg-glow-cy{
+    position:fixed; z-index:-3; pointer-events:none; border-radius:50%;
+    filter:blur(60px);
+  }
+  .bg-glow-or{
+    top:-22%; right:-14%;
+    width:62vw; height:62vw; max-width:760px; max-height:760px;
+    background:radial-gradient(circle, rgba(255,106,0,0.22), transparent 62%);
+    animation:driftA 18s ease-in-out infinite;
+  }
+  .bg-glow-cy{
+    bottom:-26%; left:-16%;
+    width:58vw; height:58vw; max-width:720px; max-height:720px;
+    background:radial-gradient(circle, rgba(0,229,255,0.16), transparent 64%);
+    animation:driftB 22s ease-in-out infinite;
+  }
+  @keyframes driftA{ 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(-5%,7%) scale(1.12);} }
+  @keyframes driftB{ 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(7%,-5%) scale(1.14);} }
+  .scanlines{
+    position:fixed; inset:0; z-index:-2; pointer-events:none; opacity:.5;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.22) 3px);
+  }
+  .vignette{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, rgba(0,0,0,0.7) 100%);
+  }
+
+  /* ===== mono kicker / data label ===== */
+  .kicker{
+    display:inline-flex; align-items:center; gap:9px;
+    font-family:var(--f-mono); font-size:.74rem; font-weight:500;
+    letter-spacing:.18em; text-transform:uppercase;
+    color:var(--cyan); padding:6px 13px;
+    border:1px solid var(--line-cy); border-radius:4px;
+    background:rgba(0,229,255,0.05);
+    box-shadow:inset 0 0 14px rgba(0,229,255,0.05);
+  }
+  .kicker::before{
+    content:""; width:7px; height:7px; border-radius:1px; flex-shrink:0;
+    background:var(--cyan); box-shadow:0 0 10px var(--cyan);
+    animation:blink 1.6s steps(2,start) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:.25; } }
+  .kicker--or{ color:var(--orange); border-color:var(--line); background:rgba(255,106,0,0.05); }
+  .kicker--or::before{ background:var(--orange); box-shadow:0 0 10px var(--orange); }
+
+  /* ===== buttons ===== */
+  .btn{
+    position:relative;
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--f-display); font-size:1rem; font-weight:600;
+    padding:15px 28px; border-radius:6px; cursor:pointer;
+    border:1px solid transparent;
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease), background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+    white-space:nowrap; isolation:isolate; overflow:hidden;
+  }
+  .btn svg{ transition:transform .3s var(--ease); }
+  /* sweep shimmer */
+  .btn--primary::after{
+    content:""; position:absolute; inset:0; z-index:-1;
+    background:linear-gradient(120deg, transparent 20%, rgba(255,255,255,.35) 50%, transparent 80%);
+    transform:translateX(-120%); transition:transform .6s var(--ease);
+  }
+  .btn--primary:hover::after{ transform:translateX(120%); }
+  .btn--primary{
+    background:linear-gradient(135deg, var(--orange-hi), var(--orange) 55%, var(--orange-deep));
+    color:#0a0500; font-weight:700;
+    box-shadow:var(--glow-or), 0 8px 26px rgba(255,106,0,0.30), inset 0 1px 0 rgba(255,255,255,.4);
+  }
+  .btn--primary:hover{ transform:translateY(-3px); box-shadow:0 0 42px rgba(255,106,0,0.65), 0 16px 50px rgba(255,106,0,0.4), inset 0 1px 0 rgba(255,255,255,.5); }
+  .btn--primary:hover svg{ transform:translateX(-5px); }
+  .btn--line{
+    background:rgba(0,229,255,0.04); color:var(--cyan);
+    border-color:rgba(0,229,255,0.4);
+  }
+  .btn--line:hover{ border-color:var(--cyan); color:#031316; background:var(--cyan); box-shadow:var(--glow-cy); transform:translateY(-3px); }
+  .btn--ghost{
+    background:transparent; color:var(--ink);
+    border-color:var(--line-soft); padding:11px 22px; font-size:.95rem;
+    font-family:var(--f-mono); letter-spacing:.04em; font-weight:500;
+  }
+  .btn--ghost:hover{ border-color:var(--orange); color:var(--orange); box-shadow:var(--glow-or-s); }
+  .btn--lg{ padding:18px 40px; font-size:1.1rem; }
+  .btn--sm{ padding:10px 20px; font-size:.9rem; }
+
+  /* ===== nav ===== */
+  .nav{
+    position:fixed; inset-block-start:0; inset-inline:0; z-index:100;
+    transition:background .4s var(--ease), border-color .4s var(--ease), backdrop-filter .4s;
+    border-block-end:1px solid transparent;
+  }
+  .nav.scrolled{
+    background:rgba(0,0,0,0.78);
+    backdrop-filter:blur(16px) saturate(140%);
+    -webkit-backdrop-filter:blur(16px) saturate(140%);
+    border-block-end-color:rgba(255,106,0,0.18);
+  }
+  .nav__inner{ display:flex; align-items:center; justify-content:space-between; gap:20px; height:74px; }
+  .brand{ display:inline-flex; align-items:center; gap:11px; font-family:var(--f-mono); font-weight:700; font-size:1.02rem; color:var(--ink); letter-spacing:.02em; }
+  .brand__mark{ color:var(--orange); display:inline-flex; transition:transform .5s var(--ease); filter:drop-shadow(0 0 8px rgba(255,106,0,0.6)); }
+  .brand:hover .brand__mark{ transform:rotate(30deg); }
+  .brand__thin{ color:var(--cyan); }
+  .nav__cta{ flex-shrink:0; }
+
+  /* ===== hero ===== */
+  .hero{
+    position:relative; min-height:96svh;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center;
+    padding-block:128px 70px;
+    max-width:var(--maxw); margin-inline:auto; padding-inline:var(--pad);
+  }
+  .hero__inner{ max-width:880px; margin-inline:auto; position:relative; z-index:2; }
+  .hero__title{
+    font-family:var(--f-display); font-weight:700;
+    font-size:clamp(2.4rem,5.6vw,4.3rem);
+    line-height:1.06; letter-spacing:-0.02em;
+    margin-block:22px 22px;
+  }
+  .hero__accent{
+    display:block;
+    background:linear-gradient(110deg, var(--cyan) 0%, var(--cyan-hi) 22%, var(--orange-hi) 60%, var(--orange) 100%);
+    background-size:240% auto;
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+    filter:drop-shadow(0 0 22px rgba(255,106,0,0.25));
+    animation:gradShift 7s linear infinite;
+    font-size:.84em; margin-top:.18em;
+  }
+  @keyframes gradShift{ to{ background-position:240% center; } }
+  .hero__sub{
+    font-family:var(--f-body);
+    font-size:clamp(1.05rem,1.9vw,1.3rem);
+    color:var(--ink-dim); font-weight:300;
+    max-width:620px; margin-block-end:38px; margin-inline:auto;
+  }
+  .hero__cta{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+
+  /* ===== scrub stage (hero canvas sequence) ===== */
+  .scrub{
+    position:relative;
+    padding-block:0 clamp(40px,8vw,90px);
+    margin-top:clamp(40px,7vw,80px);
+  }
+  .scrub__sticky{
+    position:sticky; top:0;
+    height:100svh;
+    display:grid; place-items:center;
+    overflow:hidden;
+  }
+  .scrub__canvas-wrap{
+    position:relative;
+    width:min(720px, 92%);
+    aspect-ratio:16/10;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--panel);
+    box-shadow:0 40px 110px rgba(0,0,0,0.7), 0 0 40px rgba(255,106,0,0.12), inset 0 0 50px rgba(0,0,0,0.5);
+  }
+  .scrub__canvas-wrap::before{
+    /* terminal chrome bar */
+    content:"frame_seq.webp · scroll to scrub";
+    position:absolute; top:0; inset-inline:0; z-index:3;
+    height:30px; display:flex; align-items:center; padding-inline:14px;
+    font-family:var(--f-mono); font-size:.66rem; letter-spacing:.08em; color:var(--cyan);
+    background:linear-gradient(180deg, rgba(0,0,0,0.85), rgba(0,0,0,0.3));
+    border-block-end:1px solid var(--line-cy);
+  }
+  .scrub__canvas-wrap::after{
+    content:""; position:absolute; inset:0; z-index:2; pointer-events:none;
+    background:repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.12) 3px 4px);
+    mix-blend-mode:overlay;
+  }
+  #scrubCanvas{ width:100%; height:100%; object-fit:cover; display:block; }
+  .scrub__cap{
+    position:absolute; inset-inline:0; bottom:18px; z-index:4; text-align:center;
+    font-family:var(--f-mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--orange); text-shadow:0 0 14px rgba(255,106,0,0.6);
+  }
+  .scrub__progress{
+    position:absolute; inset-inline:14px; bottom:42px; z-index:4; height:2px;
+    background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden;
+  }
+  .scrub__progress i{ display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--cyan),var(--orange)); box-shadow:0 0 12px var(--orange); }
+  .scrub__label{
+    text-align:center; max-width:560px; margin:0 auto; padding-inline:var(--pad);
+    margin-top:clamp(20px,4vw,40px);
+  }
+  .scrub__label h2{ font-family:var(--f-display); font-weight:700; font-size:clamp(1.5rem,3.2vw,2.3rem); line-height:1.16; margin-block:14px 12px; }
+  .scrub__label p{ color:var(--ink-dim); font-weight:300; font-size:clamp(1rem,1.7vw,1.15rem); }
+
+  /* ===== sections ===== */
+  .section{ padding-block:clamp(70px,11vw,140px); position:relative; }
+  .sec-head{ max-width:740px; margin-block-end:clamp(40px,6vw,68px); }
+  .sec-head--center{ text-align:center; margin-inline:auto; }
+  .sec-num{
+    display:inline-block; font-family:var(--f-mono); font-weight:700;
+    font-size:.82rem; color:var(--orange); letter-spacing:.12em;
+    padding-block-end:4px; border-block-end:2px solid var(--orange);
+    margin-block-end:18px; text-shadow:var(--glow-or-s);
+  }
+  .sec-title{
+    font-family:var(--f-display); font-weight:700;
+    font-size:clamp(1.9rem,4vw,3rem); line-height:1.12;
+    letter-spacing:-0.015em; margin-block-end:18px;
+  }
+  .sec-lead{ font-size:clamp(1rem,1.6vw,1.18rem); color:var(--ink-dim); font-weight:300; }
+
+  /* ===== VSL ===== */
+  .vsl__frame{
+    position:relative; width:min(900px,100%); margin-inline:auto;
+    aspect-ratio:16/9; border-radius:10px; overflow:hidden;
+    border:1px solid var(--line); background:var(--panel);
+    box-shadow:0 30px 90px rgba(0,0,0,0.6), 0 0 36px rgba(0,229,255,0.10);
+  }
+  .vsl__frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .vsl__placeholder{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
+    color:var(--ink-dim); text-align:center; padding:20px;
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 50%, rgba(255,106,0,0.07), transparent 60%),
+      repeating-linear-gradient(0deg, transparent 0 5px, rgba(0,229,255,0.025) 5px 6px);
+  }
+  .vsl__placeholder svg{ color:var(--orange); opacity:.9; filter:drop-shadow(0 0 14px rgba(255,106,0,0.5)); }
+  .vsl__placeholder span:first-of-type{ font-family:var(--f-mono); letter-spacing:.06em; }
+  .vsl__hint{ font-size:.85rem; color:var(--ink-faint); font-family:var(--f-mono); }
+
+  /* ===== problem / VS ===== */
+  .vs{ display:grid; grid-template-columns:1fr auto 1fr; align-items:stretch; gap:clamp(16px,3vw,36px); }
+  .vs__col{
+    border:1px solid var(--line-soft); border-radius:var(--r);
+    padding:clamp(24px,3vw,38px);
+    background:linear-gradient(180deg, var(--panel), rgba(0,0,0,0.4));
+    position:relative; overflow:hidden;
+  }
+  .vs__col--old{ opacity:.82; }
+  .vs__col--new{
+    border-color:rgba(255,106,0,0.4);
+    background:linear-gradient(180deg, rgba(20,11,4,0.7), rgba(0,0,0,0.5));
+    box-shadow:0 20px 60px rgba(0,0,0,0.4), 0 0 34px rgba(255,106,0,0.12), inset 0 0 30px rgba(255,106,0,0.04);
+  }
+  .vs__col--new::before{
+    content:""; position:absolute; top:0; inset-inline:0; height:2px;
+    background:linear-gradient(90deg,var(--cyan),var(--orange)); box-shadow:0 0 14px rgba(255,106,0,0.6);
+  }
+  .vs__top{ margin-block-end:22px; }
+  .vs__tag{ display:inline-block; font-family:var(--f-mono); font-size:.72rem; font-weight:700; padding:5px 12px; border-radius:4px; margin-block-end:14px; letter-spacing:.08em; text-transform:uppercase; }
+  .vs__tag--old{ background:rgba(255,255,255,0.06); color:var(--ink-faint); }
+  .vs__tag--new{ background:rgba(255,106,0,0.16); color:var(--orange); box-shadow:var(--glow-or-s); }
+  .vs__top h3{ font-family:var(--f-display); font-weight:600; font-size:1.3rem; }
+  .vs__col--old h3{ color:var(--ink-dim); }
+  .vs__list{ display:flex; flex-direction:column; gap:15px; }
+  .vs__list li{ display:flex; gap:12px; align-items:flex-start; font-size:1rem; color:var(--ink-dim); }
+  .vs__ico{ flex-shrink:0; width:22px; height:22px; border-radius:4px; display:grid; place-items:center; font-size:.75rem; font-weight:700; background:rgba(255,255,255,0.06); color:var(--ink-faint); margin-top:2px; font-family:var(--f-mono); }
+  .vs__ico--ok{ background:rgba(255,106,0,0.16); color:var(--orange); box-shadow:var(--glow-or-s); }
+  .vs__col--new .vs__list li{ color:var(--ink); }
+  .vs__arrow{ color:var(--cyan); display:grid; place-items:center; filter:drop-shadow(0 0 10px rgba(0,229,255,0.6)); }
+  .vs__arrow svg{ width:54px; transform:rotate(180deg); }
+
+  /* ===== solution cards ===== */
+  .cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(18px,2.4vw,26px); }
+  .card{
+    position:relative; overflow:hidden;
+    border:1px solid var(--line-soft); border-radius:var(--r);
+    padding:clamp(28px,3vw,40px) clamp(24px,2.6vw,34px);
+    background:linear-gradient(180deg, var(--panel), rgba(0,0,0,0.3));
+    transition:transform .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .card::before{
+    content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(340px circle at var(--mx,50%) var(--my,0%), rgba(255,106,0,0.12), transparent 60%);
+    opacity:0; transition:opacity .4s;
+  }
+  .card:hover::before{ opacity:1; }
+  .card > *{ position:relative; z-index:1; }
+  .card__line{
+    position:absolute; top:0; inset-inline:0; height:2px; z-index:2;
+    background:linear-gradient(90deg, var(--cyan), var(--orange));
+    box-shadow:0 0 16px rgba(255,106,0,0.6);
+    transform:scaleX(0); transform-origin:right; transition:transform .5s var(--ease);
+  }
+  .card:hover{ transform:translateY(-8px); border-color:rgba(255,106,0,0.4); box-shadow:0 28px 70px rgba(0,0,0,0.5), 0 0 38px rgba(255,106,0,0.14); }
+  .card:hover .card__line{ transform:scaleX(1); }
+  .card__ico{
+    width:58px; height:58px; border-radius:10px;
+    display:grid; place-items:center; color:var(--cyan);
+    background:rgba(0,229,255,0.07); border:1px solid rgba(0,229,255,0.22);
+    margin-block-end:24px; transition:transform .4s var(--ease), background .4s, box-shadow .4s, color .4s;
+  }
+  .card:hover .card__ico{ transform:scale(1.08) rotate(-4deg); background:rgba(255,106,0,0.14); border-color:rgba(255,106,0,0.3); color:var(--orange); box-shadow:var(--glow-or); }
+  .card__ico svg{ width:30px; height:30px; filter:drop-shadow(0 0 6px currentColor); }
+  .card__title{ font-family:var(--f-display); font-weight:600; font-size:1.32rem; margin-block-end:12px; }
+  .card__text{ color:var(--ink-dim); font-size:.98rem; font-weight:300; }
+  .card__idx{ position:absolute; bottom:10px; inset-inline-start:22px; font-family:var(--f-mono); font-weight:700; font-size:3rem; color:var(--orange); opacity:.07; line-height:1; pointer-events:none; }
+
+  /* ===== features teaser ===== */
+  .features__pills{ margin-block:18px 26px; color:var(--cyan); font-family:var(--f-mono); font-size:clamp(13px,1.7vw,15.5px); font-weight:500; line-height:1.9; letter-spacing:.02em; }
+
+  /* ===== proof ===== */
+  .quote{
+    position:relative; border:1px solid rgba(0,229,255,0.28); border-radius:14px;
+    padding:clamp(34px,5vw,60px);
+    background:linear-gradient(150deg, rgba(4,16,18,0.8), rgba(0,0,0,0.5));
+    max-width:880px; box-shadow:0 30px 80px rgba(0,0,0,0.45), 0 0 36px rgba(0,229,255,0.10);
+  }
+  .quote::before{ content:""; position:absolute; top:0; inset-inline:0; height:2px; background:linear-gradient(90deg,var(--orange),var(--cyan)); box-shadow:0 0 14px rgba(0,229,255,0.6); }
+  .quote__mark{ position:absolute; top:8px; inset-inline-start:30px; font-family:var(--f-display); font-size:6rem; color:var(--cyan); opacity:.22; line-height:1; text-shadow:var(--glow-cy); }
+  .quote blockquote{ font-family:var(--f-display); font-weight:500; font-size:clamp(1.3rem,2.6vw,1.85rem); line-height:1.45; color:var(--ink); margin-block-end:30px; position:relative; }
+  .quote__by{ display:flex; align-items:center; gap:15px; }
+  .quote__avatar{
+    width:52px; height:52px; border-radius:8px; display:grid; place-items:center;
+    font-family:var(--f-display); font-weight:700; font-size:1.3rem;
+    background:linear-gradient(135deg, var(--cyan), var(--orange)); color:#000; box-shadow:var(--glow-cy-s);
+  }
+  .quote__by strong{ display:block; font-size:1.05rem; font-weight:700; }
+  .quote__by em{ font-style:normal; font-size:.9rem; color:var(--ink-faint); font-family:var(--f-mono); }
+
+  .proof__stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(18px,2.5vw,28px); margin-block-start:clamp(34px,5vw,56px); }
+  .pstat{ text-align:center; padding:30px 20px; border:1px solid var(--line-soft); border-radius:var(--r); background:rgba(10,13,15,0.6); transition:border-color .4s, box-shadow .4s, transform .4s; }
+  .pstat:hover{ border-color:rgba(255,106,0,0.34); box-shadow:0 0 30px rgba(255,106,0,0.12); transform:translateY(-4px); }
+  .pstat__num{ display:block; font-family:var(--f-display); font-weight:700; font-size:clamp(1.8rem,3.5vw,2.6rem); color:var(--orange); line-height:1.1; margin-block-end:8px; text-shadow:0 0 22px rgba(255,106,0,0.4); }
+  .pstat:nth-child(2) .pstat__num{ color:var(--cyan); text-shadow:0 0 22px rgba(0,229,255,0.45); }
+  .pstat__label{ font-size:.92rem; color:var(--ink-dim); }
+
+  /* ===== about / מי אני ===== */
+  .about__inner{ display:grid; grid-template-columns:0.82fr 1.18fr; align-items:center; gap:clamp(34px,6vw,80px); }
+  .about__portrait{ display:grid; place-items:center; }
+  .about__body{ max-width:560px; }
+  .about__body .sec-title{ margin-block:10px 18px; }
+  .about__note{ margin-block-start:14px; font-size:.8rem; color:var(--ink-faint); opacity:.7; font-family:var(--f-mono); }
+  .portrait{ position:relative; width:min(370px,86%); }
+  .portrait::after{
+    content:""; position:absolute; inset:-3px; z-index:-1; border-radius:14px;
+    background:conic-gradient(from 120deg, var(--orange), var(--cyan), var(--orange-hi), var(--cyan-hi), var(--orange));
+    filter:blur(18px); opacity:.5; animation:halo 5s var(--ease) infinite;
+  }
+  @keyframes halo{ 0%,100%{ opacity:.4;} 50%{ opacity:.66;} }
+  .portrait__frame{
+    position:relative; border-radius:10px; overflow:hidden; aspect-ratio:834/1083;
+    border:1px solid rgba(255,106,0,0.45);
+    box-shadow:0 40px 90px rgba(0,0,0,0.6), 0 0 30px rgba(255,106,0,0.18), inset 0 1px 0 rgba(234,242,244,0.06);
+  }
+  .portrait__frame::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.95) 2%, rgba(0,0,0,0) 44%); }
+  .portrait__frame img{ width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.05) contrast(1.04); }
+  .portrait__badge{ position:absolute; inset-inline:18px; bottom:16px; z-index:2; }
+  .portrait__badge strong{ display:block; font-family:var(--f-display); font-weight:700; font-size:1.22rem; color:var(--ink); }
+  .portrait__badge span{ font-family:var(--f-mono); font-size:.78rem; color:var(--orange); text-shadow:0 0 12px rgba(255,106,0,0.5); letter-spacing:.04em; }
+  .portrait__chip{
+    position:absolute; z-index:3; font-family:var(--f-mono); font-weight:500; font-size:.74rem;
+    color:var(--cyan); background:rgba(0,0,0,0.88); border:1px solid rgba(0,229,255,0.4);
+    border-radius:6px; padding:8px 13px; backdrop-filter:blur(8px);
+    box-shadow:0 12px 34px rgba(0,0,0,0.5), var(--glow-cy-s); animation:floaty 6s var(--ease) infinite; white-space:nowrap; letter-spacing:.03em;
+  }
+  @keyframes floaty{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-10px);} }
+  .portrait__chip--a{ top:7%; inset-inline-start:-12%; animation-delay:0s; }
+  .portrait__chip--b{ top:44%; inset-inline-end:-14%; color:var(--orange); border-color:rgba(255,106,0,0.4); box-shadow:0 12px 34px rgba(0,0,0,0.5), var(--glow-or-s); animation-delay:1.3s; }
+  .portrait__chip--c{ bottom:18%; inset-inline-start:-13%; animation-delay:2.5s; }
+  @media (max-width:820px){ .about__inner{ grid-template-columns:1fr; gap:44px; } .about__portrait{ order:2; } }
+
+  /* ===== growth ===== */
+  .growth__inner{ text-align:center; max-width:760px; margin-inline:auto; }
+  .growth__eyebrow{ display:inline-block; font-family:var(--f-mono); font-size:.74rem; font-weight:700; letter-spacing:.14em; color:var(--cyan); text-transform:uppercase; margin-block-end:16px; padding:6px 14px; border:1px solid rgba(0,229,255,0.35); border-radius:4px; }
+  .growth__title{ font-family:var(--f-display); font-weight:700; font-size:clamp(1.6rem,3.5vw,2.4rem); color:var(--ink); margin-block-end:16px; line-height:1.15; }
+  .growth__sub{ font-size:clamp(1rem,1.8vw,1.2rem); color:var(--ink-dim); font-weight:300; line-height:1.6; }
+
+  /* ===== CTA band ===== */
+  .cta-band__inner{
+    position:relative; overflow:hidden; text-align:center;
+    border:1px solid rgba(255,106,0,0.34); border-radius:16px;
+    padding:clamp(48px,8vw,96px) clamp(24px,5vw,70px);
+    background:
+      radial-gradient(ellipse 80% 130% at 50% -20%, rgba(255,106,0,0.16), transparent 60%),
+      linear-gradient(180deg, rgba(10,13,15,0.85), rgba(0,0,0,0.7));
+    box-shadow:0 0 50px rgba(255,106,0,0.12), inset 0 0 60px rgba(255,106,0,0.04);
+  }
+  .cta-band__grid{
+    position:absolute; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,106,0,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.07) 1px, transparent 1px);
+    background-size:40px 40px;
+    mask-image:radial-gradient(ellipse 70% 70% at 50% 0%, #000, transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 0%, #000, transparent 75%);
+    animation:gridShift 18s linear infinite;
+  }
+  .cta-band__title, .cta-band__sub, .cta-band .btn{ position:relative; z-index:1; }
+  .cta-band__title{ font-family:var(--f-display); font-weight:700; font-size:clamp(2rem,4.6vw,3.2rem); line-height:1.14; margin-block-end:20px; }
+  .cta-band__sub{ color:var(--ink-dim); font-weight:300; font-size:clamp(1rem,1.8vw,1.2rem); max-width:600px; margin-inline:auto; margin-block-end:38px; }
+
+  /* ===== footer ===== */
+  .footer{ border-block-start:1px solid var(--line-soft); margin-block-start:40px; }
+  .footer__inner{ display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; padding-block:clamp(44px,6vw,70px); }
+  .footer__brand{ max-width:360px; }
+  .brand--footer{ margin-block-end:16px; }
+  .footer__tag{ color:var(--ink-dim); font-size:.96rem; font-weight:300; }
+  .footer__contact{ display:flex; flex-direction:column; align-items:flex-start; gap:14px; }
+  .footer__label{ font-family:var(--f-mono); font-size:.74rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); font-weight:500; }
+  .footer__link{ display:inline-flex; align-items:center; gap:10px; font-size:1.1rem; font-weight:500; color:var(--ink); transition:color .3s; }
+  .footer__link svg{ color:var(--orange); filter:drop-shadow(0 0 6px rgba(255,106,0,0.5)); }
+  .footer__link:hover{ color:var(--orange); }
+  .footer__bottom{ border-block-start:1px solid var(--line-soft); }
+  .footer__bottom .container{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; padding-block:22px; font-size:.84rem; color:var(--ink-faint); font-family:var(--f-mono); }
+  .footer__fineprint a{ color:var(--orange); font-weight:500; transition:color .3s; }
+  .footer__fineprint a:hover{ color:var(--cyan); }
+
+  /* ===== reveal ===== */
+  .reveal{ opacity:0; transform:translateY(34px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in{ opacity:1; transform:none; }
+  .reveal[data-i="1"]{ transition-delay:.08s; }
+  .reveal[data-i="2"]{ transition-delay:.16s; }
+  .reveal[data-i="3"]{ transition-delay:.24s; }
+  .reveal[data-i="4"]{ transition-delay:.32s; }
+
+  /* ===== responsive ===== */
+  @media (max-width:860px){
+    .cards{ grid-template-columns:1fr; }
+    .vs{ grid-template-columns:1fr; }
+    .vs__arrow svg{ transform:rotate(-90deg); }
+    .proof__stats{ grid-template-columns:1fr; }
+    .scrub__canvas-wrap{ width:96%; }
+  }
+  @media (max-width:760px){
+    .nav__cta .btn{ padding:9px 16px; font-size:.85rem; }
+    .footer__inner{ flex-direction:column; gap:30px; }
+    .brand{ min-height:44px; }
+  }
+  @media (max-width:480px){
+    .section{ padding-block:60px; }
+    .hero__cta{ flex-direction:column; align-items:stretch; }
+    .hero__cta .btn{ justify-content:center; }
+    .hero__cta .btn--line{ align-self:center; width:auto; }
+    .portrait__chip--c{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation:none !important; transition-duration:0.01ms !important; }
+    .reveal{ opacity:1; transform:none; }
+    html{ scroll-behavior:auto; }
+    .scrub__sticky{ position:relative; height:auto; padding-block:30px; }
+  }
+  </style>
+</head>
+<body>
+
+  <!-- ambient backdrop -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow-or" aria-hidden="true"></div>
+  <div class="bg-glow-cy" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="#top" class="brand" aria-label="הלל אקנין · דף הבית">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M16 3 L28 10 L28 22 L16 29 L4 22 L4 10 Z" />
+            <path d="M16 3 L16 16 M16 16 L28 10 M16 16 L4 10 M16 16 L16 29" opacity="0.55" />
+          </svg>
+        </span>
+      </a>
+
+      <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F%20%D7%9C%D7%92%D7%91%D7%99%20%D7%94%D7%A4%D7%99%D7%9B%D7%AA%20%D7%94%D7%A7%D7%95%D7%A8%D7%A1%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA%20%D7%9C%D7%9E%D7%99%D7%93%D7%94%20%D7%97%D7%9B%D7%9E%D7%94" class="btn btn--ghost nav__cta" target="_blank" rel="noopener">תיאום שיחה</a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+      <div class="hero__inner">
+        <h1 class="hero__title reveal" data-i="1">
+          הקורס שלך יתחיל לעבוד
+          <span class="hero__accent">כשתלמידים מסיימים ומיישמים, לא רק קונים</span>
+        </h1>
+
+        <p class="hero__sub reveal" data-i="2">
+          רוב התלמידים נרשמים, צופים בשניים-שלושה שיעורים ונעלמים. אני בונה לבעלי קורסים
+          פורטל למידה שמחזיר אותם פנימה, עד שהם מסיימים, מיישמים, וממליצים עליך הלאה.
+        </p>
+
+        <div class="hero__cta reveal" data-i="3">
+          <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F%20%D7%9C%D7%92%D7%91%D7%99%20%D7%94%D7%A4%D7%99%D7%9B%D7%AA%20%D7%94%D7%A7%D7%95%D7%A8%D7%A1%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA%20%D7%9C%D7%9E%D7%99%D7%93%D7%94%20%D7%97%D7%9B%D7%9E%D7%94" class="btn btn--primary" target="_blank" rel="noopener" data-magnetic>
+            בואו נדבר על הקורס שלכם (15 דק׳, ללא עלות)
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6" /></svg>
+          </a>
+          <a href="#vsl" class="btn btn--line">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor" stroke="none"/></svg>
+            צפו בסרטון קצר · איך זה עובד ↓
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCROLL-SCRUB STAGE (the one playful WOW moment) ============ -->
+    <section class="scrub" id="scrub" aria-label="רצף ויזואלי מבוקר גלילה">
+      <div class="scrub__sticky">
+        <div class="scrub__canvas-wrap">
+          <canvas id="scrubCanvas" width="1280" height="800" aria-hidden="true"></canvas>
+          <div class="scrub__progress" aria-hidden="true"><i id="scrubBar"></i></div>
+          <span class="scrub__cap" aria-hidden="true">RENDER · ההפיכה מקונה לתלמיד שמסיים</span>
+        </div>
+      </div>
+      <div class="scrub__label reveal">
+        <span class="kicker kicker--or">// scroll_to_reveal</span>
+        <h2>מתוכן פסיבי למסע שמחזיק אותם בפנים</h2>
+        <p>גלול, ותראה איך זה נראה מבפנים. כל פריים הוא צעד נוסף שהתלמיד עושה, עד שהוא מסיים.</p>
+      </div>
+    </section>
+
+    <!-- ============ VSL ============ -->
+    <section class="section vsl" id="vsl">
+      <div class="container">
+        <div class="sec-head sec-head--center reveal">
+          <h2 class="sec-title">תראה איך זה עובד, ב-5 דקות</h2>
+        </div>
+        <div class="vsl__frame reveal">
+          <!-- TODO: להחליף בקוד ההטמעה של Loom כשהסרטון מוכן -->
+          <div class="vsl__placeholder">
+            <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4z" fill="currentColor" stroke="none"/></svg>
+            <span>כאן ייכנס סרטון ה-VSL</span>
+            <span class="vsl__hint">שלח לי קישור Loom ואטמיע אותו</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROBLEM ============ -->
+    <section class="section problem" id="problem">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">01</span>
+          <h2 class="sec-title">הכסף נכנס. התלמידים נעלמים.</h2>
+          <p class="sec-lead">
+            בנית קורס שעובד. השקעת בתוכן, בצילום, בידע. ואז הרוב המכריע נושר כבר אחרי
+            השיעורים הראשונים. הבעיה לא הייתה אף פעם התוכן. היא שמכרת גישה לתוכן,
+            לא חוויה שמחזיקה בן אדם בפנים.
+          </p>
+        </div>
+
+        <div class="vs">
+          <article class="vs__col vs__col--old reveal" data-i="0">
+            <header class="vs__top">
+              <span class="vs__tag vs__tag--old">הדרך הישנה</span>
+              <h3>ספריית וידאו שאוספת אבק</h3>
+            </header>
+            <ul class="vs__list">
+              <li><span class="vs__ico" aria-hidden="true">✕</span> רק 3 מתוך 20 תלמידים מסיימים, גם כשהתוכן מצוין</li>
+              <li><span class="vs__ico" aria-hidden="true">✕</span> צפייה פסיבית שלא הופכת לשינוי אמיתי בחיים שלהם</li>
+              <li><span class="vs__ico" aria-hidden="true">✕</span> אתה עיוור, לא יודע מי תקוע, מי ממשיך, מי כבר ויתר</li>
+              <li><span class="vs__ico" aria-hidden="true">✕</span> כל שאלה חוזרת נופלת עליך, שוב ושוב</li>
+            </ul>
+          </article>
+
+          <div class="vs__arrow" aria-hidden="true">
+            <svg viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M58 12H4M14 4 4 12l10 8"/></svg>
+          </div>
+
+          <article class="vs__col vs__col--new reveal" data-i="1">
+            <header class="vs__top">
+              <span class="vs__tag vs__tag--new">הדרך החדשה</span>
+              <h3>מערכת למידה חיה ונושמת</h3>
+            </header>
+            <ul class="vs__list">
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> כל תלמיד יודע תמיד מה הצעד הבא, וממשיך בדיוק מאיפה שעצר</li>
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> הלמידה ממכרת כמו משחק בטלפון, הם חוזרים בעצמם, יום אחרי יום</li>
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> תזכורת אישית מחזירה אותם פנימה ברגע שהם מתחילים להיעלם</li>
+              <li><span class="vs__ico vs__ico--ok" aria-hidden="true">✓</span> אתה רואה הכול במבט אחד, ומגיע לתלמיד עוד לפני שהוא נושר</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SOLUTION ============ -->
+    <section class="section solution" id="solution">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">02</span>
+          <h2 class="sec-title">שלושה עוגנים שהופכים קונה לתלמיד שמסיים</h2>
+          <p class="sec-lead">
+            רוב התלמידים נושרים לא כי התוכן חלש, אלא כי שום דבר לא מחזיק אותם בפנים.
+            אלה שלושת המנגנונים שבונים את ההתמדה דרך חוויה ופסיכולוגיה.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card reveal" data-i="0">
+            <span class="card__line" aria-hidden="true"></span>
+            <div class="card__ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+                <rect x="10" y="14" width="28" height="20" rx="4"/>
+                <circle cx="19" cy="24" r="2.4" fill="currentColor" stroke="none"/>
+                <circle cx="29" cy="24" r="2.4" fill="currentColor" stroke="none"/>
+                <path d="M24 14V8M21 8h6"/>
+                <path d="M10 22H6M42 22h-4"/>
+              </svg>
+            </div>
+            <h3 class="card__title">מ"מחסן תוכן" למסלול ברור</h3>
+            <p class="card__text">
+              במקום ספרייה שהתלמיד קובר ושוכח, הוא נכנס למסלול אחד ברור שמוביל אותו
+              צעד צעד עד הסוף. תמיד יודע מה הלאה, אף פעם לא הולך לאיבוד.
+            </p>
+            <span class="card__idx" aria-hidden="true">01</span>
+          </article>
+
+          <article class="card reveal" data-i="1">
+            <span class="card__line" aria-hidden="true"></span>
+            <div class="card__ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M24 7l4.6 9.3 10.3 1.5-7.4 7.3 1.7 10.2L24 40.7l-9.2 4.9 1.7-10.2-7.4-7.3 10.3-1.5z"/>
+              </svg>
+            </div>
+            <h3 class="card__title">מ"בית קברות" ל"מגרש משחקים"</h3>
+            <p class="card__text">
+              נקודות, רמות ורצף יומי הופכים את הלמידה למשהו ממכר. התלמיד חוזר כי בא לו,
+              לא כי הזכרת לו. וככל שהוא חוזר, ככה הוא מסיים.
+            </p>
+            <span class="card__idx" aria-hidden="true">02</span>
+          </article>
+
+          <article class="card reveal" data-i="2">
+            <span class="card__line" aria-hidden="true"></span>
+            <div class="card__ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M8 32V20M18 32V12M28 32V24M38 32V16"/>
+                <path d="M6 38h36"/>
+              </svg>
+            </div>
+            <h3 class="card__title">אתה משוחרר מתפקיד הגננת</h3>
+            <p class="card__text">
+              הפורטל עונה על השאלות החוזרות במקומך, ומראה לך בדיוק מי מתקדם ומי נתקע.
+              אתה מתפנה לעשות את מה שבאמת חשוב, במקום לכבות שריפות.
+            </p>
+            <span class="card__idx" aria-hidden="true">03</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES (teaser) ============ -->
+    <section class="section features" id="features">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">03</span>
+          <h2 class="sec-title">מה בדיוק תקבל? את זה נתפור יחד.</h2>
+          <p class="sec-lead">
+            לכל קורס יש נקודת נשירה משלו. בשיחה קצרה נמפה איפה התלמידים שלך נופלים,
+            ונבנה לך תוכנית מדויקת להחזיר אותם. בלי מונחים טכניים, בלי התחייבות.
+          </p>
+          <p class="features__pills">פורטל למידה ממכר · מנוע שמחזיר תלמידים אוטומטית · מנוע צמיחה שמביא לך לקוחות חדשים</p>
+          <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F" class="btn btn--primary" target="_blank" rel="noopener" data-magnetic>
+            לתיאום שיחת אפיון ללא עלות
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROOF ============ -->
+    <section class="section proof" id="proof">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-num">04</span>
+          <h2 class="sec-title">ראו את זה בשטח</h2>
+        </div>
+
+        <figure class="quote reveal">
+          <span class="quote__mark" aria-hidden="true">&rdquo;</span>
+          <blockquote>
+            בית המטפלים בנה את הפורטל הזה מאפס, עם המערכת המלאה. לא הדגמה ולא פיילוט.
+            קורס חי, לומדים אמיתיים, וכל הכלים פעילים.
+          </blockquote>
+          <figcaption class="quote__by">
+            <span class="quote__avatar" aria-hidden="true">ב</span>
+            <span>
+              <strong>בית המטפלים</strong>
+              <em>פורטל לימוד חי ופעיל</em>
+            </span>
+          </figcaption>
+        </figure>
+
+        <div class="proof__stats">
+          <div class="pstat reveal" data-i="0">
+            <span class="pstat__num">51</span>
+            <span class="pstat__label">שיעורים ב-7 מודולים בקורס המלא</span>
+          </div>
+          <div class="pstat reveal" data-i="1">
+            <span class="pstat__num">3-15%</span>
+            <span class="pstat__label">סיום ממוצע ללא מבנה (MIT/HBS)</span>
+          </div>
+          <div class="pstat reveal" data-i="2">
+            <span class="pstat__num">6</span>
+            <span class="pstat__label">חוברות + דפי סיכום, נעולים לפי הרשאה</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT / מי אני ============ -->
+    <section class="section about" id="about">
+      <div class="container about__inner">
+        <div class="about__portrait reveal" data-i="0">
+          <div class="portrait">
+            <div class="portrait__frame">
+              <img src="../assets/hillel.jpg" alt="הלל אקנין, מהנדס התמדה לבעלי קורסים" width="834" height="1083" loading="lazy" />
+              <div class="portrait__badge">
+                <strong>הלל אקנין</strong>
+                <span>מהנדס התמדה לבעלי קורסים</span>
+              </div>
+            </div>
+            <span class="portrait__chip portrait__chip--a">מעקב התקדמות</span>
+            <span class="portrait__chip portrait__chip--b">משחוק אמיתי</span>
+            <span class="portrait__chip portrait__chip--c">דשבורד בעלים</span>
+          </div>
+        </div>
+
+        <div class="about__body reveal" data-i="1">
+          <span class="sec-num">05</span>
+          <h2 class="sec-title">מי אני</h2>
+          <p class="sec-lead">
+            אני הלל אקנין. אני בונה לבעלי קורסים דיגיטליים מערכת למידה שלמה, פורטל,
+            ניהול לקוחות ואוטומציות, שגורמת לתלמידים להישאר בפנים, לסיים וליישם.
+            לא טכנולוגיה לשמה. אני מתמקד בדבר אחד: המנגנון הפסיכולוגי והחווייתי שמחזיר
+            אדם ללמוד שוב ושוב, כמו שהוא חוזר לאינסטגרם. את בית המטפלים בניתי בדיוק כך,
+            מאפס, עם המערכת המלאה.
+          </p>
+          <p class="about__note">[טקסט זמני · נחדד קופי]</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GROWTH ENGINE (אפיליאציה) ============ -->
+    <section class="section growth" id="growth">
+      <div class="container growth__inner reveal">
+        <span class="growth__eyebrow">מנוע צמיחה אורגני</span>
+        <h2 class="growth__title">התלמידים שלך מביאים לך לקוחות חדשים</h2>
+        <p class="growth__sub">
+          כל תלמיד מרוצה מקבל קישור אישי, וטבלת מובילים הופכת את זה למשחק. התוצאה:
+          עוד נרשמים מגיעים מהתלמידים הקיימים שלך, בלי שתוציא שקל אחד על פרסום.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="section cta-band" id="contact">
+      <div class="container cta-band__inner reveal">
+        <div class="cta-band__grid" aria-hidden="true"></div>
+        <h2 class="cta-band__title">הקורס שלך טוב.<br />התלמידים שלך פשוט לא מסיימים אותו.</h2>
+        <p class="cta-band__sub">
+          בשיחה קצרה נמפה יחד בדיוק איפה הם נופלים ומה המנגנון שיחזיר אותם פנימה.
+          אתה יוצא עם תובנה ברורה, בלי התחייבות.
+        </p>
+        <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F" class="btn btn--primary btn--lg" target="_blank" rel="noopener" data-magnetic>
+          לתיאום שיחת אפיון ללא עלות
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6" /></svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="#top" class="brand brand--footer">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M16 3 L28 10 L28 22 L16 29 L4 22 L4 10 Z" />
+              <path d="M16 3 L16 16 M16 16 L28 10 M16 16 L4 10 M16 16 L16 29" opacity="0.55" />
+            </svg>
+          </span>
+          <span>הלל אקנין</span>
+        </a>
+        <p class="footer__tag">בונים מערכות למידה שגורמות לתלמידים לסיים וליישם, לא רק להירשם.</p>
+      </div>
+
+      <div class="footer__contact">
+        <span class="footer__label">דברו איתי</span>
+        <a href="https://wa.me/972549116092" target="_blank" rel="noopener" class="footer__link">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 .9-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7s.7 1.2 1.6 1.9c1.1.9 1.9 1.2 2.2 1.3.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.8.9c.2.1.4.2.4.3.1.2.1.8-.1 1.4z"/></svg>
+          וואטסאפ · 054-911-6092
+        </a>
+        <a href="https://wa.me/972549116092?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%A4%D7%99%D7%95%D7%9F" target="_blank" rel="noopener" class="btn btn--line btn--sm">תיאום שיחת אפיון</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <span>© <span id="year">2026</span> · הלל אקנין</span>
+        <span class="footer__fineprint">
+          נבנה ועוצב על ידי
+          <a href="https://wa.me/972549116092" target="_blank" rel="noopener">הלל אקנין</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function(){
+    "use strict";
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* ---- year ---- */
+    var y = document.getElementById("year");
+    if (y) y.textContent = new Date().getFullYear();
+
+    /* ---- nav scrolled state ---- */
+    var nav = document.getElementById("nav");
+    function onScrollNav(){ if(nav) nav.classList.toggle("scrolled", window.scrollY > 30); }
+    onScrollNav();
+    window.addEventListener("scroll", onScrollNav, { passive:true });
+
+    /* ---- reveal on scroll (staggered) ---- */
+    var reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+    if (reduceMotion || !("IntersectionObserver" in window)){
+      reveals.forEach(function(el){ el.classList.add("in"); });
+    } else {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+        });
+      }, { threshold:0.14, rootMargin:"0px 0px -8% 0px" });
+      reveals.forEach(function(el){ io.observe(el); });
+    }
+
+    /* ---- magnetic CTA buttons ---- */
+    if (!reduceMotion && window.matchMedia("(pointer:fine)").matches){
+      document.querySelectorAll("[data-magnetic]").forEach(function(btn){
+        btn.addEventListener("mousemove", function(ev){
+          var r = btn.getBoundingClientRect();
+          var mx = ev.clientX - r.left - r.width/2;
+          var my = ev.clientY - r.top - r.height/2;
+          btn.style.transform = "translate(" + (mx*0.18) + "px," + (my*0.28) + "px) translateY(-3px)";
+        });
+        btn.addEventListener("mouseleave", function(){ btn.style.transform = ""; });
+      });
+    }
+
+    /* ---- card cursor spotlight ---- */
+    if (!reduceMotion){
+      document.querySelectorAll(".card").forEach(function(card){
+        card.addEventListener("mousemove", function(ev){
+          var r = card.getBoundingClientRect();
+          card.style.setProperty("--mx", (ev.clientX - r.left) + "px");
+          card.style.setProperty("--my", (ev.clientY - r.top) + "px");
+        });
+      });
+    }
+
+    /* ===========================================================
+       SCROLL-DRIVEN CANVAS IMAGE SEQUENCE (the one WOW moment)
+       frame_001.webp .. frame_150.webp · 3-digit zero-padded
+       =========================================================== */
+    var TOTAL = 150;
+    var BASE = "../assets/frames/";
+    var canvas = document.getElementById("scrubCanvas");
+    var bar = document.getElementById("scrubBar");
+    var section = document.getElementById("scrub");
+
+    if (canvas && section){
+      var ctx = canvas.getContext("2d");
+      var images = new Array(TOTAL);
+      var loadedCount = 0;
+      var firstReady = false;
+
+      function pad(n){ return ("000" + n).slice(-3); }
+      function src(i){ return BASE + "frame_" + pad(i+1) + ".webp"; }
+
+      function drawImg(img){
+        if (!img || !img.naturalWidth) return;
+        var cw = canvas.width, ch = canvas.height;
+        var ir = img.naturalWidth / img.naturalHeight;
+        var cr = cw / ch;
+        var dw, dh, dx, dy;
+        if (ir > cr){ dh = ch; dw = ch * ir; dx = (cw - dw)/2; dy = 0; }
+        else { dw = cw; dh = cw / ir; dx = 0; dy = (ch - dh)/2; }
+        ctx.clearRect(0,0,cw,ch);
+        ctx.drawImage(img, dx, dy, dw, dh);
+      }
+
+      /* load the very first frame immediately, then preload the rest */
+      var first = new Image();
+      first.onload = function(){
+        images[0] = first; firstReady = true; drawImg(first);
+        if (!reduceMotion) preloadRest();
+      };
+      first.onerror = function(){
+        /* static fallback: solid panel + label already covers it */
+      };
+      first.src = src(0);
+
+      function preloadRest(){
+        for (var i = 1; i < TOTAL; i++){
+          (function(idx){
+            var im = new Image();
+            im.onload = function(){ images[idx] = im; loadedCount++; };
+            im.src = src(idx);
+          })(i);
+        }
+      }
+
+      /* map section scroll progress -> frame index, inside rAF */
+      var targetFrame = 0, currentFrame = -1, ticking = false;
+
+      function computeProgress(){
+        var rect = section.getBoundingClientRect();
+        var vh = window.innerHeight;
+        /* sticky section: progress runs while the section travels through the viewport */
+        var total = rect.height - vh;
+        if (total <= 0) return 0;
+        var p = (0 - rect.top) / total;
+        return Math.min(1, Math.max(0, p));
+      }
+
+      function render(){
+        ticking = false;
+        var p = computeProgress();
+        if (bar) bar.style.width = (p * 100).toFixed(1) + "%";
+        targetFrame = Math.min(TOTAL - 1, Math.floor(p * (TOTAL - 1)));
+        if (targetFrame === currentFrame) return;
+        currentFrame = targetFrame;
+        /* nearest loaded frame fallback so it never blanks while preloading */
+        var img = images[targetFrame];
+        if (!img){
+          for (var d = 1; d < TOTAL; d++){
+            if (images[targetFrame - d]){ img = images[targetFrame - d]; break; }
+            if (images[targetFrame + d]){ img = images[targetFrame + d]; break; }
+          }
+          if (!img) img = images[0];
+        }
+        drawImg(img);
+      }
+
+      function onScroll(){
+        if (reduceMotion) return;
+        if (!ticking){ ticking = true; requestAnimationFrame(render); }
+      }
+
+      window.addEventListener("scroll", onScroll, { passive:true });
+      window.addEventListener("resize", function(){ if(firstReady) drawImg(images[currentFrame] || images[0]); }, { passive:true });
+      /* initial paint once first frame is in */
+      var initId = setInterval(function(){ if(firstReady){ clearInterval(initId); render(); } }, 60);
+    }
+  })();
+  </script>
+</body>
+</html>
