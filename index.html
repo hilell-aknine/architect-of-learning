@@ -21,7 +21,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet" />
 
   <style>
     /* ============================================================
@@ -346,7 +346,41 @@
     .vsl__placeholder svg { color: var(--ember-2); }
     .vsl__placeholder span:first-of-type { font-family: var(--f-serif); font-size: 1.15rem; color: var(--paper); }
     .vsl__hint { font-size: 0.86rem; color: rgba(244,239,230,0.5); }
-    .vsl__corner { position: absolute; top: 12px; inset-inline-start: 12px; font-family: var(--f-mast); font-size: 0.7rem; letter-spacing: 0.2em; color: rgba(244,239,230,0.55); }
+    .vsl__corner { position: absolute; top: 12px; inset-inline-start: 12px; z-index: 5; font-family: var(--f-mast); font-size: 0.7rem; letter-spacing: 0.2em; color: rgba(244,239,230,0.55); }
+    /* video thumbnail (poster) · branded, shown until the visitor presses play */
+    .vsl__poster {
+      position: absolute; inset: 0; z-index: 4; width: 100%; height: 100%;
+      padding: clamp(24px, 5vw, 48px); border: 0; cursor: pointer; overflow: hidden;
+      background:
+        radial-gradient(130% 100% at 50% 8%, #2a231b 0%, var(--ink) 62%),
+        var(--ink);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(16px, 2.4vw, 26px);
+      text-align: center; transition: opacity 0.5s var(--ease);
+    }
+    .vsl__poster::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background-image: radial-gradient(rgba(244,239,230,0.05) 1px, transparent 1px);
+      background-size: 22px 22px; opacity: 0.6;
+    }
+    .vsl__play {
+      position: relative; z-index: 1; width: clamp(72px, 8vw, 88px); height: clamp(72px, 8vw, 88px);
+      border-radius: 50%; background: var(--ember); color: var(--paper); padding-inline-start: 5px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 14px 44px rgba(20,17,13,0.5), 0 0 0 10px rgba(198,93,42,0.12);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    }
+    .vsl__poster:hover .vsl__play, .vsl__poster:focus-visible .vsl__play {
+      transform: scale(1.08); box-shadow: 0 16px 50px rgba(20,17,13,0.55), 0 0 0 14px rgba(198,93,42,0.16);
+    }
+    .vsl__poster-hook {
+      position: relative; z-index: 1; font-family: var(--f-serif); font-size: clamp(1.15rem, 2.4vw, 1.7rem);
+      line-height: 1.28; color: var(--paper); max-width: 30ch;
+    }
+    .vsl__poster-label {
+      position: relative; z-index: 1; font-family: var(--f-mast); font-weight: 700;
+      font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(244,239,230,0.65);
+    }
+    .vsl__poster.is-hidden { opacity: 0; pointer-events: none; }
     /* CTA beneath the VSL so the video doesn't dead-end · conversion */
     .vsl__after { text-align: center; margin-block-start: clamp(26px, 3.4vw, 40px); }
     .vsl__after .btn { margin-inline: auto; }
@@ -696,6 +730,56 @@
       color: var(--paper) !important;
       font-weight: 700;
     }
+    /* FIX-ENGINE F-002 סבב-2 (2026-07-22): מושן כתיבה לפאנץ'. F-004 סבב-3: הוכלל ל-[data-write] גם לכרטיסי הכתב-יד. */
+    .themath__punch { font-size: clamp(1.14rem, 2.1vw, 1.5rem); }
+    [data-write] .tw {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(0.45em);
+      transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    }
+    [data-write].is-written .tw { opacity: 1; transform: none; }
+    .themath__punch em.mark { font-style: normal; position: relative; white-space: nowrap; }
+    .themath__punch em.mark::after {
+      content: ""; position: absolute; inset-inline: -3px; bottom: 0.04em; height: 0.46em; z-index: -1;
+      background: linear-gradient(180deg, transparent 40%, rgba(194,65,12,0.5) 40%);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform 0.7s var(--ease) 1.1s;
+    }
+    .themath__punch.is-written em.mark::after { transform: scaleX(1); }
+    @media (prefers-reduced-motion: reduce) {
+      [data-write] .tw { opacity: 1; transform: none; transition: none; }
+      .themath__punch em.mark::after { transform: scaleX(1); transition: none; }
+      .creds__emoji { animation: none !important; }
+    }
+    /* FIX-ENGINE F-004 סבב-3 (2026-07-22): כרטיסי "מה תקבל" בכתב-יד, בלי מסגרות */
+    .teaser__pills--hand { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .teaser__pills--hand span {
+      border: 0 !important;
+      padding: 0 !important;
+      font-family: 'Amatic SC', var(--f-mast, 'Rubik'), cursive;
+      font-weight: 700;
+      font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+      line-height: 1.25;
+      transform: rotate(-1.2deg);
+    }
+    .teaser__pills--hand span:nth-child(2) { transform: rotate(0.8deg); }
+    .teaser__pills--hand span:nth-child(3) { transform: rotate(-0.6deg); }
+    /* FIX-ENGINE F-003 סבב-3 (2026-07-22): אימוג'ים צפים ברשימת "מה בניתי" */
+    .creds__list--emoji li { padding-inline-start: 0; }
+    .creds__list--emoji li::before { display: none; }
+    .creds__emoji {
+      display: inline-block;
+      margin-inline-end: 8px;
+      animation: credFloat 3.2s ease-in-out infinite;
+    }
+    .creds__list--emoji li:nth-child(2) .creds__emoji { animation-delay: 0.5s; }
+    .creds__list--emoji li:nth-child(3) .creds__emoji { animation-delay: 1s; }
+    .creds__list--emoji li:nth-child(4) .creds__emoji { animation-delay: 1.5s; }
+    @keyframes credFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
 
     /* what happens next */
     .steps { list-style: none; display: grid; gap: 18px; margin: 0; padding: 0; }
@@ -816,6 +900,14 @@
     .lead__lock span { font-size: 0.92rem; opacity: 0.78; line-height: 1.6; }
     .lead__lock .btn { margin-block-start: 8px; }
     .lead__lock[hidden] { display: none; }
+    /* FIX-ENGINE F-VSL סבב-3 (2026-07-22): פס פולבק כשהנגן לא נטען */
+    #vslFallback {
+      position: absolute; inset-inline: 0; inset-block-end: 0; z-index: 3;
+      display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; justify-content: center;
+      padding: 13px 16px; background: rgba(20,17,13,0.9); color: var(--paper);
+      font-size: 0.95rem;
+    }
+    #vslFallback a { color: var(--gold, #D4AF37); font-weight: 700; text-decoration: underline; }
 
     .vsl__unlocked {
       display: inline-flex;
@@ -858,6 +950,12 @@
     .proofstrip__dot {
       inline-size: 4px; block-size: 4px; border-radius: 50%;
       background: rgba(244,239,230,0.34); flex: 0 0 auto;
+    }
+    /* FIX-ENGINE F-002 (2026-07-22): שורת התועלות מתחת למספרים */
+    .proofstrip__inner--benefits {
+      padding-block: 16px;
+      font-size: 0.9rem;
+      color: rgba(244,239,230,0.82);
     }
     @media (max-width: 640px) { .proofstrip__dot { display: none; } }
 
@@ -925,7 +1023,7 @@
   <main id="top">
 
     <!-- ============ HERO ============ -->
-    <section class="hero" id="hero">
+    <section class="hero" id="hero" data-area="hero" data-src="index.html #hero (הירו)">
       <div class="hero__atmos" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
       <div class="hero__paper" aria-hidden="true"></div>
       <div class="container hero__inner">
@@ -940,34 +1038,31 @@
             בוא נראה איפה התלמידים שלך נופלים
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
           </a>
-          <p class="hero__micro" id="heroMicro">מתחיל בקייס סטאדי מפורטל חי (12:45). טופס תיאום השיחה נפתח באמצע הצפייה.</p>
+          <!-- FIX-ENGINE F-001 (2026-07-22): סגנון הזמנה אישית לקייס סטאדי, לבקשת הלל. -->
+          <p class="hero__micro" id="heroMicro">בוא תראה איך אני מיישם את זה בפועל, בקורס אמיתי (12:45). טופס תיאום השיחה נפתח באמצע הצפייה.</p>
         </div>
       </div>
-      <a href="#scrub" class="hero__cue reveal" data-d="5" aria-label="גלול להמשך">
-        גלול
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
-      </a>
     </section>
 
     <!-- ============ PROOF STRIP (above the fold · earns the next 3 seconds) ============ -->
-    <section class="proofstrip" aria-label="הוכחה מהירה">
-      <div class="container proofstrip__inner">
-        <span>פורטל חי, לא הדגמה</span>
+    <section class="proofstrip" aria-label="הוכחה מהירה" data-area="proofstrip" data-src="index.html (פס הוכחה עליון)">
+      <!-- FIX-ENGINE F-001 סבב-2 (2026-07-22): שורת המספרים הוסרה לבקשת הלל ("תסיר"); המספרים נשארים בסקשן ההוכחה #proof. שורת התועלות (F-002 סבב-1) נשארה. -->
+      <div class="container proofstrip__inner proofstrip__inner--benefits">
+        <span>עדויות שמגיעות מעצמן, בלי לרדוף</span>
         <span aria-hidden="true" class="proofstrip__dot"></span>
-        <span><strong>739</strong> נרשמים</span>
+        <span>פחות שאלות חוזרות בוואטסאפ ובזום</span>
         <span aria-hidden="true" class="proofstrip__dot"></span>
-        <span><strong>276</strong> לומדים פעילים</span>
-        <span aria-hidden="true" class="proofstrip__dot"></span>
-        <span><strong>פי 3.4</strong> יותר שיעורים שהתלמיד מסיים</span>
+        <span>שקט: אתה רואה מי תקוע עוד לפני שהוא נושר</span>
       </div>
     </section>
 
     <!-- ============ PINNED PRODUCT SHOWCASE (single dark cinematic moment) ============ -->
-    <section class="scrub" id="scrub" aria-label="ארבעת המנגנונים שמחזירים תלמידים פנימה">
+    <section class="scrub" id="scrub" aria-label="ארבעת המנגנונים שמחזירים תלמידים פנימה" data-area="scrub" data-src="index.html #scrub (4 סצנות המנגנונים)">
       <div class="scrub__sticky">
 
         <div class="scrub__head-fixed">
-          <p class="scrub__title">אני לא מוסיף לקורס שלך פיצ'רים. אני מהנדס את השנייה שבה התלמיד שלך מחליט אם לחזור.</p>
+          <!-- FIX-ENGINE F-003 (2026-07-22): כותרת הסצנות הוחלפה לנוסח של הלל (פיצ'רים משתנים, הפסיכולוגיה נשארת). -->
+          <p class="scrub__title">הפיצ'רים יכולים להשתנות. הפסיכולוגיה האנושית שמובילה את התלמיד שלך לפעולה נשארת זהה.</p>
         </div>
 
         <div class="scrub__deck">
@@ -1003,7 +1098,8 @@
                 <span class="lb__pts">910</span>
               </div>
             </div>
-            <p class="scene__cap">הוא לא חזר מחר כי לא הייתה לו סיבה לחזור. טבלת המובילים נותנת לו סיבה.</p>
+            <!-- FIX-ENGINE F-004 (2026-07-22): נוסף הרובד הפסיכולוגי של תחרות, בנוסח של הלל. -->
+            <p class="scene__cap">תחרות היא גורם פסיכולוגי שהחברות הגדולות בעולם יישמו מזמן. טבלת המובילים נותנת לתלמיד שלך סיבה לחזור מחר.</p>
           </div>
 
           <!-- scene 2: personal reminder -->
@@ -1044,7 +1140,7 @@
                 </span>
               </div>
             </div>
-            <p class="scene__cap">שיעור שנצפה ולא תורגל לא נשאר. משחק התרגול הופך צפייה פסיבית ליישום.</p>
+            <p class="scene__cap">שיעור שנצפה ולא תורגל לא נשאר. בפורטל החי שבניתי, מי ששילב את משחק התרגול סיים פי 4 יותר שיעורים.</p>
           </div>
 
           <!-- scene 4: AI teacher Ram -->
@@ -1060,7 +1156,7 @@
               <p class="chat__q">איך אני מיישם את התרגיל מהשיעור הקודם?</p>
               <p class="chat__a">אני זוכר את המטרה שהצבת לעצמך — בוא נפרק את התרגיל לשלושה צעדים שמקדמים אותך אליה, ואלווה אותך ביישום.</p>
             </div>
-            <p class="scene__cap">הוא נתקע, מתבייש לשאול, ונעלם בשקט. מורה AI עונה לו ברגע שהוא נתקע.</p>
+            <p class="scene__cap">הוא נתקע, מתבייש לשאול, ונעלם בשקט. המורה האישי עונה לו באותו רגע, ומי שנעזר בו סיים פי 5 יותר שיעורים.</p>
           </div>
 
         </div>
@@ -1080,7 +1176,7 @@
     </section>
 
     <!-- ============ VSL ============ -->
-    <section class="vsl" id="vsl">
+    <section class="vsl" id="vsl" data-area="vsl" data-src="index.html #vsl (סרטון + נעילת טופס)">
       <div class="container">
         <div class="vsl__head reveal">
           <span class="kicker" style="justify-content:center">הצצה מהירה</span>
@@ -1093,6 +1189,13 @@
         <div class="vsl__frame reveal">
           <span class="vsl__corner" aria-hidden="true">קייס סטאדי · 12:45</span>
           <div id="vslPlayer" class="vsl__player"></div>
+          <button type="button" class="vsl__poster" id="vslPoster" aria-label="הפעל את הסרטון · קייס סטאדי, 12:45 דקות">
+            <span class="vsl__play" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+            <span class="vsl__poster-hook">אני נכנס לפורטל החי ומראה לך בדיוק איפה הלומדים נופלים</span>
+            <span class="vsl__poster-label">לחצו לצפייה · 12:45 דקות</span>
+          </button>
         </div>
         <div class="vsl__progress" id="vslProgress" aria-hidden="true">
           <span class="vsl__progress-fill" id="vslProgressFill"></span>
@@ -1112,18 +1215,18 @@
     </section>
 
     <!-- ============ PROBLEM ============ -->
-    <section class="chapter" id="problem">
+    <section class="chapter" id="problem" data-area="problem" data-src="index.html #problem (הבעיה + ישן/חדש)">
       <div class="container">
         <div class="chapter__head reveal">
           <div class="chapter__folio"><span class="folio">01</span></div>
           <div class="chapter__lede">
             <h2 class="chapter__title">הכסף נכנס. התלמידים נעלמים.</h2>
+            <!-- FIX-ENGINE F-008 סבב-4 (2026-07-22): פסקת הפתיחה מדברת רק על בעל העסק, עם דוגמה ספציפית, לבקשת הלל. -->
             <p class="chapter__lead dropcap">
-              התלמיד שלך סיים אתמול בערב שלושה פרקים ברצף בסדרה, ולא פתח שיעור אחד שהוא שילם
-              עליו אלפי שקלים. אותו כיסא, אותו טלפון, אותה עייפות. אם זו הייתה עצלנות, היא
-              הייתה מנצחת גם את הסדרה. ההבדל היחיד הוא שהסדרה יודעת בדיוק איפה הוא עצר
-              ומחזירה אותו לשם בלחיצה אחת, ובקורס שלך הוא צריך להיזכר לבד, לגלול, לחפש,
-              ולהחליט מחדש להתחיל. זו לא בעיה של תוכן ולא בעיה של אופי. זו בעיה של עיצוב,
+              אתה מכיר את הבוקר הזה: נכנסו עוד תשלומים על הקורס, אתה פותח את המערכת כדי
+              ליהנות רגע מהמספרים, ואז רואה את זה. עשרות אנשים ששילמו אלפי שקלים, וכמעט
+              אף אחד לא עבר את השיעור השני. השקעת חודשים בתוכן הזה, והוא יושב שם סגור.
+              זו לא בעיה של התוכן שלך ולא של ההשקעה שלך. זו בעיה של עיצוב חוויית הלמידה,
               והיא נופלת בנקודות קבועות שאפשר להצביע עליהן אחת אחת.
             </p>
             <p class="chapter__lead" style="margin-block-start:18px">
@@ -1180,7 +1283,7 @@
     </section>
 
     <!-- ============ THE MATH (turns dropout into money · reader plugs in his own numbers) ============ -->
-    <section class="chapter themath">
+    <section class="chapter themath" data-area="themath" data-src="index.html (תעשה את החשבון)">
       <div class="container">
         <div class="themath__inner reveal">
           <h2>תעשה את החשבון הזה איתי. שלושים שניות.</h2>
@@ -1192,15 +1295,16 @@
             הם לא יקנו ממך את המוצר הבא, כי הראשון לא עשה להם כלום. ובינתיים אתה חוזר
             לפייסבוק ומשלם שוב על ליד קר.
           </p>
-          <p class="themath__punch">
-            הכסף הגדול הבא שלך לא נמצא במודול הבא שתצלם. הוא נמצא בהפרש הזה.
+          <!-- FIX-ENGINE F-002 סבב-2 (2026-07-22): הפאנץ' מודגש עם מושן כתיבה מילה-מילה + מרקר, לבקשת הלל. -->
+          <p class="themath__punch" id="mathPunch" data-write>
+            הכסף הגדול הבא שלך לא נמצא במודול הבא שתצלם. הוא נמצא <em class="mark">בהפרש הזה</em>.
           </p>
         </div>
       </div>
     </section>
 
     <!-- ============ SOLUTION ============ -->
-    <section class="chapter" id="solution">
+    <section class="chapter" id="solution" data-area="solution" data-src="index.html #solution (שלושת העוגנים)">
       <div class="container">
         <div class="chapter__head reveal">
           <div class="chapter__folio"><span class="folio">02</span></div>
@@ -1255,8 +1359,9 @@
               </span>
               <h3>סוף לתפקיד הגננת</h3>
               <p>
-                עם סיכומי שיעורים מעוצבים, מחברות עבודה, ועוזר חכם שיודע את כל החומר בקורס
-                שלך, התלמידים מקבלים תשובות מיידיות. אתה מתפנה לצמיחת העסק במקום לתמיכה מתישה.
+                התלמיד מקבל תשובה ברגע שהוא נתקע, בלי לחכות שתתפנה. השאלות שחוזרות על עצמן
+                מפסיקות לנחות עליך בוואטסאפ ובזום, ואתה חוזר לעשות את הדבר שבגללו פתחת את
+                הקורס: ללמד. את כל מה שעונה לו מאחורי הקלעים אני בונה מהחומר שכבר צילמת.
               </p>
             </div>
           </article>
@@ -1265,7 +1370,7 @@
     </section>
 
     <!-- ============ FEATURES (teaser) ============ -->
-    <section class="teaser" id="features">
+    <section class="teaser" id="features" data-area="features" data-src="index.html #features (מה תקבל + כרטיסים)">
       <div class="container">
         <span class="folio" aria-hidden="true">03</span>
         <div class="teaser__inner reveal">
@@ -1274,10 +1379,11 @@
             לכל קורס יש נקודת נשירה משלו. בשיחה קצרה נמפה איפה התלמידים שלך נופלים,
             ונבנה לך תוכנית מדויקת להחזיר אותם. בלי מונחים טכניים, בלי התחייבות.
           </p>
-          <div class="teaser__pills">
-            <span>פורטל למידה ממכר</span>
-            <span>מנוע שמחזיר תלמידים אוטומטית</span>
-            <span>אחוז סיום שמייצר לך עדויות</span>
+          <!-- FIX-ENGINE F-004 סבב-3 (2026-07-22): הכרטיסים הפכו לשורות בכתב-יד עם מושן כתיבה, בלי מסגרות, לבקשת הלל. -->
+          <div class="teaser__pills teaser__pills--hand">
+            <span data-write data-write-delay="0">למידה שמרגישה כמו נטפליקס, לא כמו שיעורי בית</span>
+            <span data-write data-write-delay="700">תלמיד שחוזר בעצמו, בלי שתרדוף אחריו</span>
+            <span data-write data-write-delay="1300">אחוז סיום שמייצר לך עדויות</span>
           </div>
           <div class="teaser__cta">
             <a href="#contact" data-cta class="btn btn--ghost-paper" data-magnetic>
@@ -1289,43 +1395,10 @@
       </div>
     </section>
 
-    <!-- ============ PROOF ============ -->
-    <section class="chapter" id="proof">
-      <div class="container">
-        <div class="chapter__head reveal">
-          <div class="chapter__folio"><span class="folio">04</span></div>
-          <div class="chapter__lede">
-            <h2 class="chapter__title">לא הדגמה. פורטל שרץ עכשיו.</h2>
-            <p class="chapter__lead">
-              את הפורטל של בית המטפלים בניתי מאפס: הקורס, מנגנוני ההתמדה והדאטה שמאחוריהם.
-              אין לי כאן קיר של עדויות, יש לי מערכת חיה אחת. כל נתון שאתה רואה בפס הזה נשלף
-              ממנה, לא נכתב בדף מכירה. בשיחה אני נכנס איתך פנימה ואתה רואה אותם מבפנים.
-            </p>
-          </div>
-        </div>
-
-        <div class="stats">
-          <div class="stat reveal" data-d="1">
-            <span class="stat__num">פי 3.4</span>
-            <span class="stat__label">יותר שיעורים שהתלמיד מסיים בפורטל מותאם-אישית, מול קורס רגיל</span>
-          </div>
-          <div class="stat reveal" data-d="2">
-            <span class="stat__num">58%</span>
-            <span class="stat__label">מהתלמידים שהתחברו למנגנונים הגיעו ל-10+ שיעורים — מול 15% בלבד בלעדיהם</span>
-          </div>
-          <div class="stat reveal" data-d="3">
-            <span class="stat__num">+41%</span>
-            <span class="stat__label">עלייה במספר התלמידים שמתחילים בפועל ללמוד, אחרי שדרוג הפורטל</span>
-          </div>
-        </div>
-        <p class="reveal" style="margin-block-start:26px;text-align:center;font-size:0.82rem;opacity:0.62">
-          נמדד על נתוני פורטל בית המטפלים החי — 739 נרשמים, 276 לומדים פעילים.
-        </p>
-      </div>
-    </section>
+    <!-- FIX-ENGINE F-005 סבב-3 (2026-07-22): סקשן ההוכחה (04, רשת הנתונים) הוסר לבקשת הלל — התוכן מופיע בסרטון הקייס סטאדי. הסקשנים הבאים מוספרו מחדש. -->
 
     <!-- ============ ABOUT / מי אני ============ -->
-    <section class="chapter about" id="about">
+    <section class="chapter about" id="about" data-area="about" data-src="index.html #about (מי אני)">
       <div class="container about__inner">
         <div class="about__portrait reveal" data-d="1">
           <div class="frame">
@@ -1340,7 +1413,7 @@
         </div>
 
         <div class="about__body reveal" data-d="2">
-          <span class="kicker">מי אני</span>
+          <!-- FIX-ENGINE F-009 סבב-4 (2026-07-22): הוסר ה-kicker הכפול "מי אני" (נשארה הכותרת), לבקשת הלל. -->
           <h2 class="chapter__title" style="margin-block:16px 20px">מי אני</h2>
           <p class="body">
             אני הילל אקנין, ואני לא בונה אתרים.
@@ -1360,16 +1433,14 @@
           <div class="creds">
             <span class="creds__label">מה בניתי לפני זה</span>
             <p class="creds__intro">שמות לקוחות אני לא מפרסם בלי אישור מהם, אז הנה מה שכן מותר לומר:</p>
-            <ul class="creds__list">
-              <li>חברות בתחום הייעוץ העסקי</li>
-              <li>מכללה מובילה בתחום ההתפתחות האישית</li>
-              <li>מערכות לגדודי מילואים</li>
-              <li>מערכות ניהול מידע לחברות נדל"ן</li>
+            <!-- FIX-ENGINE F-003 סבב-3 (2026-07-22): אימוג'ים צפים לרשימת "מה בניתי", לבקשת הלל. -->
+            <ul class="creds__list creds__list--emoji">
+              <li><span class="creds__emoji">💼</span>חברות בתחום הייעוץ העסקי</li>
+              <li><span class="creds__emoji">🎓</span>מכללה מובילה בתחום ההתפתחות האישית</li>
+              <li><span class="creds__emoji">🎖️</span>מערכות לגדודי מילואים</li>
+              <li><span class="creds__emoji">🏢</span>מערכות ניהול מידע לחברות נדל"ן</li>
             </ul>
-            <p class="creds__note">
-              מכנה משותף אחד: מערכת שאנשים אמיתיים צריכים להיכנס אליה שוב ושוב, אחרת
-              היא לא שווה כלום.
-            </p>
+            <!-- FIX-ENGINE F-010 סבב-4 (2026-07-22): הוסרה שורת "מכנה משותף אחד", לבקשת הלל. -->
           </div>
         </div>
       </div>
@@ -1377,11 +1448,11 @@
 
 
     <!-- ============ OBJECTIONS (handles A2 · the two thoughts in his head) ============ -->
-    <section class="chapter objections" id="objections">
+    <section class="chapter objections" id="objections" data-area="objections" data-src="index.html #objections (התנגדויות)">
       <div class="objections__bg" aria-hidden="true"></div>
       <div class="container">
         <div class="chapter__head reveal">
-          <div class="chapter__folio"><span class="folio">05</span></div>
+          <div class="chapter__folio"><span class="folio">04</span></div>
           <div class="chapter__lede">
             <h2 class="chapter__title">המחשבות שעוברות לך בראש עכשיו. כולן לגיטימיות.</h2>
           </div>
@@ -1440,10 +1511,10 @@
     </section>
 
     <!-- ============ WHAT HAPPENS NEXT (removes the uncertainty that stops the lead) ============ -->
-    <section class="chapter nextsteps" id="next">
+    <section class="chapter nextsteps" id="next" data-area="next" data-src="index.html #next (מה קורה אחרי טלפון)">
       <div class="container">
         <div class="chapter__head reveal">
-          <div class="chapter__folio"><span class="folio">06</span></div>
+          <div class="chapter__folio"><span class="folio">05</span></div>
           <div class="chapter__lede">
             <h2 class="chapter__title">מה קורה אחרי שאתה משאיר טלפון</h2>
           </div>
@@ -1456,7 +1527,8 @@
           </li>
           <li class="reveal" data-d="2">
             <span class="steps__no" aria-hidden="true">02</span>
-            <p>עשרים דקות בזום, בלי עלות. פותחים את המספרים שכבר יש לך: כמה נרשמו, כמה בכלל נכנסו, כמה סיימו.</p>
+            <!-- FIX-ENGINE F-006 סבב-3 (2026-07-22): דיוק שלב 02 — ניתוח הקיים ושיפור במינימום מאמץ, לבקשת הלל. -->
+            <p>עשרים דקות בזום, בלי עלות. מנתחים יחד מה שכבר יש לך: איפה התלמידים עוצרים היום, ומה אפשר לשפר במינימום מאמץ, כדי שהם יצאו מרוצים ולך יהיו הרבה יותר תוצאות ועדויות.</p>
           </li>
           <li class="reveal" data-d="3">
             <span class="steps__no" aria-hidden="true">03</span>
@@ -1467,7 +1539,7 @@
     </section>
 
     <!-- ============ FINAL CTA ============ -->
-    <section class="chapter finale" id="contact">
+    <section class="chapter finale" id="contact" data-area="contact" data-src="index.html #contact (CTA סופי + טופס)">
       <div class="container">
         <div class="finale__inner reveal">
           <div class="finale__grid" aria-hidden="true"></div>
@@ -1512,23 +1584,8 @@
   </main>
 
   <!-- ============ FOOTER ============ -->
-  <footer class="footer">
-    <div class="container footer__inner">
-      <div class="footer__brand">
-        <a href="#top" class="brand">
-          <span class="brand__mast">הילל אקנין</span>
-        </a>
-        <p class="footer__tag">בונים מערכות למידה שגורמות לתלמידים לסיים וליישם, לא רק להירשם.</p>
-      </div>
-      <div class="footer__contact">
-        <span class="footer__label">דברו איתי</span>
-        <a href="https://wa.me/972549116092" target="_blank" rel="noopener" class="footer__link">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 .9-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7s.7 1.2 1.6 1.9c1.1.9 1.9 1.2 2.2 1.3.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.8.9c.2.1.4.2.4.3.1.2.1.8-.1 1.4z"/></svg>
-          וואטסאפ · 054-911-6092
-        </a>
-        <a href="#contact" data-cta class="btn btn--line" style="padding:11px 22px;font-size:0.9rem">בוא נמפה את נקודות הנשירה שלי</a>
-      </div>
-    </div>
+  <footer class="footer" data-area="footer" data-src="index.html (פוטר)">
+    <!-- FIX-ENGINE F-011 סבב-4 (2026-07-22): החלק העליון של הפוטר (מותג + תיאור + דברו איתי) הוסר לבקשת הלל. נשארה שורת הזכויות והקרדיט. -->
     <div class="footer__bottom">
       <div class="container">
         <span>© <span id="year">2026</span> · הילל אקנין</span>
@@ -1557,7 +1614,16 @@
       var STORE_KEY = 'vslUnlocked_' + VIDEO_ID;
 
       var player = null, timer = null, unlocked = false;
-      var maxPct = 0;
+      var maxPct = 0, pendingPlay = false;
+      var started = false, watchdog = null;
+      var poster = document.getElementById('vslPoster');
+
+      if (poster) poster.addEventListener('click', function () {
+        poster.classList.add('is-hidden');
+        if (player && player.playVideo) player.playVideo();
+        else pendingPlay = true;
+        armWatchdog();
+      });
 
       var lock = document.getElementById('leadLock');
       var form = document.getElementById('leadForm');
@@ -1585,6 +1651,25 @@
       /* returning visitor who already watched */
       try { if (localStorage.getItem(STORE_KEY) === '1') unlock(); } catch (e) {}
 
+      /* FIX-ENGINE F-VSL סבב-3 (2026-07-22): רשת ביטחון לפארטו של הדף — הסרטון.
+         אם הנגן לא מתחיל לנגן תוך 10 שניות מלחיצת הפליי (חסימה, כשל API, רשת),
+         פותחים את הטופס ומציגים לינק צפייה ישיר ביוטיוב. ליד לא הולך לאיבוד בגלל נגן. */
+      function failOpen() {
+        if (unlocked || started) return;
+        var frame = document.querySelector('.vsl__frame');
+        if (frame && !document.getElementById('vslFallback')) {
+          var fb = document.createElement('div');
+          fb.id = 'vslFallback';
+          fb.innerHTML = '<strong>הסרטון לא נטען כאן?</strong> <a href="https://youtu.be/' + VIDEO_ID + '" target="_blank" rel="noopener">לצפייה ישירה ביוטיוב</a>';
+          frame.appendChild(fb);
+        }
+        unlock();
+      }
+      function armWatchdog() {
+        if (watchdog || unlocked || started) return;
+        watchdog = setTimeout(failOpen, 10000);
+      }
+
       function tick() {
         if (!player || !player.getDuration) return;
         var d = player.getDuration();
@@ -1604,14 +1689,21 @@
           videoId: VIDEO_ID,
           playerVars: { rel: 0, modestbranding: 1, playsinline: 1, hl: 'he' },
           events: {
+            onReady: function () {
+              if (pendingPlay && player.playVideo) { pendingPlay = false; player.playVideo(); }
+            },
             onStateChange: function (e) {
+              if (e.data === YT.PlayerState.PLAYING && poster) poster.classList.add('is-hidden');
               if (e.data === YT.PlayerState.PLAYING) {
+                started = true;
+                if (watchdog) { clearTimeout(watchdog); watchdog = null; }
                 if (!timer) timer = setInterval(tick, 1000);
               } else if (timer && e.data !== YT.PlayerState.BUFFERING) {
                 clearInterval(timer); timer = null;
               }
               if (e.data === YT.PlayerState.ENDED) unlock();
-            }
+            },
+            onError: function () { failOpen(); }
           }
         });
       };
@@ -1762,5 +1854,67 @@
       }
     })();
   </script>
+
+  <!-- FIX-ENGINE F-002 סבב-2 (2026-07-22): מושן כתיבה לפאנץ' של "תעשה את החשבון". בלי JS הטקסט פשוט מוצג רגיל. -->
+  <script>
+    (function () {
+      var els = Array.prototype.slice.call(document.querySelectorAll('[data-write]'));
+      if (!els.length) return;
+      var STEP = 90;
+      els.forEach(function (p) {
+        var delay = parseInt(p.getAttribute('data-write-delay') || '0', 10);
+        function wrapWords(node) {
+          var frag = document.createDocumentFragment();
+          node.textContent.split(/(\s+)/).forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            var s = document.createElement('span');
+            s.className = 'tw';
+            s.textContent = part;
+            s.style.transitionDelay = delay + 'ms';
+            delay += STEP;
+            frag.appendChild(s);
+          });
+          node.parentNode.replaceChild(frag, node);
+        }
+        Array.prototype.slice.call(p.childNodes).forEach(function (n) {
+          if (n.nodeType === 3) { wrapWords(n); }
+          else if (n.nodeType === 1) {
+            var w = document.createElement('span');
+            w.className = 'tw';
+            w.style.transitionDelay = delay + 'ms';
+            delay += STEP;
+            n.parentNode.insertBefore(w, n);
+            w.appendChild(n);
+          }
+        });
+      });
+      var pending = els.slice();
+      function write(p) {
+        p.classList.add('is-written');
+        var i = pending.indexOf(p);
+        if (i > -1) pending.splice(i, 1);
+      }
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting && pending.indexOf(e.target) > -1) { write(e.target); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.35 });
+        els.forEach(function (p) { io.observe(p); });
+      }
+      /* פולבק גיאומטרי — לא תלוי באירועים, מתנקה כשהכל נכתב */
+      function check() {
+        pending.slice().forEach(function (p) {
+          var r = p.getBoundingClientRect();
+          if (r.top < window.innerHeight * 0.85 && r.bottom > 0) write(p);
+        });
+      }
+      window.addEventListener('scroll', check, { passive: true });
+      check();
+      var iv = setInterval(function () { check(); if (!pending.length) clearInterval(iv); }, 500);
+    })();
+  </script>
+
 </body>
 </html>
