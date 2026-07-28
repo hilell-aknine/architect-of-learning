@@ -211,7 +211,7 @@
 
     /* ============ PINNED PRODUCT SHOWCASE (the single dark cinematic moment) ============ */
     /* tall driver so 4 scenes get scroll room; sticky stage holds the dark room */
-    .scrub { position: relative; height: 420vh; margin-block: clamp(40px, 6vw, 80px) 0; }
+    .scrub { position: relative; height: 525vh; margin-block: clamp(40px, 6vw, 80px) 0; }
     .scrub__sticky {
       position: sticky; top: 0; height: 100vh; overflow: hidden;
       display: flex; flex-direction: column; align-items: center;
@@ -274,6 +274,17 @@
     .lb__row--me .lb__pts { color: var(--ember-2); }
     .lb__crown { color: var(--gold); flex-shrink: 0; }
     .lb__crown svg { width: 18px; height: 18px; display: block; }
+
+    /* scene 5 — "המסך שלך": מודיעין למידה בצד בעל הקורס */
+    .own__row { display: flex; align-items: center; gap: 12px; padding-block: 12px; border-block-start: 1px solid var(--rule-soft); }
+    .own__name { flex: 1; font-weight: 700; font-size: 0.98rem; }
+    .own__lessons { font-family: var(--f-mast); font-weight: 800; font-size: 0.9rem; color: var(--ink-soft); flex-shrink: 0; }
+    .own__state { font-size: 0.74rem; font-weight: 700; flex-shrink: 0; min-width: 92px; text-align: end; }
+    .own__state--live { color: #2f8f5b; }
+    .own__state--gone { color: var(--ember); }
+    .own__row--flag { background: var(--ink); color: var(--paper); margin-inline: -10px; padding-inline: 14px; box-shadow: 4px 4px 0 var(--ember); border-block-start: 0; }
+    .own__row--flag .own__lessons { color: var(--gold); }
+    .own__row--flag .own__state--gone { color: var(--ember-2); }
 
     /* ---- scene 2: reminder chat bubble ---- */
     .bubble { position: relative; background: var(--forest); color: var(--paper); padding: 16px 18px 22px; border-radius: 16px 16px 16px 4px; font-weight: 600; font-size: 1.05rem; line-height: 1.5; max-width: 92%; }
@@ -1057,7 +1068,7 @@
     </section>
 
     <!-- ============ PINNED PRODUCT SHOWCASE (single dark cinematic moment) ============ -->
-    <section class="scrub" id="scrub" aria-label="ארבעת המנגנונים שמחזירים תלמידים פנימה" data-area="scrub" data-src="index.html #scrub (4 סצנות המנגנונים)">
+    <section class="scrub" id="scrub" aria-label="חמשת המנגנונים שמחזירים תלמידים פנימה" data-area="scrub" data-src="index.html #scrub (5 סצנות המנגנונים)">
       <div class="scrub__sticky">
 
         <div class="scrub__head-fixed">
@@ -1159,6 +1170,34 @@
             <p class="scene__cap">הוא נתקע, מתבייש לשאול, ונעלם בשקט. המורה האישי עונה לו באותו רגע, ומי שנעזר בו סיים פי 5 יותר שיעורים.</p>
           </div>
 
+          <!-- scene 5: the owner's view — learning intelligence -->
+          <div class="scene" data-scene="4">
+            <div class="pcard">
+              <div class="pcard__top">
+                <span class="pcard__chip">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.6"/></svg>
+                  המסך שלך
+                </span>
+              </div>
+              <div class="own__row own__row--flag">
+                <span class="own__name">מיכל כהן</span>
+                <span class="own__lessons">38 שיעורים</span>
+                <span class="own__state own__state--gone">נעלמה · 41 יום</span>
+              </div>
+              <div class="own__row">
+                <span class="own__name">אבי לוי</span>
+                <span class="own__lessons">12 שיעורים</span>
+                <span class="own__state own__state--live">פעיל · היום</span>
+              </div>
+              <div class="own__row">
+                <span class="own__name">רונית שגב</span>
+                <span class="own__lessons">3 שיעורים</span>
+                <span class="own__state own__state--gone">נעלמה · 60 יום</span>
+              </div>
+            </div>
+            <p class="scene__cap">שלושתם קנו את אותו קורס ונראים לך זהים. רק המסך הזה מראה שמיכל כמעט סיימה ואז נעלמה.</p>
+          </div>
+
         </div>
 
         <div class="scrub__dots" id="scrubDots" aria-hidden="true">
@@ -1166,6 +1205,7 @@
           <button type="button" data-dot="1" aria-label="מנגנון 2"></button>
           <button type="button" data-dot="2" aria-label="מנגנון 3"></button>
           <button type="button" data-dot="3" aria-label="מנגנון 4"></button>
+          <button type="button" data-dot="4" aria-label="מנגנון 5"></button>
         </div>
 
         <div class="scrub__cue" aria-hidden="true">
