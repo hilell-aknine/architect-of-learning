@@ -1041,6 +1041,39 @@
       line-height: 1.65;
     }
   </style>
+  <!-- ============ הנעה לפעולה משתנה לפי מקור התנועה (2026-08-02) ============
+       חייב לרוץ לפני שער הצפייה, כי בממומן ובחם השער נפתח מראש.
+
+         ממומן   ?src=ad   · utm_source=facebook/meta/ig · utm_medium=cpc/paid
+                 → וואטסאפ ישיר, בלי שער צפייה ובלי טופס.
+                   (הכרעת רם 22.7, DECISIONS.md: ממומן הולך לוואטסאפ בלי חיכוך.)
+         חם      ?src=warm · ?ref=…
+                 → חיוג ישיר. כבר מכיר אותנו, לא צריך לשכנע אלא להקל.
+         אורגני  ברירת המחדל
+                 → אפס שינוי. הדף נשאר בדיוק כמו שהוא, כולל שער הצפייה.
+       ==================================================================== -->
+  <script>
+    (function () {
+      var P = new URLSearchParams(location.search);
+      var src = (P.get('src') || '').toLowerCase();
+      var utm = (P.get('utm_source') || '').toLowerCase();
+      var med = (P.get('utm_medium') || '').toLowerCase();
+
+      var variant = 'organic';
+      if (src === 'ad' || src === 'warm') variant = src;
+      else if (['facebook','fb','meta','instagram','ig','paid'].indexOf(utm) > -1 ||
+               med === 'cpc' || med === 'paid') variant = 'ad';
+      else if (P.get('ref')) variant = 'warm';
+
+      window.__CTA_VARIANT = variant;
+      document.documentElement.setAttribute('data-cta-src', variant);
+
+      /* בממומן ובחם אין שער צפייה. הטופס והכפתורים פתוחים מהשנייה הראשונה. */
+      if (variant !== 'organic') {
+        try { localStorage.setItem('vslUnlocked_QdNjWsOehSA', '1'); } catch (e) {}
+      }
+    })();
+  </script>
 </head>
 <body>
 
@@ -1815,5 +1848,55 @@
     })();
   </script>
 
+  <!-- ============ הנעה לפעולה משתנה · שכבת הכפתורים (2026-08-02) ============
+       רץ אחרון, אחרי שכל שאר הסקריפטים סיימו לתפוס את הכפתורים.
+       באורגני לא נוגע בכלום. ==================================================== -->
+  <script>
+    (function () {
+      var variant = window.__CTA_VARIANT || 'organic';
+      if (variant === 'organic') return;
+
+      var PHONE = '972549116092';
+      var WA = 'https://wa.me/' + PHONE + '?text=' +
+               encodeURIComponent('היי הלל, הגעתי מהדף. שם הקורס שלי הוא: ');
+
+      var V = {
+        ad: {
+          label: 'כתוב לי בוואטסאפ',
+          href:  WA,
+          blank: true,
+          sub:   'כתוב לי את שם הקורס שלך ואחזור אליך עם מה שאני רואה',
+          micro: 'שיחה אחת בוואטסאפ. בלי טפסים ובלי סרטון חובה.'
+        },
+        warm: {
+          label: 'בוא נדבר עכשיו',
+          href:  'tel:+' + PHONE,
+          blank: false,
+          sub:   'אנחנו כבר מכירים. נסגור את זה בשיחה קצרה',
+          micro: 'אנחנו כבר מכירים. תרים טלפון ונדבר.'
+        }
+      }[variant];
+
+      /* כל כפתורי ה-CTA בדף מקבלים את היעד החדש */
+      document.querySelectorAll('a[data-cta]').forEach(function (a) {
+        a.href = V.href;
+        if (V.blank) { a.target = '_blank'; a.rel = 'noopener'; }
+        /* מחליף רק את צומת הטקסט, כדי לא למחוק את האייקון שבתוך הכפתור */
+        var swapped = false;
+        a.childNodes.forEach(function (n) {
+          if (!swapped && n.nodeType === 3 && n.nodeValue.trim()) {
+            n.nodeValue = V.label; swapped = true;
+          }
+        });
+        if (!swapped) a.textContent = V.label;
+      });
+
+      var sub = document.getElementById('stickySub');
+      if (sub) sub.textContent = V.sub;
+
+      var micro = document.getElementById('heroMicro');
+      if (micro) { micro.textContent = V.micro; micro.classList.remove('is-hidden'); }
+    })();
+  </script>
 </body>
 </html>
