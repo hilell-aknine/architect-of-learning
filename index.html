@@ -59,6 +59,8 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* class rules that set `display` beat the UA rule for [hidden]; keep hidden elements hidden */
+    [hidden] { display: none !important; }
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; }
     body {
       font-family: var(--f-body);
@@ -130,6 +132,11 @@
       letter-spacing: 0.26em; text-transform: uppercase; color: var(--ember);
     }
     .kicker::before { content: ""; width: 30px; height: 1.5px; background: var(--ember); }
+    .hero__kicker {
+      justify-content: center; margin-block-end: 20px; font-size: 0.92rem;
+      letter-spacing: 0.05em; line-height: 1.55; max-width: 700px; margin-inline: auto;
+    }
+    .hero__kicker::before, .hero__kicker::after { content: none; }
 
     /* gigantic editorial section numeral, set into the margin */
     .folio {
@@ -703,6 +710,7 @@
       line-height: 1.55;
     }
     .hero__micro.is-hidden { display: none; }
+    .hero__micro--promise { opacity: 1; font-weight: 700; color: var(--ember); margin-block-start: 10px; }
 
     .creds__intro {
       margin-block-end: 12px;
@@ -742,7 +750,7 @@
       font-weight: 700;
     }
     /* FIX-ENGINE F-002 סבב-2 (2026-07-22): מושן כתיבה לפאנץ'. F-004 סבב-3: הוכלל ל-[data-write] גם לכרטיסי הכתב-יד. */
-    .themath__punch { font-size: clamp(1.14rem, 2.1vw, 1.5rem); }
+    .themath__punch { font-size: clamp(1.3rem, 2.6vw, 1.9rem); }
     [data-write] .tw {
       display: inline-block;
       opacity: 0;
@@ -758,9 +766,17 @@
       transition: transform 0.7s var(--ease) 1.1s;
     }
     .themath__punch.is-written em.mark::after { transform: scaleX(1); }
+    .themath__punch em.mark { display: inline-block; color: var(--ember-2); font-weight: 900; }
+    .themath__punch.is-written em.mark { animation: punchPop 0.7s var(--ease) 1.9s both; }
+    @keyframes punchPop {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.14); text-shadow: 0 0 26px rgba(234,88,12,0.55); }
+      100% { transform: scale(1); }
+    }
     @media (prefers-reduced-motion: reduce) {
       [data-write] .tw { opacity: 1; transform: none; transition: none; }
       .themath__punch em.mark::after { transform: scaleX(1); transition: none; }
+      .themath__punch.is-written em.mark { animation: none; }
       .creds__emoji { animation: none !important; }
     }
     /* FIX-ENGINE F-004 סבב-3 (2026-07-22): כרטיסי "מה תקבל" בכתב-יד, בלי מסגרות */
@@ -1038,19 +1054,21 @@
       <div class="hero__atmos" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
       <div class="hero__paper" aria-hidden="true"></div>
       <div class="container hero__inner">
+        <p class="kicker hero__kicker reveal" data-d="1">החלק הגרוע בקורס דיגיטלי שמוכר מאות בחודש? מה שקורה אחרי הקנייה.</p>
         <h1 class="hero__title reveal" data-d="2">
-          מכרת את הקורס. אז למה רוב מי ששילם בקושי פתח אותו?
+          אל תתפשר על המותג שלך. שדרג את הקורס הקיים <span class="hero__sub-accent">לנכס דיגיטלי פרימיום</span> שמייצר חוויית למידה ברמה הגבוהה ביותר בשוק
         </h1>
         <p class="hero__sub reveal" data-d="3">
-          כל לומד שנוטש הוא לא רק אחוז בדוח. הוא עדות שלא תקבל, המלצה שלא תגיע, והמוצר הבא שלא תמכור לו. אני בונה לבעלי קורסים את המערכת שמחזירה אותו פנימה, שוב ושוב, עד שהוא מסיים ומיישם.
+          אתה לא "עוד אחד בתחום". אני הופך את הקורס שלך לחוויית למידה ברמה אחרת, כזאת שגורמת לתלמידים לסיים, ליישם ולחזור לקנות ממך.
         </p>
         <div class="hero__cta reveal" data-d="4">
-          <a href="#contact" data-cta class="btn btn--solid btn--pulse" data-magnetic>
-            בוא נראה איפה התלמידים שלך נופלים
+          <a href="#vsl" data-cta class="btn btn--solid btn--pulse" data-magnetic>
+            אני רוצה לראות איך זה נראה בקורס אמיתי
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
           </a>
           <!-- FIX-ENGINE F-001 (2026-07-22): סגנון הזמנה אישית לקייס סטאדי, לבקשת הלל. -->
           <p class="hero__micro" id="heroMicro">בוא תראה איך אני מיישם את זה בפועל, בקורס אמיתי (12:45). טופס תיאום השיחה נפתח באמצע הצפייה.</p>
+          <p class="hero__micro hero__micro--promise">עד סוף הדף תדע בדיוק למה תלמידים נוטשים דווקא אצלך, ומה עושים עם זה.</p>
         </div>
       </div>
     </section>
@@ -1067,153 +1085,7 @@
       </div>
     </section>
 
-    <!-- ============ PINNED PRODUCT SHOWCASE (single dark cinematic moment) ============ -->
-    <section class="scrub" id="scrub" aria-label="חמשת המנגנונים שמחזירים תלמידים פנימה" data-area="scrub" data-src="index.html #scrub (5 סצנות המנגנונים)">
-      <div class="scrub__sticky">
 
-        <div class="scrub__head-fixed">
-          <!-- FIX-ENGINE F-003 (2026-07-22): כותרת הסצנות הוחלפה לנוסח של הלל (פיצ'רים משתנים, הפסיכולוגיה נשארת). -->
-          <p class="scrub__title">הפיצ'רים יכולים להשתנות. הפסיכולוגיה האנושית שמובילה את התלמיד שלך לפעולה נשארת זהה.</p>
-        </div>
-
-        <div class="scrub__deck">
-
-          <!-- scene 1: friendly competition / leaderboard -->
-          <div class="scene is-active" data-scene="0">
-            <div class="pcard">
-              <div class="pcard__top">
-                <span class="pcard__chip">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 4h14v3a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4zM9 11v3M15 11v3M8 14h8M7 20h10M9 17h6"/></svg>
-                  טבלת מובילים
-                </span>
-              </div>
-              <div class="lb__row">
-                <span class="lb__rank">1</span>
-                <span class="lb__crown" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7l4 4 5-6 5 6 4-4v10H3z"/></svg></span>
-                <span class="lb__name">דנה</span>
-                <span class="lb__pts">1,240</span>
-              </div>
-              <div class="lb__row">
-                <span class="lb__rank">2</span>
-                <span class="lb__name">יוסי</span>
-                <span class="lb__pts">1,090</span>
-              </div>
-              <div class="lb__row">
-                <span class="lb__rank">3</span>
-                <span class="lb__name">מאיה</span>
-                <span class="lb__pts">980</span>
-              </div>
-              <div class="lb__row lb__row--me">
-                <span class="lb__rank">4</span>
-                <span class="lb__name">אתה</span>
-                <span class="lb__pts">910</span>
-              </div>
-            </div>
-            <!-- FIX-ENGINE F-004 (2026-07-22): נוסף הרובד הפסיכולוגי של תחרות, בנוסח של הלל. -->
-            <p class="scene__cap">תחרות היא גורם פסיכולוגי שהחברות הגדולות בעולם יישמו מזמן. טבלת המובילים נותנת לתלמיד שלך סיבה לחזור מחר.</p>
-          </div>
-
-          <!-- scene 2: personal reminder -->
-          <div class="scene" data-scene="1">
-            <div class="pcard">
-              <span class="bubble__who">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M21 11.5a8 8 0 0 1-11.5 7.2L3 21l2.3-6.5A8 8 0 1 1 21 11.5z"/></svg>
-                תזכורת אישית
-              </span>
-              <div class="bubble">
-                היי דנה, נשארו לך 2 שיעורים לסיים את המודול. ממשיכים?
-                <span class="bubble__time">09:14</span>
-              </div>
-            </div>
-            <p class="scene__cap">הוא לא נטש, הוא שכח. תזכורת אישית תופסת אותו לפני שהשכחה הופכת לנטישה.</p>
-          </div>
-
-          <!-- scene 3: practice game -->
-          <div class="scene" data-scene="2">
-            <div class="pcard">
-              <div class="game__top">
-                <span class="game__lives" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21S4 14.5 4 8.8A4.3 4.3 0 0 1 12 6a4.3 4.3 0 0 1 8 2.8C20 14.5 12 21 12 21z"/></svg>
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21S4 14.5 4 8.8A4.3 4.3 0 0 1 12 6a4.3 4.3 0 0 1 8 2.8C20 14.5 12 21 12 21z"/></svg>
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21S4 14.5 4 8.8A4.3 4.3 0 0 1 12 6a4.3 4.3 0 0 1 8 2.8C20 14.5 12 21 12 21z"/></svg>
-                </span>
-                <span class="game__streak">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2C13 2 5 9 5 14.5A7 7 0 0 0 19 14.5c0-2.3-1.5-4.3-2.8-6 .2 1.6-.6 3-2 3.4.6-2.4-.3-5.6-1.2-9.9z"/></svg>
-                  7
-                </span>
-              </div>
-              <div class="xp" aria-hidden="true"><span class="xp__fill"></span></div>
-              <div class="xp__row">
-                <span class="xp__label">XP</span>
-                <span class="game__badge">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12l5 5 9-11"/></svg>
-                  נכון! +20
-                </span>
-              </div>
-            </div>
-            <p class="scene__cap">שיעור שנצפה ולא תורגל לא נשאר. בפורטל החי שבניתי, מי ששילב את משחק התרגול סיים פי 4 יותר שיעורים.</p>
-          </div>
-
-          <!-- scene 4: AI teacher Ram -->
-          <div class="scene" data-scene="3">
-            <div class="pcard">
-              <div class="chat__head">
-                <span class="chat__avatar" aria-hidden="true">AI</span>
-                <span class="chat__id">
-                  <strong>המורה האישי שלך</strong>
-                  <span>מורה AI · עוזר לך ליישם</span>
-                </span>
-              </div>
-              <p class="chat__q">איך אני מיישם את התרגיל מהשיעור הקודם?</p>
-              <p class="chat__a">אני זוכר את המטרה שהצבת לעצמך — בוא נפרק את התרגיל לשלושה צעדים שמקדמים אותך אליה, ואלווה אותך ביישום.</p>
-            </div>
-            <p class="scene__cap">הוא נתקע, מתבייש לשאול, ונעלם בשקט. המורה האישי עונה לו באותו רגע, ומי שנעזר בו סיים פי 5 יותר שיעורים.</p>
-          </div>
-
-          <!-- scene 5: the owner's view — learning intelligence -->
-          <div class="scene" data-scene="4">
-            <div class="pcard">
-              <div class="pcard__top">
-                <span class="pcard__chip">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.6"/></svg>
-                  המסך שלך
-                </span>
-              </div>
-              <div class="own__row own__row--flag">
-                <span class="own__name">מיכל כהן</span>
-                <span class="own__lessons">38 שיעורים</span>
-                <span class="own__state own__state--gone">נעלמה · 41 יום</span>
-              </div>
-              <div class="own__row">
-                <span class="own__name">אבי לוי</span>
-                <span class="own__lessons">12 שיעורים</span>
-                <span class="own__state own__state--live">פעיל · היום</span>
-              </div>
-              <div class="own__row">
-                <span class="own__name">רונית שגב</span>
-                <span class="own__lessons">3 שיעורים</span>
-                <span class="own__state own__state--gone">נעלמה · 60 יום</span>
-              </div>
-            </div>
-            <p class="scene__cap">שלושתם קנו את אותו קורס ונראים לך זהים. רק המסך הזה מראה שמיכל כמעט סיימה ואז נעלמה.</p>
-          </div>
-
-        </div>
-
-        <div class="scrub__dots" id="scrubDots" aria-hidden="true">
-          <button type="button" class="is-active" data-dot="0" aria-label="מנגנון 1"></button>
-          <button type="button" data-dot="1" aria-label="מנגנון 2"></button>
-          <button type="button" data-dot="2" aria-label="מנגנון 3"></button>
-          <button type="button" data-dot="3" aria-label="מנגנון 4"></button>
-          <button type="button" data-dot="4" aria-label="מנגנון 5"></button>
-        </div>
-
-        <div class="scrub__cue" aria-hidden="true">
-          גלול להמשך
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
-        </div>
-      </div>
-    </section>
 
     <!-- ============ VSL ============ -->
     <section class="vsl" id="vsl" data-area="vsl" data-src="index.html #vsl (סרטון + נעילת טופס)">
@@ -1243,7 +1115,7 @@
         <div class="vsl__after reveal">
           <p class="vsl__afterline" id="vslAfterline">
             בסרטון אני פותח את הפורטל החי ואת המספרים שמאחוריו. מי שמגיע לשיחה אחרי שראה
-            אותו לא מבזבז את עשרים הדקות על הסברים, אלא על הקורס שלו. בגלל זה הטופס נפתח
+            אותו לא מבזבז אותה על הסברים, אלא על הקורס שלו. בגלל זה הטופס נפתח
             בסוף הסרטון, לא לפניו.
           </p>
           <a href="#contact" data-cta class="btn btn--solid" data-cta data-magnetic>
@@ -1261,18 +1133,10 @@
           <div class="chapter__folio"><span class="folio">01</span></div>
           <div class="chapter__lede">
             <h2 class="chapter__title">הכסף נכנס. התלמידים נעלמים.</h2>
-            <!-- FIX-ENGINE F-008 סבב-4 (2026-07-22): פסקת הפתיחה מדברת רק על בעל העסק, עם דוגמה ספציפית, לבקשת הלל. -->
             <p class="chapter__lead dropcap">
-              אתה מכיר את הבוקר הזה: נכנסו עוד תשלומים על הקורס, אתה פותח את המערכת כדי
-              ליהנות רגע מהמספרים, ואז רואה את זה. עשרות אנשים ששילמו אלפי שקלים, וכמעט
-              אף אחד לא עבר את השיעור השני. השקעת חודשים בתוכן הזה, והוא יושב שם סגור.
-              זו לא בעיה של התוכן שלך ולא של ההשקעה שלך. זו בעיה של עיצוב חוויית הלמידה,
-              והיא נופלת בנקודות קבועות שאפשר להצביע עליהן אחת אחת.
-            </p>
-            <p class="chapter__lead" style="margin-block-start:18px">
-              אתה מכיר את התסכול: השקעת עשרות שעות בצילום, בעריכה ובבניית תוכן זהב. הלקוחות
-              קנו, ואז נעלמו. הקורס נקבר בתיקייה צדדית. ואתה עובד קשה מדי. כמה שעות בשבוע
-              אתה עונה בוואטסאפ ובזום על שאלות שהתשובה להן כבר נמצאת בתוך הקורס?
+              הלקוחות קנו ונעלמו, ואיתם נעלם הרווח הגדול באמת: הרכישה הבאה, ההמלצה לחבר,
+              העדות שמוכרת בשבילך. קורס שאנשים לא מסיימים הוא עסק שמוכר רק ללקוחות חדשים,
+              וזו הדרך הכי יקרה למכור.
             </p>
           </div>
         </div>
@@ -1369,7 +1233,7 @@
               <p>
                 רוב מי שקונה קורס דיגיטלי לא מסיים אותו, וזה קורה בנקודות קבועות וצפויות.
                 הפורטל מחזיר את הלומד בדיוק לנקודה שבה עצר, כמו בנטפליקס, ודוחף אותו לשיעור
-                הבא. בפורטל החי שבניתי זה הקפיץ פי 3.4 את מספר השיעורים שהתלמיד באמת מסיים.
+                הבא. וכשהוא בכל זאת נעלם, המערכת שולחת לו תזכורת וואטסאפ אישית, בשם שלך.
                 אותו תוכן, אותם אנשים. ההבדל הוא בחוויה.
               </p>
             </div>
@@ -1414,20 +1278,22 @@
       <div class="container">
         <span class="folio" aria-hidden="true">03</span>
         <div class="teaser__inner reveal">
-          <h2>מה בדיוק תקבל? את זה נתפור יחד.</h2>
+          <h2>השיחה הזאת לא מתאימה לכולם.</h2>
           <p class="lead">
-            לכל קורס יש נקודת נשירה משלו. בשיחה קצרה נמפה איפה התלמידים שלך נופלים,
-            ונבנה לך תוכנית מדויקת להחזיר אותם. בלי מונחים טכניים, בלי התחייבות.
+            אני עובד רק עם בעלי קורסים שכבר מוכרים ורוצים להפסיק להיראות כמו כולם.
+            אם זה אתה, שיחה אחת קצרה תראה לך כמה הקורס שלך יכול לתת עוד.
+            בלי לחץ, בלי מונחים טכניים.
           </p>
-          <!-- FIX-ENGINE F-004 סבב-3 (2026-07-22): הכרטיסים הפכו לשורות בכתב-יד עם מושן כתיבה, בלי מסגרות, לבקשת הלל. -->
           <div class="teaser__pills teaser__pills--hand">
-            <span data-write data-write-delay="0">למידה שמרגישה כמו נטפליקס, לא כמו שיעורי בית</span>
-            <span data-write data-write-delay="700">תלמיד שחוזר בעצמו, בלי שתרדוף אחריו</span>
-            <span data-write data-write-delay="1300">אחוז סיום שמייצר לך עדויות</span>
+            <span data-write data-write-delay="0">מפה מדויקת של נקודות הנשירה בקורס שלך</span>
+            <span data-write data-write-delay="600">הדגמה חיה של פורטל פרימיום עובד</span>
+            <span data-write data-write-delay="1200">המספרים שלך: כמה שווה כל תלמיד שנשאר, ותוך כמה זמן תראה את זה</span>
+            <span data-write data-write-delay="1800">דרכים חדשות לשווק על בסיס הקורס שכבר יש לך</span>
+            <span data-write data-write-delay="2400">תוכנית פעולה שנשארת אצלך, גם אם לא נעבוד יחד</span>
           </div>
           <div class="teaser__cta">
             <a href="#contact" data-cta class="btn btn--ghost-paper" data-magnetic>
-              בוא נמפה את נקודות הנשירה שלי
+              בדוק אם זה מתאים לך
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
             </a>
           </div>
@@ -1456,18 +1322,20 @@
           <!-- FIX-ENGINE F-009 סבב-4 (2026-07-22): הוסר ה-kicker הכפול "מי אני" (נשארה הכותרת), לבקשת הלל. -->
           <h2 class="chapter__title" style="margin-block:16px 20px">מי אני</h2>
           <p class="body">
-            אני הילל אקנין, ואני לא בונה אתרים.
+            אני הילל אקנין, ואני לא בונה אתרים. אני עוזר לבעלי קורסים להפוך ידע לתוצאות:
+            יותר תלמידים שמסיימים, מיישמים וממשיכים לקנות.
           </p>
           <p class="body" style="margin-block-start:16px">
-            התחלתי לחפור בשאלה אחת: למה אנשים רציניים, שהוציאו אלפי שקלים מהכיס, בקושי
-            נוגעים במה שקנו. ההסבר הנוח הוא "אנשים עצלנים". ההסבר הזה נוח מדי, והוא פשוט
-            לא נכון. הנשירה מקורסים היא לא עניין של אופי, היא עניין של עיצוב, והיא מתרכזת
-            בנקודות קבועות וצפויות. ברגע שמזהים אותן, אפשר לבנות סביבן מערכת שמחזירה
-            את הלומד פנימה.
+            את התשובה מצאתי בקורס חי שבניתי לו את הפורטל מאפס: 775 נרשמים, מעל 2,000
+            שיעורים שהושלמו. כשהדאטה התחילה לזרום אליי, התחלתי למדוד. ואז ראיתי את זה
+            שחור על גבי לבן: מי שלמד עם חוויית תרגול משחקית השלים פי 4 יותר שיעורים.
+            אותו קורס, אותו תוכן, חוויה אחרת.
           </p>
           <p class="body" style="margin-block-start:16px">
-            את בית המטפלים בניתי בדיוק ככה, מאפס: פורטל, ניהול לקוחות ומנגנוני התמדה.
-            קורס חי, לומדים אמיתיים, מספרים אמיתיים. לא הדגמה.
+            מאותו רגע הפסקתי לקבל את ההסבר הנוח של "תלמידים עצלנים". נשירה היא לא עניין
+            של אופי, היא עניין של עיצוב. היום אני בונה מערכות למידה שמבוססות על שינוי
+            התנהגות: AI, פסיכולוגיה ודאטה שמזהים בדיוק איפה התלמיד שלך נופל, ומחזירים
+            אותו פנימה.
           </p>
 
           <div class="creds">
@@ -1563,12 +1431,12 @@
         <ol class="steps">
           <li class="reveal" data-d="1">
             <span class="steps__no" aria-hidden="true">01</span>
-            <p>אני חוזר אליך אישית בוואטסאפ תוך 24 שעות. לא מוקד, לא נציג, לא רצף מיילים אוטומטי.</p>
+            <p>אני חוזר אליך אישית בוואטסאפ. לא מוקד, לא נציג, לא רצף מיילים אוטומטי.</p>
           </li>
           <li class="reveal" data-d="2">
             <span class="steps__no" aria-hidden="true">02</span>
             <!-- FIX-ENGINE F-006 סבב-3 (2026-07-22): דיוק שלב 02 — ניתוח הקיים ושיפור במינימום מאמץ, לבקשת הלל. -->
-            <p>עשרים דקות בזום, בלי עלות. מנתחים יחד מה שכבר יש לך: איפה התלמידים עוצרים היום, ומה אפשר לשפר במינימום מאמץ, כדי שהם יצאו מרוצים ולך יהיו הרבה יותר תוצאות ועדויות.</p>
+            <p>מנתחים יחד מה שכבר יש לך: איפה התלמידים עוצרים היום, ומה אפשר לשפר במינימום מאמץ, כדי שהם יצאו מרוצים ולך יהיו הרבה יותר תוצאות ועדויות.</p>
           </li>
           <li class="reveal" data-d="3">
             <span class="steps__no" aria-hidden="true">03</span>
@@ -1585,9 +1453,9 @@
           <div class="finale__grid" aria-hidden="true"></div>
           <h2 style="margin-block-start:18px">אז מה עושים עכשיו?</h2>
           <p class="finale__sub">
-            עשרים דקות בזום. נעבור על הקורס שלך ואראה לך בדיוק איפה אתה מאבד תלמידים, ומה
-            זה עולה לך: עדויות שלא תקבל, הפניות שלא יגיעו, ומוצר המשך שקשה למכור למי שלא
-            סיים. גם אם לא נעבוד יחד, תצא עם המפה הזאת ביד.
+            נעבור יחד על הקורס שלך ואראה לך בדיוק איפה אתה מאבד תלמידים, ומה זה עולה לך:
+            עדויות שלא תקבל, הפניות שלא יגיעו, ומוצר המשך שקשה למכור למי שלא סיים.
+            גם אם לא נעבוד יחד, תצא עם המפה הזאת ביד.
           </p>
           <p class="finale__filter">
             השיחה מיועדת למי שכבר מוכר קורס. אם עוד לא מכרת, זה מוקדם מדי בשבילך.
@@ -1595,7 +1463,7 @@
           <div class="lead__lock" id="leadLock">
             <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
             <strong>הטופס נפתח אחרי צפייה בסרטון</strong>
-            <span id="leadLockNote">עשרים הדקות שוות משהו רק אחרי שראית איך המערכת עובדת. הטופס נפתח בסוף הסרטון.</span>
+            <span id="leadLockNote">השיחה שווה משהו רק אחרי שראית איך המערכת עובדת. הטופס נפתח בסוף הסרטון.</span>
             <a href="#vsl" class="btn btn--ghost-paper">לצפייה בסרטון</a>
           </div>
           <form class="lead" id="leadForm" novalidate hidden>
@@ -1607,15 +1475,10 @@
               בוא נמפה את נקודות הנשירה שלי
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
             </button>
-            <div class="finale__reassure">
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>20 דקות בזום</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>ללא עלות</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>ללא התחייבות</span>
-            </div>
           </form>
           <div class="lead__done" id="leadDone" hidden>
-            <strong>השיחה שלך שמורה ✓</strong>
-            <span>קיבלתי את הפרטים — אחזור אליך אישית תוך 24 שעות לתאם את הזמן המדויק.</span>
+            <strong>הפרטים התקבלו ✓</strong>
+            <span>אחזור אליך אישית לתאם את השיחה.</span>
           </div>
         </div>
       </div>
@@ -1629,10 +1492,6 @@
     <div class="footer__bottom">
       <div class="container">
         <span>© <span id="year">2026</span> · הילל אקנין</span>
-        <span class="footer__fineprint">
-          נבנה ועוצב על ידי
-          <a href="https://wa.me/972549116092" target="_blank" rel="noopener">הילל אקנין</a>
-        </span>
       </div>
     </div>
   </footer>
@@ -1682,7 +1541,7 @@
         var micro = document.getElementById('heroMicro');
         if (micro) micro.classList.add('is-hidden');
         var sticky = document.getElementById('stickySub');
-        if (sticky) sticky.textContent = '20 דקות בזום · בלי עלות';
+        if (sticky) sticky.textContent = 'הטופס פתוח · השאר פרטים ונדבר';
         if (afterline) {
           afterline.innerHTML = '<span class="vsl__unlocked">הטופס נפתח ✓</span><br>ראית איך זה עובד. עכשיו בוא נסתכל על הקורס שלך.';
         }
