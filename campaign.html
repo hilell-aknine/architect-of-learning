@@ -24,6 +24,22 @@ fbq('track','PageView');
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=2132323570952002&ev=PageView&noscript=1" alt="" /></noscript>
 
+<!-- ===================================================================
+     MICROSOFT CLARITY — הקלטות סשן + מפות חום (פרויקט xf3ucswd1s)
+     מיסוך Balanced מצד קלאריטי, ומותנה בהסכמת עוגיות בדיוק כמו בעמוד האבחון.
+     בלי זה משלמים על תנועה בלי לראות מה הגולש עשה בדף.
+     =================================================================== -->
+<script>
+(function(){
+  try { if (localStorage.getItem('cookie_consent_v2') === 'essential') return; } catch(e){}
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window,document,"clarity","script","xf3ucswd1s");
+})();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -78,9 +94,10 @@ h1 .accent{color:var(--ember); display:block}
   max-width:58ch; margin:0 auto 22px;
 }
 .video-frame{
-  position:relative; width:100%; aspect-ratio:16/9;
+  /* יחס הגובה-רוחב של הסרטון עצמו (1280x574), כדי שלא יהיו פסים שחורים מסביב */
+  position:relative; width:100%; aspect-ratio:1280/574;
   border-radius:14px; overflow:hidden;
-  border:1px solid var(--rule); background:var(--paper-soft);
+  border:1px solid var(--rule); background:#0b0a08;
   box-shadow:0 18px 50px rgba(20,17,13,0.14);
 }
 .video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -90,6 +107,35 @@ h1 .accent{color:var(--ember); display:block}
 }
 .video-ph b{font-size:1.15rem; font-weight:800; color:var(--ember)}
 .video-ph span{font-size:.94rem; color:var(--ink-faint); max-width:42ch}
+
+/* ---------- כרזת פתיחה (facade) ----------
+   הדף לא טוען את הנגן של יוטיוב עד שלוחצים. עד אז זו רק תמונה אחת קלה,
+   ולכן הדף נטען מהר גם למי שלא נוגע בסרטון בכלל. */
+.video-poster{
+  position:absolute; inset:0; width:100%; height:100%; padding:0; border:0;
+  cursor:pointer; background:#0b0a08; display:block; overflow:hidden;
+}
+.video-poster img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform .5s var(--ease), opacity .3s var(--ease);
+}
+.video-poster:hover img{transform:scale(1.03); opacity:.9}
+.video-poster.is-hidden{display:none}
+.video-poster__play{
+  position:absolute; inset-block-start:50%; inset-inline-start:50%;
+  transform:translate(-50%,-50%);
+  width:clamp(64px,9vw,86px); aspect-ratio:1; border-radius:50%;
+  background:var(--ember); display:grid; place-items:center;
+  box-shadow:0 10px 34px rgba(0,0,0,0.45);
+  transition:transform .25s var(--ease), background .25s var(--ease);
+}
+.video-poster:hover .video-poster__play{transform:translate(-50%,-50%) scale(1.08); background:var(--ember-2)}
+.video-poster__play svg{width:38%; height:38%; fill:#fff; margin-inline-start:8%}
+.video-poster__label{
+  position:absolute; inset-block-end:0; inset-inline:0; padding:26px 20px 16px;
+  background:linear-gradient(to top,rgba(0,0,0,.72),transparent);
+  color:#fff; font-weight:700; font-size:clamp(.9rem,1.6vw,1.02rem); text-align:center;
+}
 
 /* ---------- פורטלים חיים ---------- */
 .portals{padding:0 0 clamp(48px,7vw,84px); text-align:center}
@@ -198,7 +244,16 @@ footer{padding:34px 0; color:var(--ink-faint); font-size:.88rem}
 <section class="videosec">
   <div class="wrap">
     <p class="video-lead">בסרטון שלמטה אני מראה בדיוק איך זה עובד, ואיך זה מתלבש על קורס קיים בלי לשנות שיעור אחד בתוכן שלך.</p>
-    <div class="video-frame" id="videoFrame"></div>
+    <div class="video-frame">
+      <div id="videoPlayer"></div>
+      <button class="video-poster" id="videoPoster" type="button" aria-label="הפעלת הסרטון">
+        <img src="assets/campaign-vsl-poster.jpg" alt="הלל אקנין מציג פורטל לימודים דופמיני" width="1280" height="574" />
+        <span class="video-poster__play" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        <span class="video-poster__label">לחץ לצפייה · 8 דקות</span>
+      </button>
+    </div>
   </div>
 </section>
 
@@ -269,60 +324,155 @@ footer{padding:34px 0; color:var(--ink-faint); font-size:.88rem}
   /* =====================================================================
      הסרטון
      ---------------------------------------------------------------------
-     כרגע מוטמע קייס הסטאדי מהערוץ של הלל, אותו סרטון שיושב בדף הראשי:
-        "איך גורמים לתלמידים לסיים קורס דיגיטלי, קייס סטאדי מפורטל חי"
-     אם יש הקלטת לום אחרת שצריכה לרוץ כאן במקום, מדביקים את הקישור שלה
-     ב-LOOM_URL והוא גובר אוטומטית על היוטיוב. שתי הצורות עובדות:
-        https://www.loom.com/share/XXXXXXXX
-        https://www.loom.com/embed/XXXXXXXX
+     ההדגמה המלאה, מוטמעת כסרטון לא-רשום מהערוץ של הלל.
+     שני דברים חשובים כאן:
+     1. הנגן של יוטיוב לא נטען עם הדף אלא רק בלחיצה על הכרזה. עד אז זו
+        תמונה אחת של 40KB, כך שהדף נטען מהר גם למי שלא צופה.
+     2. `enablejsapi` מאפשר לדף לדעת כמה מהסרטון באמת נצפה. זה לא משמש
+        לסנן לידים — הלל חוזר לכולם — אלא כדי לדעת אם הסרטון עצמו עובד
+        או שאנשים נוטשים אותו באמצע בזמן שמשלמים על התנועה.
      ===================================================================== */
-  var LOOM_URL   = "";
-  var YOUTUBE_ID = "QdNjWsOehSA";
+  var YOUTUBE_ID = "MKozm893I30";
+  var PHONE      = "972549116092";
 
-  var PHONE = "972549116092";
+  var poster   = document.getElementById("videoPoster");
+  var player   = null;
+  var maxPct   = 0;     /* האחוז הגבוה ביותר שנצפה, עמיד לדילוגים אחורה */
+  var maxSecs  = 0;
+  var finished = false;
+  var ticker   = null;
 
-  var iframe = document.createElement("iframe");
-  iframe.src = LOOM_URL
-    ? LOOM_URL.replace("/share/", "/embed/")
-    : "https://www.youtube-nocookie.com/embed/" + YOUTUBE_ID + "?rel=0&modestbranding=1";
-  iframe.allowFullscreen = true;
-  iframe.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen");
-  iframe.setAttribute("loading", "lazy");
-  iframe.title = "פורטל לימודים דופמיני";
-  document.getElementById("videoFrame").appendChild(iframe);
+  function fallbackEmbed(){
+    /* רשת ביטחון: אם ה-API של יוטיוב לא נטען (חוסם פרסומות, רשת, כשל),
+       עדיין מציגים נגן רגיל. עדיף לאבד את המדידה מאשר את הצפייה. */
+    if (document.getElementById("videoFallbackFrame")) return;
+    var f = document.createElement("iframe");
+    f.id = "videoFallbackFrame";
+    f.src = "https://www.youtube-nocookie.com/embed/" + YOUTUBE_ID + "?rel=0&modestbranding=1&autoplay=1&playsinline=1";
+    f.allowFullscreen = true;
+    f.title = "פורטל לימודים דופמיני";
+    f.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen");
+    var holder = document.getElementById("videoPlayer");
+    if (holder && holder.parentNode) holder.parentNode.appendChild(f);
+  }
+
+  function tick(){
+    if (!player || !player.getDuration) return;
+    var d = player.getDuration();
+    if (!d) return;
+    var t = player.getCurrentTime() || 0;
+    if (t > maxSecs) maxSecs = t;
+    var pct = t / d;
+    if (pct > maxPct) maxPct = pct;
+    if (maxPct >= 0.97) finished = true;
+  }
+
+  function startPlayer(){
+    if (!window.YT || !window.YT.Player) { fallbackEmbed(); return; }
+    player = new YT.Player("videoPlayer", {
+      videoId: YOUTUBE_ID,
+      playerVars: { rel:0, modestbranding:1, playsinline:1, hl:"he", autoplay:1 },
+      events: {
+        onReady: function(){ if (player.playVideo) player.playVideo(); },
+        onStateChange: function(e){
+          if (e.data === YT.PlayerState.PLAYING && !ticker) ticker = setInterval(tick, 1000);
+          if (e.data === YT.PlayerState.ENDED) { finished = true; maxPct = 1; }
+        },
+        onError: function(){ fallbackEmbed(); }
+      }
+    });
+  }
+
+  if (poster) poster.addEventListener("click", function(){
+    poster.classList.add("is-hidden");
+    if (window.YT && window.YT.Player) { startPlayer(); return; }
+    window.onYouTubeIframeAPIReady = startPlayer;
+    var s = document.createElement("script");
+    s.src = "https://www.youtube.com/iframe_api";
+    s.onerror = fallbackEmbed;
+    document.head.appendChild(s);
+    /* אם ה-API לא ענה תוך 8 שניות, לא משאירים מסך שחור */
+    setTimeout(function(){ if (!player) fallbackEmbed(); }, 8000);
+  });
 
   /* =====================================================================
      שליחת הטופס
      ---------------------------------------------------------------------
-     פותח וואטסאפ עם הפרטים מוכנים, כדי שהדף יעבוד מהרגע הראשון בלי backend.
-     ה-utm_content נוסע יחד עם הפרטים, כדי שיהיה ידוע איזו מודעה הביאה את הליד.
+     הליד נשלח לשרת (`/api/lead`), שם הוא נשמר ומשם יוצאת ההתראה להלל.
+     אם השרת נכשל מכל סיבה — הגולש לא מקבל מסך תודה מזויף. במקום זה נפתח
+     וואטסאפ עם הפרטים מוכנים, כדי שהפנייה תגיע בכל מקרה. ליד לא הולך לאיבוד.
      ===================================================================== */
-  var params   = new URLSearchParams(location.search);
+  var params = new URLSearchParams(location.search);
+  var utm = {};
+  params.forEach(function(v,k){ if (/^utm_/i.test(k) || k === "fbclid" || k === "gclid") utm[k] = v; });
   var adSource = params.get("utm_content") || params.get("utm_campaign") || "לא ידוע";
 
-  document.getElementById("submitBtn").addEventListener("click", function(){
-    var name     = (document.getElementById("f-name").value     || "").trim();
-    var phone    = (document.getElementById("f-phone").value    || "").trim();
-    var biz      = (document.getElementById("f-biz").value      || "").trim();
-    var students = (document.getElementById("f-students").value || "").trim();
-    var err      = document.getElementById("formErr");
+  var btn = document.getElementById("submitBtn");
+  var err = document.getElementById("formErr");
 
-    if (!name || !phone){
-      err.textContent = "צריך לפחות שם וטלפון כדי שאוכל לחזור אליך.";
-      return;
-    }
-    err.textContent = "";
-
-    if (window.fbq) fbq("track", "Lead");
-
+  function waFallback(name, phone, biz, students){
     var msg = "היי הלל, הגעתי מהדף."
             + "\nשם: " + name
             + "\nטלפון: " + phone
             + "\nשם העסק: " + (biz || "לא צוין")
             + "\nכמה תלמידים: " + (students || "לא צוין")
             + "\nמקור: " + adSource;
-
     window.open("https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+  }
+
+  function showThanks(){
+    var wrap = document.querySelector(".formwrap");
+    if (!wrap) return;
+    wrap.innerHTML =
+      '<p class="body" style="text-align:center;margin:0">' +
+      '<strong>קיבלתי. אחזור אליך.</strong><br>' +
+      'הפרטים שלך אצלי, ואני חוזר לכל מי שמשאיר. אין צורך לעשות שום דבר נוסף.' +
+      '</p>';
+  }
+
+  btn.addEventListener("click", function(){
+    var name     = (document.getElementById("f-name").value     || "").trim();
+    var phone    = (document.getElementById("f-phone").value    || "").trim();
+    var biz      = (document.getElementById("f-biz").value      || "").trim();
+    var students = (document.getElementById("f-students").value || "").trim();
+
+    if (!name || phone.replace(/\D/g,"").length < 9){
+      err.textContent = "צריך שם וטלפון תקין כדי שאוכל לחזור אליך.";
+      return;
+    }
+    err.textContent = "";
+    btn.disabled = true;
+    btn.textContent = "שולח…";
+
+    tick(); /* תופסים את מצב הצפייה העדכני ברגע השליחה */
+
+    var payload = {
+      name: name, phone: phone, business: biz, students: students,
+      adSource: adSource, utm: utm, page: "campaign",
+      referrer: document.referrer || "",
+      videoWatchedPct: Math.round(maxPct * 100),
+      videoSeconds: Math.round(maxSecs),
+      videoCompleted: finished
+    };
+
+    fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(new Error("http_" + r.status)); })
+    .then(function(){
+      if (window.fbq) fbq("track", "Lead");
+      showThanks();
+    })
+    .catch(function(){
+      /* השרת לא קיבל את הליד. לא מציגים תודה — פותחים וואטסאפ ואומרים את האמת. */
+      if (window.fbq) fbq("track", "Lead");
+      waFallback(name, phone, biz, students);
+      btn.disabled = false;
+      btn.textContent = "שלח ואחזור אליך";
+      err.textContent = "פתחתי לך וואטסאפ עם הפרטים. שלח לי אותם שם ואחזור אליך.";
+    });
   });
 })();
 </script>
