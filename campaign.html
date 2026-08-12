@@ -302,11 +302,10 @@ footer{padding:34px 0; color:var(--ink-faint); font-size:.88rem}
     <p class="sub">משאיר פרטים, ואני חוזר אליך.</p>
 
     <div class="formwrap">
+      <!-- שם וטלפון בלבד. כל שדה נוסף גובה אחוזי המרה, והשאר ממילא נברר בשיחה. -->
       <div class="field"><label for="f-name">שם מלא</label><input id="f-name" type="text" autocomplete="name" /></div>
       <div class="field"><label for="f-phone">טלפון</label><input id="f-phone" type="tel" inputmode="tel" autocomplete="tel" /></div>
-      <div class="field"><label for="f-biz">שם העסק</label><input id="f-biz" type="text" autocomplete="organization" /></div>
-      <div class="field"><label for="f-students">כמה תלמידים יש לך בקורסים הדיגיטליים</label><input id="f-students" type="text" inputmode="numeric" /></div>
-      <button class="btn" type="button" id="submitBtn">שלח ואחזור אליך</button>
+      <button class="btn" type="button" id="submitBtn">אני רוצה לקבוע פגישה</button>
       <p class="err" id="formErr"></p>
       <p class="note">הפרטים נשלחים אליי בלבד. אין דיוור ואין רשימת תפוצה.</p>
     </div>
@@ -410,12 +409,10 @@ footer{padding:34px 0; color:var(--ink-faint); font-size:.88rem}
   var btn = document.getElementById("submitBtn");
   var err = document.getElementById("formErr");
 
-  function waFallback(name, phone, biz, students){
+  function waFallback(name, phone){
     var msg = "היי הלל, הגעתי מהדף."
             + "\nשם: " + name
             + "\nטלפון: " + phone
-            + "\nשם העסק: " + (biz || "לא צוין")
-            + "\nכמה תלמידים: " + (students || "לא צוין")
             + "\nמקור: " + adSource;
     window.open("https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
   }
@@ -431,10 +428,8 @@ footer{padding:34px 0; color:var(--ink-faint); font-size:.88rem}
   }
 
   btn.addEventListener("click", function(){
-    var name     = (document.getElementById("f-name").value     || "").trim();
-    var phone    = (document.getElementById("f-phone").value    || "").trim();
-    var biz      = (document.getElementById("f-biz").value      || "").trim();
-    var students = (document.getElementById("f-students").value || "").trim();
+    var name  = (document.getElementById("f-name").value  || "").trim();
+    var phone = (document.getElementById("f-phone").value || "").trim();
 
     if (!name || phone.replace(/\D/g,"").length < 9){
       err.textContent = "צריך שם וטלפון תקין כדי שאוכל לחזור אליך.";
@@ -447,7 +442,7 @@ footer{padding:34px 0; color:var(--ink-faint); font-size:.88rem}
     tick(); /* תופסים את מצב הצפייה העדכני ברגע השליחה */
 
     var payload = {
-      name: name, phone: phone, business: biz, students: students,
+      name: name, phone: phone,
       adSource: adSource, utm: utm, page: "campaign",
       referrer: document.referrer || "",
       videoWatchedPct: Math.round(maxPct * 100),
@@ -468,9 +463,9 @@ footer{padding:34px 0; color:var(--ink-faint); font-size:.88rem}
     .catch(function(){
       /* השרת לא קיבל את הליד. לא מציגים תודה — פותחים וואטסאפ ואומרים את האמת. */
       if (window.fbq) fbq("track", "Lead");
-      waFallback(name, phone, biz, students);
+      waFallback(name, phone);
       btn.disabled = false;
-      btn.textContent = "שלח ואחזור אליך";
+      btn.textContent = "אני רוצה לקבוע פגישה";
       err.textContent = "פתחתי לך וואטסאפ עם הפרטים. שלח לי אותם שם ואחזור אליך.";
     });
   });
