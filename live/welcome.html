@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>נכנסת · הדגמה חיה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#F4EFE6; --ink:#14110D; --ink-soft:#4A4339; --ink-faint:#6E6557;
+    --ember:#C2410C; --ember-2:#E2570F; --forest:#1E4D3B; --gold:#B7892E;
+    --rule:rgba(20,17,13,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"Rubik",system-ui,sans-serif; background:var(--paper); color:var(--ink);
+    min-height:100vh; display:grid; place-items:center; padding:24px; line-height:1.6;
+  }
+  .card{
+    max-width:460px; width:100%; background:#fff; border:1.5px solid var(--ink);
+    box-shadow:7px 7px 0 var(--ember); padding:36px 30px; text-align:center;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:.72rem;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--ember); margin-bottom:18px;
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--forest);}
+  h1{font-size:1.5rem; font-weight:800; margin-bottom:10px;}
+  p{color:var(--ink-soft); font-size:.95rem; margin-bottom:6px;}
+  .email{font-weight:800; color:var(--ink);}
+  .meta{margin-top:22px; padding-top:18px; border-top:1px dashed var(--rule); font-size:.8rem; color:var(--ink-faint); text-align:right;}
+  .meta div{margin-bottom:4px;}
+  .err{color:#8A2C06; font-weight:700;}
+  .note{margin-top:22px; font-size:.82rem; color:var(--ink-faint);}
+</style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="badge"><span class="dot"></span> בודק מול Supabase, בזמן אמת…</div>
+    <h1 id="title">רגע…</h1>
+    <p id="body">מאמת את הקישור מול השרת של סופהבייס.</p>
+    <div class="meta" id="meta" hidden></div>
+    <p class="note">זו בדיוק המסך שהתלמיד שלך רואה כשהוא נכנס מהודעת וואטסאפ בלי סיסמה. אין כאן שום דבר מוקלט.</p>
+  </div>
+
+<script>
+(function () {
+  var SUPABASE_URL = "https://vrqtelhjuydocxcletel.supabase.co";
+  // anon key — public by design, this is the key meant to sit in browser code.
+  var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZycXRlbGhqdXlkb2N4Y2xldGVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTgxNDcsImV4cCI6MjEwMjA5NDE0N30.nj9TRQeDVoTgEmjqe6NR3UjW8FvDQmwVwTWg-Bb9SRA";
+
+  var title = document.getElementById('title');
+  var body = document.getElementById('body');
+  var meta = document.getElementById('meta');
+
+  function param(hash, key) {
+    var m = new RegExp('[#&]' + key + '=([^&]*)').exec(hash);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  var hash = window.location.hash || '';
+  var accessToken = param(hash, 'access_token');
+
+  if (!accessToken) {
+    title.textContent = 'אין קישור תקף';
+    body.innerHTML = '<span class="err">הקישור הזה נפתח בלי הפרמטרים הנדרשים.</span> חזור לדף הפיצ׳רים החיים ולחץ שוב על הכפתור.';
+    return;
+  }
+
+  // Real server round trip — asks Supabase's own Auth API to confirm this access_token
+  // is genuinely valid right now, and returns the real user record behind it.
+  fetch(SUPABASE_URL + '/auth/v1/user', {
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + accessToken }
+  })
+    .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, json: j }; }); })
+    .then(function (res) {
+      if (!res.ok || !res.json || !res.json.email) {
+        title.textContent = 'הקישור הזה כבר נוצל או פג';
+        body.textContent = 'קישורי כניסה הם חד-פעמיים, בדיוק כמו שצריך להיות. חזור ולחץ שוב על הכפתור.';
+        return;
+      }
+      var u = res.json;
+      title.textContent = 'מחובר ✓';
+      body.innerHTML = 'נכנסת בתור <span class="email">' + u.email + '</span> — בלי סיסמה, בלחיצה אחת מהוואטסאפ.';
+      meta.hidden = false;
+      meta.innerHTML =
+        '<div>מזהה משתמש: ' + u.id + '</div>' +
+        '<div>אומת מול: auth/v1/user (קריאת שרת אמיתית)</div>' +
+        '<div>שעת האימות: ' + new Date().toLocaleString('he-IL') + '</div>';
+    })
+    .catch(function () {
+      title.textContent = 'שגיאת רשת';
+      body.textContent = 'לא הצלחנו להגיע לשרת של סופהבייס כרגע. נסה שוב בעוד רגע.';
+    });
+})();
+</script>
+</body>
+</html>

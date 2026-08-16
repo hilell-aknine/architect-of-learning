@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>פיצ'רים חיים · בניית פורטלים מקצועיים</title>
+<meta name="description" content="כלי מכירה פנימי — כל פיצ'ר כאן רץ באמת, ברגע שלוחצים עליו." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper:#F4EFE6; --paper-2:#ECE5D7; --paper-soft:#E6DDCB;
+    --ink:#14110D; --ink-2:#2A2520; --ink-soft:#4A4339; --ink-faint:#6E6557;
+    --rule:rgba(20,17,13,0.14); --rule-soft:rgba(20,17,13,0.08);
+    --ember:#C2410C; --ember-2:#E2570F; --ember-deep:#8A2C06;
+    --forest:#1E4D3B; --gold:#B7892E;
+    --maxw:1280px; --pad:clamp(20px,5vw,72px);
+    --f-mast:"Rubik",system-ui,sans-serif; --f-body:"Rubik",system-ui,sans-serif;
+    --ease:cubic-bezier(0.22,1,0.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  [hidden]{display:none !important;}
+  html{-webkit-text-size-adjust:100%; overflow-x:clip;}
+  body{
+    font-family:var(--f-body); background:var(--paper); color:var(--ink);
+    line-height:1.6; overflow-x:clip; -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .container{width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:var(--pad);}
+
+  /* ============ GATE ============ */
+  #gate{
+    position:fixed; inset:0; z-index:500; background:var(--ink); color:var(--paper);
+    display:grid; place-items:center; padding:24px;
+  }
+  #gate .box{max-width:420px; width:100%; text-align:center;}
+  #gate h1{font-family:var(--f-mast); font-weight:900; font-size:1.4rem; margin-bottom:10px;}
+  #gate p{color:#C9C2B4; font-size:.9rem; margin-bottom:22px;}
+  #gate input{
+    width:100%; padding:14px 16px; font-size:1rem; font-family:var(--f-body);
+    border:1.5px solid #4A4339; background:#1E1A14; color:var(--paper); margin-bottom:12px;
+    text-align:center; letter-spacing:.04em;
+  }
+  #gate input:focus{outline:none; border-color:var(--ember);}
+  #gate button{
+    width:100%; padding:14px; font-weight:700; font-size:.95rem; font-family:var(--f-body);
+    background:var(--ember); color:#fff; border:none; cursor:pointer; transition:background .2s;
+  }
+  #gate button:hover{background:var(--ember-2);}
+  #gate .err{color:#E2570F; font-size:.82rem; margin-top:10px; min-height:1.2em;}
+
+  /* ============ HEADER ============ */
+  header.top{padding-block:32px 20px; border-bottom:1px solid var(--rule);}
+  .brand{font-family:var(--f-mast); font-weight:900; font-size:1.1rem; letter-spacing:-.01em;}
+  .brand span{color:var(--ember);}
+  .top__row{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-top:18px;}
+  .kicker{
+    display:inline-flex; align-items:center; gap:10px; font-weight:700; font-size:.72rem;
+    letter-spacing:.24em; text-transform:uppercase; color:var(--ember); margin-bottom:12px;
+  }
+  .kicker::before{content:""; width:26px; height:1.5px; background:var(--ember);}
+  h1.hero{font-family:var(--f-mast); font-weight:900; font-size:clamp(1.7rem,4vw,2.7rem); line-height:1.08; letter-spacing:-.02em; max-width:820px;}
+  h1.hero em{font-style:normal; color:var(--ember);}
+  .lede{max-width:560px; color:var(--ink-soft); font-size:1rem; margin-top:14px;}
+  .liveflag{
+    display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:.78rem;
+    color:var(--forest); background:rgba(30,77,59,0.08); border:1px solid rgba(30,77,59,0.25);
+    padding:8px 14px; flex-shrink:0;
+  }
+  .liveflag .dot{width:8px; height:8px; border-radius:50%; background:var(--forest); animation:blip 1.8s var(--ease) infinite;}
+  @keyframes blip{0%,100%{box-shadow:0 0 0 0 rgba(30,77,59,.5);} 70%{box-shadow:0 0 0 8px rgba(30,77,59,0);}}
+
+  /* ============ GRID ============ */
+  main{padding-block:36px 80px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(400px,1fr)); gap:22px;}
+  .card{
+    background:#fff; border:1.5px solid var(--ink); padding:26px 24px; position:relative;
+    box-shadow:6px 6px 0 var(--rule-soft); transition:box-shadow .25s var(--ease), transform .25s var(--ease);
+  }
+  .card:hover{box-shadow:6px 6px 0 rgba(194,65,12,0.35); transform:translate(-1px,-1px);}
+  .card__num{
+    font-family:var(--f-mast); font-weight:900; font-size:.72rem; color:var(--gold);
+    letter-spacing:.1em; margin-bottom:8px;
+  }
+  .card__title{font-family:var(--f-mast); font-weight:800; font-size:1.18rem; margin-bottom:8px; line-height:1.3;}
+  .card__where{font-size:.8rem; color:var(--ink-faint); margin-bottom:14px; line-height:1.5;}
+  .card__where code{background:var(--paper-2); padding:1px 6px; font-size:.76rem; border-radius:2px;}
+  .card__stage{
+    background:var(--paper-2); border:1px dashed var(--rule); padding:16px; margin-bottom:16px;
+    min-height:64px; font-size:.88rem; color:var(--ink-soft);
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--f-body); font-weight:700;
+    font-size:.88rem; padding:12px 20px; border:1.5px solid var(--ink); background:var(--ink);
+    color:var(--paper); cursor:pointer; transition:all .2s var(--ease); width:100%; justify-content:center;
+  }
+  .btn:hover{background:var(--ember); border-color:var(--ember); transform:translate(1px,1px);}
+  .btn:disabled{opacity:.55; cursor:wait;}
+  .btn--line{background:transparent; color:var(--ink);}
+  .btn--line:hover{background:var(--ink); color:var(--paper);}
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn-row .btn{flex:1; min-width:150px;}
+
+  .ok{color:var(--forest); font-weight:700;}
+  .bad{color:var(--ember-deep); font-weight:700;}
+  .mono{font-family:ui-monospace,Consolas,monospace; font-size:.78rem; word-break:break-all; background:var(--paper-2); padding:8px 10px; display:block; margin-top:8px; white-space:pre-wrap;}
+  .spin{display:inline-block; width:13px; height:13px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* --- station map (card 3) --- */
+  .stations{display:flex; gap:6px; margin-bottom:14px;}
+  .st{
+    flex:1; text-align:center; padding:10px 4px; font-size:.72rem; font-weight:700;
+    border:1.5px solid var(--rule); background:var(--paper); color:var(--ink-faint);
+    transition:all .35s var(--ease); position:relative;
+  }
+  .st.active{border-color:var(--ember); color:var(--ember); background:#fff; box-shadow:0 0 0 3px rgba(194,65,12,0.12);}
+  .st.done{border-color:var(--forest); color:#fff; background:var(--forest);}
+  .st.locked::after{content:"🔒"; display:block; font-size:.9rem; margin-top:2px;}
+
+  /* --- progress + notebook (card 4) --- */
+  .lesson-row{display:flex; align-items:center; gap:10px; padding:7px 0; font-size:.86rem; border-bottom:1px solid var(--rule-soft);}
+  .lesson-row input{width:17px; height:17px; accent-color:var(--forest); cursor:pointer;}
+  .lesson-row.checked span{text-decoration:line-through; color:var(--ink-faint);}
+  .pbar{height:8px; background:var(--paper-2); margin:14px 0 6px; overflow:hidden; border:1px solid var(--rule);}
+  .pbar__fill{height:100%; width:0%; background:linear-gradient(90deg,var(--ember-deep),var(--ember)); transition:width .5s var(--ease);}
+  .pbar__label{font-size:.76rem; color:var(--ink-faint); text-align:left; margin-bottom:10px;}
+  .notebook{background:#fffbf0; border:1px solid var(--gold); padding:10px 12px; font-size:.78rem; color:var(--ink-soft); max-height:110px; overflow-y:auto;}
+  .notebook div{padding:2px 0; border-bottom:1px dashed rgba(183,137,46,.25);}
+  .notebook div:last-child{border-bottom:none;}
+
+  /* --- message queue (card 5) --- */
+  .queue{display:flex; flex-direction:column; gap:6px; margin-bottom:14px;}
+  .qrow{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 10px; background:var(--paper-2); font-size:.8rem;}
+  .qrow__time{color:var(--ink-faint); font-family:ui-monospace,monospace; font-size:.72rem;}
+  .chip{font-weight:700; font-size:.68rem; letter-spacing:.06em; padding:3px 9px; text-transform:uppercase; border-radius:2px;}
+  .chip--pending{background:rgba(183,137,46,.16); color:var(--gold);}
+  .chip--sent{background:rgba(30,77,59,.14); color:var(--forest);}
+  .chip--failed{background:rgba(194,65,12,.14); color:var(--ember-deep);}
+  .chip--skipped{background:rgba(20,17,13,.08); color:var(--ink-faint);}
+
+  footer{padding-block:26px; border-top:1px solid var(--rule); color:var(--ink-faint); font-size:.8rem; text-align:center;}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <h1>פיצ'רים חיים</h1>
+    <p>כלי מכירה פנימי. הקלד את הקוד כדי להיכנס (נשמר בדפדפן הזה, לא תצטרך להקליד שוב).</p>
+    <input type="password" id="gateInput" placeholder="קוד גישה" autocomplete="off" />
+    <button id="gateBtn">כניסה</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="container">
+    <div class="brand">בניית פורטלים מקצועיים <span>· פיצ'רים חיים</span></div>
+    <div class="top__row">
+      <div>
+        <div class="kicker">לא הבטחה — הדגמה</div>
+        <h1 class="hero">כל כפתור כאן <em>עושה משהו אמיתי</em>,<br>ברגע שלוחצים עליו</h1>
+        <p class="lede">שישה פיצ'רים שרצים היום בפורטלים אמיתיים של לקוחות. לא סקרינשוט, לא סרטון מוקלט — כל כפתור מפעיל את המנגנון עצמו, עכשיו, מול העיניים שלך.</p>
+      </div>
+      <div class="liveflag"><span class="dot"></span> כל הפעולות כאן חיות</div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="grid">
+
+    <!-- ============ CARD 1 — magic link WhatsApp login ============ -->
+    <section class="card">
+      <div class="card__num">01 · כניסה בלי סיסמה</div>
+      <div class="card__title">כניסה בלחיצה אחת מהודעת וואטסאפ</div>
+      <div class="card__where">רץ היום אצל לקוח אמיתי: <code>welcome-learner</code>, מייצר קישור כניסה אמיתי דרך Supabase ושולח אותו בוואטסאפ. אין סיסמה למשתמש בכלל.</div>
+      <div class="card__stage" id="stage1">לחץ על הכפתור — תוך שנייה תקבל הודעת וואטסאפ אמיתית עם קישור כניסה אמיתי.</div>
+      <button class="btn" id="btn1">📲 שלח לי קישור כניסה עכשיו</button>
+    </section>
+
+    <!-- ============ CARD 2 — RLS / escalation protection ============ -->
+    <section class="card">
+      <div class="card__num">02 · אבטחה</div>
+      <div class="card__title">הגנת הסלמה בזמן אמת (RLS)</div>
+      <div class="card__where">כל טבלה ב-Postgres נעולה ב-Row Level Security. הכפתורים כאן באמת מנסים לגנוב מידע כאורח אנונימי — ותראה את הדחייה האמיתית מהשרת.</div>
+      <div class="card__stage" id="stage2">לחץ ותראה ניסיון פריצה אמיתי נחסם על ידי המסד עצמו, לא על ידי קוד קליינט.</div>
+      <div class="btn-row">
+        <button class="btn btn--line" id="btn2a">🕵️ נסה לקרוא לידים כאורח</button>
+        <button class="btn btn--line" id="btn2b">🔓 נסה להתחזות לאדמין</button>
+      </div>
+    </section>
+
+    <!-- ============ CARD 3 — day-lock journey map ============ -->
+    <section class="card">
+      <div class="card__num">03 · נעילת ימים</div>
+      <div class="card__title">מפת מסלול עם ימים נעולים ופתוחים</div>
+      <div class="card__where">מנגנון שנבנה עבור הפרויקט הבא בתור: אכיפה אמיתית בצד שרת (לא <code>localStorage</code>), כל יום נפתח רק אחרי שהקודם הושלם.</div>
+      <div class="stations" id="stations"></div>
+      <div class="btn-row">
+        <button class="btn" id="btn3">✅ השלם את היום הנוכחי</button>
+        <button class="btn btn--line" id="btn3reset">↺ אפס</button>
+      </div>
+    </section>
+
+    <!-- ============ CARD 4 — progress + notebook ============ -->
+    <section class="card">
+      <div class="card__num">04 · התמדה</div>
+      <div class="card__title">מעקב התקדמות + מחברת אישית</div>
+      <div class="card__where">כל שיעור שהתלמיד מסמן נכתב אוטומטית למחברת האישית שלו עם חותמת זמן — כדי שיראה את עצמו מתקדם.</div>
+      <div id="lessons"></div>
+      <div class="pbar"><div class="pbar__fill" id="pbarFill"></div></div>
+      <div class="pbar__label" id="pbarLabel">0 מתוך 5 שיעורים</div>
+      <div class="notebook" id="notebook"><div style="color:var(--ink-faint)">המחברת האישית שלך תתמלא כאן…</div></div>
+    </section>
+
+    <!-- ============ CARD 5 — outbound message queue ============ -->
+    <section class="card">
+      <div class="card__num">05 · תזכורות</div>
+      <div class="card__title">תור הודעות יוצאות עם תזמון וסטטוסים</div>
+      <div class="card__where">בדיוק המנגנון שרץ היום כל 2 דקות אצל לקוחות: <code>automation_event</code> עם <code>scheduled_for</code>, ומכונת מצבים pending → sent / failed.</div>
+      <div class="queue" id="queue"></div>
+      <button class="btn" id="btn5">⏱️ הרץ מחזור עכשיו</button>
+    </section>
+
+    <!-- ============ CARD 6 — real admin dashboard round trip ============ -->
+    <section class="card">
+      <div class="card__num">06 · ניהול</div>
+      <div class="card__title">לוח בקרה אמיתי מול Supabase חי</div>
+      <div class="card__where">לא תמונת מסך. כתיבה אמיתית למסד production, קריאה חוזרת, ומחיקה — הכל מול אותה טבלה שמזינה את דף הנחיתה האמיתי שלנו.</div>
+      <div class="card__stage" id="stage6">לחץ ותראה רשומה אמיתית נכתבת, נקראת בחזרה, ונמחקת — עם זמני תגובה אמיתיים.</div>
+      <button class="btn" id="btn6">🗄️ כתוב + קרא + נקה מול המסד עכשיו</button>
+    </section>
+
+  </div>
+</main>
+
+<footer>כלי מכירה פנימי · בניית פורטלים מקצועיים · לא מיועד לשיתוף ציבורי</footer>
+
+<script>
+(function(){
+
+  /* ============ GATE ============ */
+  var GK = 'liveFeaturesPasscode';
+  var gate = document.getElementById('gate');
+  var gateInput = document.getElementById('gateInput');
+  var gateBtn = document.getElementById('gateBtn');
+  var gateErr = document.getElementById('gateErr');
+
+  function getPasscode(){ return localStorage.getItem(GK) || ''; }
+  function unlockGate(){ gate.remove(); }
+  if (getPasscode()) unlockGate();
+
+  gateBtn.addEventListener('click', function(){
+    var v = gateInput.value.trim();
+    if (!v){ gateErr.textContent = 'הקלד קוד גישה'; return; }
+    localStorage.setItem(GK, v);
+    gateErr.textContent = '';
+    unlockGate();
+  });
+  gateInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') gateBtn.click(); });
+
+  function passHeader(){ return { 'x-live-passcode': getPasscode() }; }
+
+  function badPasscodeHint(el){
+    el.innerHTML = '<span class="bad">קוד הגישה שגוי או שהשתנה.</span> <a href="#" id="fixPass" style="text-decoration:underline;">לחץ כדי להקליד קוד מחדש</a>';
+    var a = document.getElementById('fixPass');
+    if (a) a.addEventListener('click', function(e){ e.preventDefault(); localStorage.removeItem(GK); location.reload(); });
+  }
+
+  /* ============ CARD 1 — magic link ============ */
+  var btn1 = document.getElementById('btn1');
+  var stage1 = document.getElementById('stage1');
+  btn1.addEventListener('click', function(){
+    btn1.disabled = true;
+    btn1.innerHTML = '<span class="spin"></span> שולח בקשה אמיתית ל-Supabase…';
+    stage1.textContent = 'מייצר magic link דרך auth/v1/admin/generate_link…';
+    fetch('/api/live-magic-link', { method:'POST', headers: passHeader() })
+      .then(function(r){ return r.json().then(function(j){ return {status:r.status, json:j}; }); })
+      .then(function(res){
+        btn1.disabled = false;
+        btn1.textContent = '📲 שלח לי קישור כניסה עכשיו';
+        if (res.status === 401){ badPasscodeHint(stage1); return; }
+        if (!res.json.ok){
+          stage1.innerHTML = '<span class="bad">נכשל:</span> <span class="mono">' + JSON.stringify(res.json).slice(0,300) + '</span>';
+          return;
+        }
+        var waLine = res.json.sent
+          ? '<span class="ok">✓ נשלח בוואטסאפ אמיתי ל-972549116092. תבדוק את הטלפון עכשיו.</span>'
+          : '<span class="bad">הוואטסאפ לא נשלח (' + (res.json.sendError||'') + ')</span> — אבל הקישור עצמו אמיתי, פתח אותו ישירות:';
+        stage1.innerHTML = waLine + '<a class="mono" href="' + res.json.link + '" target="_blank" style="display:block;color:var(--ember);text-decoration:underline;">' + res.json.link + '</a>';
+      })
+      .catch(function(e){
+        btn1.disabled = false;
+        btn1.textContent = '📲 שלח לי קישור כניסה עכשיו';
+        stage1.innerHTML = '<span class="bad">שגיאת רשת:</span> ' + e.message;
+      });
+  });
+
+  /* ============ CARD 2 — RLS live attack ============ */
+  var SB_URL = 'https://vrqtelhjuydocxcletel.supabase.co';
+  var SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZycXRlbGhqdXlkb2N4Y2xldGVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTgxNDcsImV4cCI6MjEwMjA5NDE0N30.nj9TRQeDVoTgEmjqe6NR3UjW8FvDQmwVwTWg-Bb9SRA';
+  var stage2 = document.getElementById('stage2');
+
+  document.getElementById('btn2a').addEventListener('click', function(){
+    stage2.textContent = 'שולח בקשת SELECT אמיתית עם מפתח anon בלבד…';
+    fetch(SB_URL + '/rest/v1/campaign_leads?select=*&limit=5', { headers:{ apikey:SB_ANON, Authorization:'Bearer '+SB_ANON } })
+      .then(function(r){ return r.json().then(function(j){ return {status:r.status, json:j}; }); })
+      .then(function(res){
+        stage2.innerHTML = (res.status >= 400 ? '<span class="ok">✓ נחסם על ידי המסד (קוד '+res.status+')</span>' : '<span class="bad">⚠ עבר — יש לבדוק את המדיניות</span>')
+          + '<span class="mono">' + JSON.stringify(res.json) + '</span>';
+      })
+      .catch(function(e){ stage2.innerHTML = '<span class="bad">שגיאת רשת:</span> '+e.message; });
+  });
+
+  document.getElementById('btn2b').addEventListener('click', function(){
+    stage2.textContent = 'שולח בקשת admin/users אמיתית עם מפתח anon בלבד…';
+    fetch(SB_URL + '/auth/v1/admin/users', { headers:{ apikey:SB_ANON, Authorization:'Bearer '+SB_ANON } })
+      .then(function(r){ return r.json().then(function(j){ return {status:r.status, json:j}; }); })
+      .then(function(res){
+        stage2.innerHTML = (res.status >= 400 ? '<span class="ok">✓ נחסם על ידי שכבת ה-Auth (קוד '+res.status+')</span>' : '<span class="bad">⚠ עבר — יש לבדוק</span>')
+          + '<span class="mono">' + JSON.stringify(res.json) + '</span>';
+      })
+      .catch(function(e){ stage2.innerHTML = '<span class="bad">שגיאת רשת:</span> '+e.message; });
+  });
+
+  /* ============ CARD 3 — station map ============ */
+  var stationsEl = document.getElementById('stations');
+  var stationState = [0,0,0,0,0,0]; // 0 locked, 1 active, 2 done
+  stationState[0] = 1;
+  function renderStations(){
+    stationsEl.innerHTML = '';
+    stationState.forEach(function(s, i){
+      var d = document.createElement('div');
+      d.className = 'st' + (s===1?' active':'') + (s===2?' done':'') + (s===0?' locked':'');
+      d.textContent = 'יום ' + (i+1);
+      stationsEl.appendChild(d);
+    });
+  }
+  renderStations();
+  document.getElementById('btn3').addEventListener('click', function(){
+    var activeIdx = stationState.indexOf(1);
+    if (activeIdx === -1) return;
+    stationState[activeIdx] = 2;
+    if (activeIdx + 1 < stationState.length) stationState[activeIdx+1] = 1;
+    renderStations();
+  });
+  document.getElementById('btn3reset').addEventListener('click', function(){
+    stationState = [1,0,0,0,0,0];
+    renderStations();
+  });
+
+  /* ============ CARD 4 — progress + notebook ============ */
+  var lessonNames = ['פתיחה ומיפוי מטרה','המסגרת המרכזית','תרגול מודרך','יישום על המקרה שלך','סיכום ושלב הבא'];
+  var lessonsEl = document.getElementById('lessons');
+  var notebookEl = document.getElementById('notebook');
+  var pbarFill = document.getElementById('pbarFill');
+  var pbarLabel = document.getElementById('pbarLabel');
+  lessonNames.forEach(function(name, i){
+    var row = document.createElement('label');
+    row.className = 'lesson-row';
+    row.innerHTML = '<input type="checkbox" data-i="'+i+'"><span>'+name+'</span>';
+    lessonsEl.appendChild(row);
+  });
+  function updateProgress(){
+    var boxes = lessonsEl.querySelectorAll('input');
+    var checked = 0;
+    boxes.forEach(function(b){ if (b.checked) checked++; b.closest('.lesson-row').classList.toggle('checked', b.checked); });
+    pbarFill.style.width = (checked / boxes.length * 100) + '%';
+    pbarLabel.textContent = checked + ' מתוך ' + boxes.length + ' שיעורים';
+  }
+  lessonsEl.addEventListener('change', function(e){
+    if (e.target.tagName !== 'INPUT') return;
+    updateProgress();
+    if (e.target.checked){
+      var t = new Date().toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
+      var entry = document.createElement('div');
+      entry.textContent = '✓ השלמת: "' + lessonNames[e.target.dataset.i] + '" — ' + t;
+      if (notebookEl.children.length === 1 && notebookEl.children[0].style.color) notebookEl.innerHTML = '';
+      notebookEl.prepend(entry);
+    }
+  });
+
+  /* ============ CARD 5 — message queue ============ */
+  var queueData = [
+    { to:'תלמיד א׳', time:'09:00', status:'pending', attempts:0 },
+    { to:'תלמיד ב׳', time:'09:02', status:'pending', attempts:0 },
+    { to:'תלמיד ג׳', time:'09:04', status:'pending', attempts:0 },
+    { to:'תלמיד ד׳', time:'09:06', status:'pending', attempts:1 },
+  ];
+  var chipText = { pending:'ממתין', sent:'נשלח', failed:'נכשל', skipped:'דולג' };
+  var queueEl = document.getElementById('queue');
+  function renderQueue(){
+    queueEl.innerHTML = '';
+    queueData.forEach(function(row){
+      var d = document.createElement('div');
+      d.className = 'qrow';
+      d.innerHTML = '<span>' + row.to + '</span><span class="qrow__time">' + row.time + (row.attempts?(' · ניסיון '+row.attempts):'') + '</span><span class="chip chip--'+row.status+'">'+chipText[row.status]+'</span>';
+      queueEl.appendChild(d);
+    });
+  }
+  renderQueue();
+  document.getElementById('btn5').addEventListener('click', function(btnEvt){
+    var btn = btnEvt.currentTarget;
+    btn.disabled = true;
+    var idx = 0;
+    var iv = setInterval(function(){
+      if (idx >= queueData.length){ clearInterval(iv); btn.disabled = false; return; }
+      var row = queueData[idx];
+      if (row.status === 'pending'){
+        if (row.attempts >= 1 && idx === 3){ row.status = 'failed'; row.attempts++; }
+        else { row.status = 'sent'; }
+      }
+      renderQueue();
+      idx++;
+    }, 380);
+  });
+
+  /* ============ CARD 6 — real DB round trip ============ */
+  var btn6 = document.getElementById('btn6');
+  var stage6 = document.getElementById('stage6');
+  btn6.addEventListener('click', function(){
+    btn6.disabled = true;
+    btn6.innerHTML = '<span class="spin"></span> כותב רשומה אמיתית…';
+    stage6.textContent = 'INSERT → SELECT → DELETE מול production, ממש עכשיו…';
+    fetch('/api/live-admin-demo', { method:'POST', headers: passHeader() })
+      .then(function(r){ return r.json().then(function(j){ return {status:r.status, json:j}; }); })
+      .then(function(res){
+        btn6.disabled = false;
+        btn6.textContent = '🗄️ כתוב + קרא + נקה מול המסד עכשיו';
+        if (res.status === 401){ badPasscodeHint(stage6); return; }
+        if (!res.json.ok){
+          stage6.innerHTML = '<span class="bad">נכשל:</span> <span class="mono">' + JSON.stringify(res.json).slice(0,300) + '</span>';
+          return;
+        }
+        var j = res.json;
+        stage6.innerHTML =
+          '<span class="ok">✓ נכתב, נקרא בחזרה, ונוקה</span>' +
+          '<div class="mono">מזהה: ' + j.insertedId + '\nנוצר ב: ' + new Date(j.insertedAt).toLocaleString('he-IL') +
+          '\nסה"כ לידים אמיתיים כרגע: ' + j.totalRealLeads +
+          '\nנוקה מהמסד: ' + (j.cleaned ? 'כן' : 'עדיין לא, בדיקה ידנית') +
+          '\nזמן כתיבה: ' + j.timingsMs.insert + 'ms · קריאה: ' + j.timingsMs.count + 'ms · מחיקה: ' + j.timingsMs.delete + 'ms' +
+          '\nסה"כ: ' + j.timingsMs.total + 'ms</div>';
+      })
+      .catch(function(e){
+        btn6.disabled = false;
+        btn6.textContent = '🗄️ כתוב + קרא + נקה מול המסד עכשיו';
+        stage6.innerHTML = '<span class="bad">שגיאת רשת:</span> ' + e.message;
+      });
+  });
+
+})();
+</script>
+</body>
+</html>
