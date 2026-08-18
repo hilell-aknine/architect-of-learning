@@ -79,6 +79,10 @@
   .camp-lead-row .nm{font-weight:700}
   .camp-lead-row .ph{color:var(--soft);font-size:13px}
   .camp-lead-row .wa{padding:6px 10px;font-size:13px}
+  .watch-tag{font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
+  .watch-tag.full{background:rgba(31,138,143,.15);color:var(--teal)}
+  .watch-tag.part{background:rgba(217,138,31,.15);color:var(--amber-d)}
+  .watch-tag.none{background:rgba(91,102,117,.12);color:var(--soft)}
   @media(max-width:680px){.camp-kpis{grid-template-columns:repeat(3,1fr)}.camp-lead-row{flex-wrap:wrap}}
 
   /* controls */
@@ -303,11 +307,16 @@ function renderCampaign(){
 
   if (campaignLeads.length){
     html += '<div class="camp-leads"><h3>לידים מדף הנחיתה של הקמפיין (' + campaignLeads.length + ')</h3>' +
-      campaignLeads.slice(0,10).map(l => `
+      campaignLeads.slice(0,10).map(l => {
+        const pct = l.video_completed ? 100 : (l.video_watched_pct||0);
+        const cls = l.video_completed || pct>=80 ? "full" : pct>0 ? "part" : "none";
+        const watchLabel = l.video_completed ? "✓ סיים לצפות" : pct>0 ? "צפה ב-"+pct+"%" : "לא צפה";
+        return `
         <div class="camp-lead-row">
-          <div><span class="nm">${l.name||"ללא שם"}</span> <span class="ph">· ${l.phone||""} · ${timeAgo(l.created_at)}</span></div>
+          <div><span class="nm">${l.name||"ללא שם"}</span> <span class="ph">· ${l.phone||""} · ${timeAgo(l.created_at)}</span> <span class="watch-tag ${cls}">${watchLabel}</span></div>
           <a class="wa" href="${campWaLink(l)}" target="_blank">💬 וואטסאפ</a>
-        </div>`).join("") +
+        </div>`;
+      }).join("") +
       '</div>';
   }
   body.innerHTML = html;

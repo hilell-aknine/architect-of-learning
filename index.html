@@ -1641,12 +1641,18 @@
         watchdog = setTimeout(failOpen, 10000);
       }
 
+      /* נחשף גלובלית כדי שטופס הליד (סקריפט נפרד למטה) ידע כמה בפועל נצפה,
+         לא רק אם/מתי נפתח - זו הדרך היחידה לדעת אם ליד באמת ראה את הסרטון. */
+      window.__vslProgress = { pct: 0, seconds: 0, completed: false };
+
       function tick() {
         if (!player || !player.getDuration) return;
         var d = player.getDuration();
         if (!d) return;
         var pct = player.getCurrentTime() / d;
         if (pct > maxPct) maxPct = pct;
+        window.__vslProgress.pct = maxPct;
+        window.__vslProgress.seconds = player.getCurrentTime();
         var shown = Math.min(100, Math.round((maxPct / UNLOCK_AT) * 100));
         if (fill && !unlocked) fill.style.width = shown + '%';
         if (note && !unlocked) {
@@ -1672,7 +1678,7 @@
               } else if (timer && e.data !== YT.PlayerState.BUFFERING) {
                 clearInterval(timer); timer = null;
               }
-              if (e.data === YT.PlayerState.ENDED) unlock();
+              if (e.data === YT.PlayerState.ENDED) { window.__vslProgress.completed = true; unlock(); }
             },
             onError: function () { failOpen(); }
           }
@@ -1714,10 +1720,16 @@
           if (phone.replace(/\D/g, '').length < 9) { phoneEl.focus(); return; }
           var btn = leadForm.querySelector('.lead__submit');
           if (btn) { btn.disabled = true; btn.style.opacity = '0.65'; btn.style.pointerEvents = 'none'; }
+          var vp = window.__vslProgress || { pct: 0, seconds: 0, completed: false };
           fetch('/api/lead', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: name, phone: phone, source: 'landing-portal' })
+            body: JSON.stringify({
+              name: name, phone: phone, source: 'landing-portal',
+              videoWatchedPct: Math.round(vp.pct * 100),
+              videoSeconds: vp.seconds,
+              videoCompleted: vp.completed
+            })
           }).then(function (res) {
             if (res.ok) {
               /* real conversion → dedicated thank-you page (fires the Meta Lead pixel event there) */
