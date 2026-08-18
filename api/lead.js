@@ -11,7 +11,7 @@
 // Never hardcode a key or token here, and never fall back to a default token.
 //
 //   REQUIRED (lead is lost without these):
-//     SUPABASE_URL                e.g. https://lgixufkqkwdbksbohnxu.supabase.co
+//     SUPABASE_URL                e.g. https://vrqtelhjuydocxcletel.supabase.co
 //     SUPABASE_SERVICE_ROLE_KEY   service_role key (server-side only — never expose to the browser)
 //
 //   OPTIONAL (WhatsApp notification only):

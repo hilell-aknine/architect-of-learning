@@ -6,8 +6,8 @@
 (function () {
   "use strict";
 
-  var ENDPOINT = window.HAK_CHAT_ENDPOINT || "https://lgixufkqkwdbksbohnxu.supabase.co/functions/v1/chat";
-  var SUPA_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaXh1Zmtxa3dkYmtzYm9obnh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwMjUxNzYsImV4cCI6MjA5NzYwMTE3Nn0.ig176ITZQfuodxSfktIHEqOxpb4a_dFEt1KsvWr823g";
+  var ENDPOINT = window.HAK_CHAT_ENDPOINT || "https://vrqtelhjuydocxcletel.supabase.co/functions/v1/chat";
+  var SUPA_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZycXRlbGhqdXlkb2N4Y2xldGVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTgxNDcsImV4cCI6MjEwMjA5NDE0N30.nj9TRQeDVoTgEmjqe6NR3UjW8FvDQmwVwTWg-Bb9SRA";
 
   var OPENER =
     "שלום, אני העוזר של הלל אקנין. אשמח להסביר לך איך הלל גורם ללקוחות של בעלי קורסים באמת לסיים וליישם את הקורס, במקום שייעלמו אחרי שיעור. ספר לי, מה הקורס או העסק שלך?";
