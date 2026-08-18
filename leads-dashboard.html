@@ -63,6 +63,15 @@
   .camp-ad-row .m{text-align:center}
   .camp-ad-row .m .v{font-weight:800}
   .camp-ad-row .m .k{color:var(--soft);font-size:10px}
+  .camp-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+  .camp-split h3{font-size:13px;color:var(--soft);font-weight:700;margin-bottom:8px}
+  .seg-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px;border-radius:8px;font-size:13px;margin-bottom:4px}
+  .seg-row.good{background:rgba(31,138,143,.1)}
+  .seg-row.bad{background:rgba(224,73,47,.08)}
+  .seg-row .nm{font-weight:600}
+  .seg-row .ctr{font-weight:800;font-variant-numeric:tabular-nums}
+  .seg-row.good .ctr{color:var(--teal)} .seg-row.bad .ctr{color:var(--hot)}
+  @media(max-width:680px){.camp-split{grid-template-columns:1fr}}
   .camp-leads{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
   .camp-leads h3{font-size:13px;color:var(--soft);font-weight:700;margin-bottom:8px}
   .camp-lead-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
@@ -268,6 +277,28 @@ function renderCampaign(){
           <div class="m"><div class="v">${a.videoViews!=null?he(a.videoViews):"—"}</div><div class="k">צפיות</div></div>
         </div>`;
       }).join("") + '</div>';
+  }
+
+  const segRow = (label, ctr, good) => `<div class="seg-row ${good?"good":"bad"}"><span class="nm">${label}</span><span class="ctr">${ctr.toFixed(1)}%</span></div>`;
+  const placements = (campaign.placements||[]).filter(p=>p.impressions>=5);
+  const audience = (campaign.audience||[]).filter(a=>a.impressions>=5);
+  if (placements.length || audience.length){
+    html += '<div class="camp-split">';
+    if (placements.length){
+      const zeros = placements.filter(p=>p.ctr===0);
+      html += '<div><h3>📍 איפה זה עובד (מיקום)</h3>' +
+        segRow(placements[0].platform+" · "+placements[0].position, placements[0].ctr, true) +
+        (zeros.length ? zeros.map(p=>segRow(p.platform+" · "+p.position+" (₪"+he(p.spend)+" בזבוז)", p.ctr, false)).join("") : "") +
+        '</div>';
+    }
+    if (audience.length){
+      const zeros = audience.filter(a=>a.ctr===0);
+      html += '<div><h3>👥 איפה זה עובד (קהל)</h3>' +
+        segRow(audience[0].gender+" "+audience[0].age, audience[0].ctr, true) +
+        (zeros.length ? zeros.map(a=>segRow(a.gender+" "+a.age+" (₪"+he(a.spend)+" בזבוז)", a.ctr, false)).join("") : "") +
+        '</div>';
+    }
+    html += '</div>';
   }
 
   if (campaignLeads.length){
