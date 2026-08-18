@@ -8,7 +8,6 @@ Thumbs.db
 desktop.ini
 
 # internal — never ship to the public site
-leads-dashboard.html
 bot-inbox.html
 supabase/.temp/
 .playwright-mcp/
