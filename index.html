@@ -1112,10 +1112,11 @@
       var utm = (P.get('utm_source') || '').toLowerCase();
       var med = (P.get('utm_medium') || '').toLowerCase();
 
+      /* הלל, 19.8: כיבוי וריאנט "ממומן -> וואטסאפ בלבד" (הכרעת רם 22.7, DECISIONS.md).
+         מתנגש עם הזרימה שנבנתה היום (טופס + פורטלים + מעקב צפייה) בדיוק לתנועה
+         הזו. וריאנט "חם" (?ref=) עדיין פעיל, לא נגעתי בו. */
       var variant = 'organic';
-      if (src === 'ad' || src === 'warm') variant = src;
-      else if (['facebook','fb','meta','instagram','ig','paid'].indexOf(utm) > -1 ||
-               med === 'cpc' || med === 'paid') variant = 'ad';
+      if (src === 'warm') variant = src;
       else if (P.get('ref')) variant = 'warm';
 
       window.__CTA_VARIANT = variant;
