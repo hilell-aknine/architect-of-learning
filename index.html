@@ -598,7 +598,6 @@
 
     /* lead form · reserve a strategy call (conversion) */
     .lead { max-width: 540px; margin: 0 auto; }
-    .finale__cta-label { font-family: var(--f-body); font-weight: 700; font-size: 1.02rem; color: rgba(244,239,230,0.92); margin-block-end: 16px; text-align: center; }
     .lead__row { display: flex; gap: 12px; margin-block-end: 16px; }
     .lead__input {
       flex: 1; min-width: 0; font-family: var(--f-body); font-weight: 600; font-size: 1rem;
@@ -1154,8 +1153,7 @@
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
           </a>
           <!-- FIX-ENGINE F-001 (2026-07-22): סגנון הזמנה אישית לקייס סטאדי, לבקשת הלל. -->
-          <p class="hero__micro" id="heroMicro">בוא תראה איך אני מיישם את זה בפועל, בקורס אמיתי (8:40). בסוף הדף - השאר פרטים ונקבע שיחת אסטרטגיה קצרה, בלי עלות.</p>
-          <p class="hero__micro hero__micro--promise">עד סוף הדף תדע בדיוק למה תלמידים נוטשים דווקא אצלך, ומה עושים עם זה.</p>
+          <p class="hero__micro" id="heroMicro">בוא תראה איך אני מיישם את זה בפועל, בקורס אמיתי (8:40).</p>
         </div>
       </div>
     </section>
@@ -1262,7 +1260,6 @@
             <a href="#vsl" class="btn btn--ghost-paper">לצפייה בסרטון</a>
           </div>
           <form class="lead" id="leadForm" novalidate>
-            <p class="finale__cta-label">השאר פרטים ואחזור אליך לקביעת שיחת אסטרטגיה קצרה, בלי עלות:</p>
             <div class="lead__row">
               <input class="lead__input" type="text" name="name" id="leadName" placeholder="השם שלך" autocomplete="name" required />
               <input class="lead__input" type="tel" name="phone" id="leadPhone" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required />
@@ -1654,17 +1651,8 @@
       if (variant === 'organic') return;
 
       var PHONE = '972549116092';
-      var WA = 'https://wa.me/' + PHONE + '?text=' +
-               encodeURIComponent('היי הלל, הגעתי מהדף. שם הקורס שלי הוא: ');
 
       var V = {
-        ad: {
-          label: 'כתוב לי בוואטסאפ',
-          href:  WA,
-          blank: true,
-          sub:   'כתוב לי את שם הקורס שלך ואחזור אליך עם מה שאני רואה',
-          micro: 'שיחה אחת בוואטסאפ. בלי טפסים ובלי סרטון חובה.'
-        },
         warm: {
           label: 'בוא נדבר עכשיו',
           href:  'tel:+' + PHONE,
