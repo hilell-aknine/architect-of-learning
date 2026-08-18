@@ -959,18 +959,6 @@
     .lead__lock span { font-size: 0.92rem; opacity: 0.78; line-height: 1.6; }
     .lead__lock .btn { margin-block-start: 8px; }
     .lead__lock[hidden] { display: none; }
-    .lead__skip {
-      margin-block-start: 4px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 0.86rem;
-      color: rgba(244,239,230,0.55);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .lead__skip:hover, .lead__skip:focus-visible { color: rgba(244,239,230,0.85); }
     /* FIX-ENGINE F-VSL סבב-3 (2026-07-22): פס פולבק כשהנגן לא נטען */
     #vslFallback {
       position: absolute; inset-inline: 0; inset-block-end: 0; z-index: 3;
@@ -1542,7 +1530,6 @@
             <strong>הטופס נפתח אחרי צפייה בסרטון</strong>
             <span id="leadLockNote">השיחה שווה משהו רק אחרי שראית איך המערכת עובדת. הטופס נפתח בסוף הסרטון.</span>
             <a href="#vsl" class="btn btn--ghost-paper">לצפייה בסרטון</a>
-            <button type="button" class="lead__skip" id="leadSkipLock">או השאר פרטים עכשיו, בלי לצפות</button>
           </div>
           <form class="lead" id="leadForm" novalidate hidden>
             <div class="lead__row">
@@ -1593,6 +1580,9 @@
       var VIDEO_ID = 'bF0atlGw0T4';
       var UNLOCK_AT = 0.60;                 /* 60% of the video */
       var STORE_KEY = 'vslUnlocked_' + VIDEO_ID;
+      /* GATE_ENABLED (הלל, 18.8): פתוח מההתחלה בלי תנאי כרגע, כדי למקסם נפח לידים
+         בזמן הטסט. להחזיר ל-true כשעולים בהיקף ואיכות הלידים צריכה לרדת. */
+      var GATE_ENABLED = false;
 
       var player = null, timer = null, unlocked = false;
       var maxPct = 0, pendingPlay = false;
@@ -1629,16 +1619,12 @@
         }
       }
 
-      /* returning visitor who already watched */
-      try { if (localStorage.getItem(STORE_KEY) === '1') unlock(); } catch (e) {}
-
-      /* explicit opt-out of the watch gate — leave details without watching */
-      var skipLock = document.getElementById('leadSkipLock');
-      if (skipLock) {
-        skipLock.addEventListener('click', function () {
-          unlock();
-          if (form) form.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
+      /* gate off (הלל, 18.8) → הטופס פתוח מהרגע הראשון, בלי תנאי צפייה */
+      if (!GATE_ENABLED) {
+        unlock();
+      } else {
+        /* returning visitor who already watched */
+        try { if (localStorage.getItem(STORE_KEY) === '1') unlock(); } catch (e) {}
       }
 
       /* FIX-ENGINE F-VSL סבב-3 (2026-07-22): רשת ביטחון לפארטו של הדף — הסרטון.
