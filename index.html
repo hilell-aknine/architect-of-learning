@@ -577,8 +577,28 @@
     .finale__reassure span { display: inline-flex; align-items: center; gap: 8px; }
     .finale__reassure svg { width: 16px; height: 16px; color: var(--ember-2); flex-shrink: 0; }
 
+    /* פורטלים חיים — הוכחה אחרי הסרטון (הלל, 19.8: הוחזר מ-campaign.html) */
+    .portals { padding: clamp(48px,7vw,84px) 0; text-align: center; background: var(--paper); }
+    .portals__title { font-family: var(--f-mast); font-weight: 900; letter-spacing: -0.01em; line-height: 1.2; font-size: clamp(1.6rem,3.6vw,2.4rem); color: var(--ink); }
+    .portals__sub { margin: 10px auto 0; max-width: 52ch; color: var(--ink-soft); font-size: 1.02rem; }
+    .portals__grid { display: grid; gap: 16px; margin-top: 28px; text-align: right; grid-template-columns: 1fr; }
+    @media(min-width:720px){ .portals__grid { grid-template-columns: 1fr 1fr; } }
+    .portal { display: flex; flex-direction: column; gap: 8px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 14px; padding: 0 0 20px; text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: transform .2s var(--ease), border-color .2s var(--ease), box-shadow .2s var(--ease); }
+    .portal__shot { display: block; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--paper-soft); border-block-end: 1px solid var(--rule); margin-bottom: 14px; }
+    .portal__shot img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: transform .35s var(--ease); }
+    .portal:hover .portal__shot img { transform: scale(1.04); }
+    .portal__name, .portal__desc, .portal__go { padding-inline: 20px; }
+    .portal::before { content: ""; position: absolute; inset-block-start: 0; inset-inline: 0; height: 3px; background: var(--ember); opacity: 0; transition: opacity .2s var(--ease); }
+    .portal:hover { transform: translateY(-3px); border-color: rgba(194,65,12,.4); box-shadow: 0 14px 34px rgba(20,17,13,.12); }
+    .portal:hover::before { opacity: 1; }
+    .portal__name { font-weight: 800; font-size: 1.08rem; line-height: 1.35; }
+    .portal__desc { font-size: .96rem; color: var(--ink-soft); line-height: 1.55; }
+    .portal__go { margin-top: 4px; font-weight: 700; font-size: .92rem; color: var(--ember); }
+    .portal__go::after { content: " ←"; }
+
     /* lead form · reserve a strategy call (conversion) */
     .lead { max-width: 540px; margin: 0 auto; }
+    .finale__cta-label { font-family: var(--f-body); font-weight: 700; font-size: 1.02rem; color: rgba(244,239,230,0.92); margin-block-end: 16px; text-align: center; }
     .lead__row { display: flex; gap: 12px; margin-block-end: 16px; }
     .lead__input {
       flex: 1; min-width: 0; font-family: var(--f-body); font-weight: 600; font-size: 1rem;
@@ -588,7 +608,8 @@
     }
     .lead__input::placeholder { color: rgba(244,239,230,0.5); }
     .lead__input:focus { border-color: var(--ember-2); background: rgba(244,239,230,0.1); }
-    .lead__submit { width: 100%; justify-content: center; }
+    .lead__submit { width: 100%; justify-content: center; font-size: 1.28rem; font-weight: 800; padding-block: 24px; }
+    @media (max-width: 520px){ .lead__submit { font-size: 1.12rem; padding-block: 20px; } }
     .lead .finale__reassure { margin-block-start: 18px; }
     .lead__done {
       max-width: 540px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px;
@@ -1132,7 +1153,7 @@
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
           </a>
           <!-- FIX-ENGINE F-001 (2026-07-22): סגנון הזמנה אישית לקייס סטאדי, לבקשת הלל. -->
-          <p class="hero__micro" id="heroMicro">בוא תראה איך אני מיישם את זה בפועל, בקורס אמיתי (8:40). טופס תיאום השיחה נפתח באמצע הצפייה.</p>
+          <p class="hero__micro" id="heroMicro">בוא תראה איך אני מיישם את זה בפועל, בקורס אמיתי (8:40). בסוף הדף - השאר פרטים ונקבע שיחת אסטרטגיה קצרה, בלי עלות.</p>
           <p class="hero__micro hero__micro--promise">עד סוף הדף תדע בדיוק למה תלמידים נוטשים דווקא אצלך, ומה עושים עם זה.</p>
         </div>
       </div>
@@ -1180,8 +1201,7 @@
         <div class="vsl__after reveal">
           <p class="vsl__afterline" id="vslAfterline">
             בסרטון אני פותח את מערכת הקורסים החיה ואת המספרים שמאחוריה. מי שמגיע לשיחה אחרי שראה
-            אותו לא מבזבז אותה על הסברים, אלא על הקורס שלו. בגלל זה הטופס נפתח
-            בסוף הסרטון, לא לפניו.
+            אותו לא מבזבז אותה על הסברים, אלא על הקורס שלו. השאר פרטים למטה ונקבע שיחה קצרה, בלי עלות.
           </p>
           <a href="#contact" data-cta class="btn btn--solid" data-cta data-magnetic>
             שיחת אסטרטגיה בלי עלות
@@ -1191,323 +1211,37 @@
       </div>
     </section>
 
-    <!-- ============ PROBLEM ============ -->
-    <section class="chapter" id="problem" data-area="problem" data-src="index.html #problem (הבעיה + ישן/חדש)">
+    <!-- ============ PORTALS (proof after the video) ============ -->
+    <section class="portals" id="portals" data-area="portals" data-src="index.html #portals (פורטלים חיים)">
       <div class="container">
-        <div class="chapter__head reveal">
-          <div class="chapter__folio"><span class="folio">01</span></div>
-          <div class="chapter__lede">
-            <h2 class="chapter__title">הכסף נכנס. התלמידים נעלמים.</h2>
-            <p class="chapter__lead dropcap">
-              הלקוחות קנו ונעלמו, ואיתם נעלם הרווח הגדול באמת: הרכישה הבאה, ההמלצה לחבר,
-              העדות שמוכרת בשבילך. קורס שאנשים לא מסיימים הוא עסק שמוכר רק ללקוחות חדשים,
-              וזו הדרך הכי יקרה למכור.
-            </p>
-          </div>
-        </div>
-
-        <div class="ledger">
-          <article class="col col--old reveal" data-d="1">
-            <span class="col__tag">הדרך הישנה</span>
-            <figure class="col__fig">
-              <img src="assets/old-way.webp" alt="ספריית וידאו נטושה שאוספת אבק" loading="lazy"
-                   onerror="this.closest('.col__fig').remove()" />
-            </figure>
-            <h3>ספריית וידאו שאוספת אבק</h3>
-            <ul class="col__list">
-              <li><span class="tick" aria-hidden="true">✕</span> רק 3 מתוך 20 תלמידים מסיימים, גם כשהתוכן מצוין</li>
-              <li><span class="tick" aria-hidden="true">✕</span> צפייה פסיבית שלא הופכת לשינוי אמיתי בחיים שלהם</li>
-              <li><span class="tick" aria-hidden="true">✕</span> אתה עיוור, לא יודע מי תקוע, מי ממשיך, מי כבר ויתר</li>
-              <li><span class="tick" aria-hidden="true">✕</span> כל שאלה חוזרת נופלת עליך, שוב ושוב</li>
-            </ul>
-          </article>
-
-          <div class="ledger__div" aria-hidden="true">
-            <svg viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M58 12H4M14 4 4 12l10 8"/></svg>
-          </div>
-
-          <article class="col col--new reveal" data-d="2">
-            <span class="col__tag">הדרך החדשה</span>
-            <figure class="col__fig">
-              <img src="assets/new-way.webp" alt="מסלול למידה חי שמחזיר את הלומד לנקודה שבה עצר" loading="lazy"
-                   onerror="this.closest('.col__fig').remove()" />
-            </figure>
-            <h3>מערכת למידה חיה ונושמת</h3>
-            <ul class="col__list">
-              <li><span class="tick" aria-hidden="true">✓</span> כל תלמיד יודע תמיד מה הצעד הבא, וממשיך בדיוק מאיפה שעצר</li>
-              <li><span class="tick" aria-hidden="true">✓</span> הלמידה מושכת אותם פנימה כמו שהם נמשכים לטלפון, והם חוזרים בעצמם יום אחרי יום</li>
-              <li><span class="tick" aria-hidden="true">✓</span> תזכורת אישית מחזירה אותם פנימה ברגע שהם מתחילים להיעלם</li>
-              <li><span class="tick" aria-hidden="true">✓</span> אתה רואה הכול במבט אחד, ומגיע לתלמיד עוד לפני שהוא נושר</li>
-            </ul>
-          </article>
-        </div>
-
-        <div class="midcta reveal">
-          <a href="#contact" data-cta class="btn btn--solid" data-magnetic>
-            בוא נמפה איפה התלמידים שלך נופלים
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
+        <h2 class="portals__title">פורטלים חיים שבניתי</h2>
+        <p class="portals__sub">מערכות אמיתיות שרצות עכשיו עם תלמידים אמיתיים, לא הדמיות. תיכנס ותסתכל בעצמך.</p>
+        <div class="portals__grid">
+          <a class="portal" href="https://eitan-azaria-portal.vercel.app" target="_blank" rel="noopener">
+            <span class="portal__shot"><img src="assets/portals/eitan.jpg" alt="איתן עזריה, הפודקאסט הביולוגיה של הווינרים" loading="lazy" /></span>
+            <span class="portal__name">איתן עזריה</span>
+            <span class="portal__desc">פורטל הפודקאסט, מאות פרקים עם חבילות לימוד ומאמן אישי בתוך הפורטל</span>
+            <span class="portal__go">לצפייה בפורטל</span>
+          </a>
+          <a class="portal" href="https://kagan-portal.vercel.app" target="_blank" rel="noopener">
+            <span class="portal__shot"><img src="assets/portals/kagan.jpg" alt="ד״ר אריה קגן מרצה מול אולם מלא" loading="lazy" /></span>
+            <span class="portal__name">המכללה ללימודי NLP של אריה קגן</span>
+            <span class="portal__desc">קורסי NLP ודמיון מודרך, מסלול למידה מלא עם מעקב התקדמות</span>
+            <span class="portal__go">לצפייה בפורטל</span>
+          </a>
+          <a class="portal" href="https://scale-rovchi-app.vercel.app" target="_blank" rel="noopener">
+            <span class="portal__shot"><img src="assets/portals/scale.jpg" alt="ניב ויובל, סקייל רווחי" loading="lazy" /></span>
+            <span class="portal__name">סקייל רווחי</span>
+            <span class="portal__desc">למעלה ממאה שיעורים, לצד כלים שהתלמידים מפעילים בתוך הפורטל</span>
+            <span class="portal__go">לצפייה בפורטל</span>
+          </a>
+          <a class="portal" href="https://www.therapist-home.com/" target="_blank" rel="noopener">
+            <span class="portal__shot"><img src="assets/portals/therapist.jpg" alt="רם מעביר שיעור בקורס NLP, בית המטפלים" loading="lazy" /></span>
+            <span class="portal__name">בית המטפלים</span>
+            <span class="portal__desc">פורטל למידה לעשרות מטפלים, הפורטל שממנו הגיעו המספרים בקייס סטאדי</span>
+            <span class="portal__go">לצפייה בפורטל</span>
           </a>
         </div>
-      </div>
-    </section>
-
-    <!-- ============ THE MATH (turns dropout into money · reader plugs in his own numbers) ============ -->
-    <section class="chapter themath" data-area="themath" data-src="index.html (תעשה את החשבון)">
-      <div class="container">
-        <div class="themath__inner reveal">
-          <h2>תעשה את החשבון הזה איתי. שלושים שניות.</h2>
-          <p>
-            קח את מספר האנשים ששילמו לך על הקורס האחרון. עכשיו קח את מספר מי שבאמת סיים אותו.
-          </p>
-          <p>
-            ההפרש הוא לא אחוז בדוח. אלה אנשים שכבר גבית מהם כסף, ואין להם מה לספר עליך.
-            הם לא יקנו ממך את המוצר הבא, כי הראשון לא עשה להם כלום. ובינתיים אתה חוזר
-            לפייסבוק ומשלם שוב על ליד קר.
-          </p>
-          <!-- FIX-ENGINE F-002 סבב-2 (2026-07-22): הפאנץ' מודגש עם מושן כתיבה מילה-מילה + מרקר, לבקשת הלל. -->
-          <p class="themath__punch" id="mathPunch" data-write>
-            הכסף הגדול הבא שלך לא נמצא במודול הבא שתצלם. הוא נמצא <em class="mark">בהפרש הזה</em>.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ SOLUTION ============ -->
-    <section class="chapter" id="solution" data-area="solution" data-src="index.html #solution (שלושת העוגנים)">
-      <div class="container">
-        <div class="chapter__head reveal">
-          <div class="chapter__folio"><span class="folio">02</span></div>
-          <div class="chapter__lede">
-            <h2 class="chapter__title">שלושה עוגנים שהופכים קונה לתלמיד שמסיים</h2>
-            <p class="chapter__lead">
-              לומד נעלם בשלוש נקודות: כשהוא לא זוכר איפה עצר, כשהוא נתקע במכשול הראשון,
-              וכשאף אחד לא שם לב שהוא הפסיק. שלושת העוגנים בנויים בדיוק מול שלוש הנקודות
-              האלה.
-            </p>
-          </div>
-        </div>
-
-        <div class="anchors">
-          <article class="anchor reveal" data-d="1">
-            <div class="anchor__no" aria-hidden="true">01</div>
-            <div>
-              <span class="anchor__icon" aria-hidden="true">
-                <img src="assets/anchor-1.webp" alt="מדרגות עולות שהשלב העליון בהן מואר" loading="lazy" onerror="this.parentElement.remove()" />
-              </span>
-              <h3>זינוק בהשלמת הקורס</h3>
-              <p>
-                רוב מי שקונה קורס דיגיטלי לא מסיים אותו, וזה קורה בנקודות קבועות וצפויות.
-                המערכת מחזירה את הלומד בדיוק לנקודה שבה עצר, כמו בנטפליקס, ודוחפת אותו לשיעור
-                הבא. וכשהוא בכל זאת נעלם, המערכת שולחת לו תזכורת וואטסאפ אישית, בשם שלך.
-                אותו תוכן, אותם אנשים. ההבדל הוא בחוויה.
-              </p>
-            </div>
-          </article>
-
-          <article class="anchor reveal" data-d="2">
-            <div class="anchor__no" aria-hidden="true">02</div>
-            <div>
-              <span class="anchor__icon" aria-hidden="true">
-                <img src="assets/anchor-2.webp" alt="זרע שמתפצל לשורשים מסתעפים" loading="lazy" onerror="this.parentElement.remove()" />
-              </span>
-              <h3>עדויות שמגיעות מעצמן</h3>
-              <p>
-                תלמיד שלא סיים את הקורס לא ייתן לך עדות, ובטח לא ימליץ עליך לחבר. תלמיד
-                שסיים ויישם, כן. ברגע שאחוזי הסיום עולים, העדויות מפסיקות להיות משהו שאתה
-                רודף אחריו והופכות למשהו שנצבר אצלך מעצמו, יחד עם קהל שכבר מוכן לקנות ממך
-                את המוצר הבא.
-              </p>
-            </div>
-          </article>
-
-          <article class="anchor reveal" data-d="3">
-            <div class="anchor__no" aria-hidden="true">03</div>
-            <div>
-              <span class="anchor__icon" aria-hidden="true">
-                <img src="assets/anchor-3.webp" alt="פעמון זכוכית שמתרומם ומשחרר עומס עבודה" loading="lazy" onerror="this.parentElement.remove()" />
-              </span>
-              <h3>סוף לתפקיד הגננת</h3>
-              <p>
-                התלמיד מקבל תשובה ברגע שהוא נתקע, בלי לחכות שתתפנה. השאלות שחוזרות על עצמן
-                מפסיקות לנחות עליך בוואטסאפ ובזום, ואתה חוזר לעשות את הדבר שבגללו פתחת את
-                הקורס: ללמד. את כל מה שעונה לו מאחורי הקלעים אני בונה מהחומר שכבר צילמת.
-              </p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ FEATURES (teaser) ============ -->
-    <section class="teaser" id="features" data-area="features" data-src="index.html #features (מה תקבל + כרטיסים)">
-      <div class="container">
-        <span class="folio" aria-hidden="true">03</span>
-        <div class="teaser__inner reveal">
-          <h2>השיחה הזאת לא מתאימה לכולם.</h2>
-          <p class="lead">
-            אני עובד רק עם בעלי קורסים שכבר מוכרים ורוצים להפסיק להיראות כמו כולם.
-            אם זה אתה, שיחה אחת קצרה תראה לך כמה הקורס שלך יכול לתת עוד.
-            בלי לחץ, בלי מונחים טכניים.
-          </p>
-          <div class="teaser__pills teaser__pills--hand">
-            <span data-write data-write-delay="0">מפה מדויקת של נקודות הנשירה בקורס שלך</span>
-            <span data-write data-write-delay="600">הדגמה חיה של מערכת קורסים פרימיום עובדת</span>
-            <span data-write data-write-delay="1200">המספרים שלך: כמה שווה כל תלמיד שנשאר, ותוך כמה זמן תראה את זה</span>
-            <span data-write data-write-delay="1800">דרכים חדשות לשווק על בסיס הקורס שכבר יש לך</span>
-            <span data-write data-write-delay="2400">תוכנית פעולה שנשארת אצלך, גם אם לא נעבוד יחד</span>
-          </div>
-          <div class="teaser__cta">
-            <a href="#contact" data-cta class="btn btn--ghost-paper" data-magnetic>
-              בדוק אם זה מתאים לך
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FIX-ENGINE F-005 סבב-3 (2026-07-22): סקשן ההוכחה (04, רשת הנתונים) הוסר לבקשת הלל — התוכן מופיע בסרטון הקייס סטאדי. הסקשנים הבאים מוספרו מחדש. -->
-
-    <!-- ============ ABOUT / מי אני ============ -->
-    <section class="chapter about" id="about" data-area="about" data-src="index.html #about (מי אני)">
-      <div class="container about__inner">
-        <div class="about__portrait reveal" data-d="1">
-          <div class="frame">
-            <div class="frame__img">
-              <img src="assets/hillel-ig.jpg" alt="הילל אקנין, מהנדס התמדה לבעלי קורסים" width="1080" height="1080" loading="lazy" />
-              <div class="frame__cap">
-                <strong>הילל אקנין</strong>
-                <span>מהנדס התמדה לבעלי קורסים</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="about__body reveal" data-d="2">
-          <!-- FIX-ENGINE F-009 סבב-4 (2026-07-22): הוסר ה-kicker הכפול "מי אני" (נשארה הכותרת), לבקשת הלל. -->
-          <h2 class="chapter__title" style="margin-block:16px 20px">מי אני</h2>
-          <p class="body">
-            אני הילל אקנין, ואני לא בונה אתרים. אני עוזר לבעלי קורסים להפוך ידע לתוצאות:
-            יותר תלמידים שמסיימים, מיישמים וממשיכים לקנות.
-          </p>
-          <p class="body" style="margin-block-start:16px">
-            את התשובה מצאתי בקורס חי שבניתי לו את מערכת הלמידה מאפס: 775 נרשמים, מעל 2,000
-            שיעורים שהושלמו. כשהדאטה התחילה לזרום אליי, התחלתי למדוד. ואז ראיתי את זה
-            שחור על גבי לבן: מי שלמד עם חוויית תרגול משחקית השלים פי 4 יותר שיעורים.
-            אותו קורס, אותו תוכן, חוויה אחרת.
-          </p>
-          <p class="body" style="margin-block-start:16px">
-            מאותו רגע הפסקתי לקבל את ההסבר הנוח של "תלמידים עצלנים". נשירה היא לא עניין
-            של אופי, היא עניין של עיצוב. היום אני בונה מערכות למידה שמבוססות על שינוי
-            התנהגות: AI, פסיכולוגיה ודאטה שמזהים בדיוק איפה התלמיד שלך נופל, ומחזירים
-            אותו פנימה.
-          </p>
-
-          <div class="creds">
-            <span class="creds__label">מה בניתי לפני זה</span>
-            <p class="creds__intro">שמות לקוחות אני לא מפרסם בלי אישור מהם, אז הנה מה שכן מותר לומר:</p>
-            <!-- FIX-ENGINE F-003 סבב-3 (2026-07-22): אימוג'ים צפים לרשימת "מה בניתי", לבקשת הלל. -->
-            <ul class="creds__list creds__list--emoji">
-              <li><span class="creds__emoji">💼</span>חברות בתחום הייעוץ העסקי</li>
-              <li><span class="creds__emoji">🎓</span>מכללה מובילה בתחום ההתפתחות האישית</li>
-              <li><span class="creds__emoji">🎖️</span>מערכות לגדודי מילואים</li>
-              <li><span class="creds__emoji">🏢</span>מערכות ניהול מידע לחברות נדל"ן</li>
-            </ul>
-            <!-- FIX-ENGINE F-010 סבב-4 (2026-07-22): הוסרה שורת "מכנה משותף אחד", לבקשת הלל. -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ============ OBJECTIONS (handles A2 · the two thoughts in his head) ============ -->
-    <section class="chapter objections" id="objections" data-area="objections" data-src="index.html #objections (התנגדויות)">
-      <div class="objections__bg" aria-hidden="true"></div>
-      <div class="container">
-        <div class="chapter__head reveal">
-          <div class="chapter__folio"><span class="folio">04</span></div>
-          <div class="chapter__lede">
-            <h2 class="chapter__title">המחשבות שעוברות לך בראש עכשיו. כולן לגיטימיות.</h2>
-          </div>
-        </div>
-
-        <div class="anchors">
-          <article class="anchor reveal" data-d="1">
-            <div class="anchor__no" aria-hidden="true">01</div>
-            <div>
-              <h3>"אני לא רוצה עוד מערכת לתחזק."</h3>
-              <p>
-                נכון, ואתה גם לא אמור. אתה לא קם בבוקר כדי לנהל מערכות מידע, אתה קם כדי
-                ללמד. אני בונה, מטמיע, ונשאר אחראי על התחזוקה. מה שאתה מקבל זה פגישת
-                מספרים חודשית: מי נכנס, מי תקוע, מי עומד לנשור, ומה עושים עם זה.
-              </p>
-            </div>
-          </article>
-
-          <article class="anchor reveal" data-d="2">
-            <div class="anchor__no" aria-hidden="true">02</div>
-            <div>
-              <h3>"בעוד שנה כל אחד יבנה מערכת קורסים עם AI. אז למה לשלם לך?"</h3>
-              <p>
-                כנראה שכן, ואתה צודק לגמרי. רק שמערכת קורסים אף פעם לא היתה הבעיה. אף אחד לא נטש
-                קורס כי לא היה לו נגן וידאו. הם נטשו כי אף אחד לא הנדס את הרגע שבו הם
-                מחליטים אם לחזור. את זה AI לא יעשה בשבילך בשנה הבאה, כי זה לא קוד. זו
-                פסיכולוגיה של התנהגות, וזה מה שאני עושה.
-              </p>
-            </div>
-          </article>
-
-          <article class="anchor reveal" data-d="3">
-            <div class="anchor__no" aria-hidden="true">03</div>
-            <div>
-              <h3>"כבר יש לי פלטפורמה. אני חייב לעבור?"</h3>
-              <p>
-                לא בהכרח. קודם מסתכלים איפה הלומדים שלך נופלים היום. לפעמים המנגנונים
-                נבנים על מה שכבר יש לך, ולפעמים הפלטפורמה עצמה היא מה שמפיל אותם. את זה
-                אפשר לדעת רק אחרי שמסתכלים על הנתונים שלך.
-              </p>
-            </div>
-          </article>
-
-          <article class="anchor reveal" data-d="4">
-            <div class="anchor__no" aria-hidden="true">04</div>
-            <div>
-              <h3>"מי מזין את כל התוכן? אין לי זמן לעוד פרויקט."</h3>
-              <p>
-                אתה נותן את החומר שכבר צילמת. את המבנה, ההעלאה, הסיכומים ומנגנוני ההתמדה
-                אני בונה. מה שנדרש ממך זה החלטות, לא הקלדה.
-              </p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ WHAT HAPPENS NEXT (removes the uncertainty that stops the lead) ============ -->
-    <section class="chapter nextsteps" id="next" data-area="next" data-src="index.html #next (מה קורה אחרי טלפון)">
-      <div class="container">
-        <div class="chapter__head reveal">
-          <div class="chapter__folio"><span class="folio">05</span></div>
-          <div class="chapter__lede">
-            <h2 class="chapter__title">מה קורה אחרי שאתה משאיר טלפון</h2>
-          </div>
-        </div>
-
-        <ol class="steps">
-          <li class="reveal" data-d="1">
-            <span class="steps__no" aria-hidden="true">01</span>
-            <p>אני חוזר אליך אישית בוואטסאפ. לא מוקד, לא נציג, לא רצף מיילים אוטומטי.</p>
-          </li>
-          <li class="reveal" data-d="2">
-            <span class="steps__no" aria-hidden="true">02</span>
-            <!-- FIX-ENGINE F-006 סבב-3 (2026-07-22): דיוק שלב 02 — ניתוח הקיים ושיפור במינימום מאמץ, לבקשת הלל. -->
-            <p>מנתחים יחד מה שכבר יש לך: איפה התלמידים עוצרים היום, ומה אפשר לשפר במינימום מאמץ, כדי שהם יצאו מרוצים ולך יהיו הרבה יותר תוצאות ועדויות.</p>
-          </li>
-          <li class="reveal" data-d="3">
-            <span class="steps__no" aria-hidden="true">03</span>
-            <p>אם יש התאמה, תקבל הצעה עם היקף, לוח זמנים ומחיר. אם אין התאמה, אני אומר לך את זה בשיחה עצמה.</p>
-          </li>
-        </ol>
       </div>
     </section>
 
@@ -1520,19 +1254,20 @@
           <p class="finale__sub">
             אני קובע איתך שיחת אסטרטגיה קצרה, בלי עלות. בשיחה תדע בדיוק איך לשפר את הקורס שלך כך שהוא ייראה שונה מהמתחרים שלך, ויתן ללקוחות שלך ערך איכותי פי עשר, בלי לשנות אפילו מילה אחת בתוכן הקורס עצמו.
           </p>
-          <div class="lead__lock" id="leadLock">
+          <div class="lead__lock" id="leadLock" hidden>
             <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
             <strong>הטופס נפתח אחרי צפייה בסרטון</strong>
             <span id="leadLockNote">השיחה שווה משהו רק אחרי שראית איך המערכת עובדת. הטופס נפתח בסוף הסרטון.</span>
             <a href="#vsl" class="btn btn--ghost-paper">לצפייה בסרטון</a>
           </div>
-          <form class="lead" id="leadForm" novalidate hidden>
+          <form class="lead" id="leadForm" novalidate>
+            <p class="finale__cta-label">השאר פרטים ואחזור אליך לקביעת שיחת אסטרטגיה קצרה, בלי עלות:</p>
             <div class="lead__row">
               <input class="lead__input" type="text" name="name" id="leadName" placeholder="השם שלך" autocomplete="name" required />
               <input class="lead__input" type="tel" name="phone" id="leadPhone" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required />
             </div>
             <button type="submit" class="btn btn--ghost-paper btn--lg btn--pulse lead__submit" data-magnetic>
-              אני רוצה שיחת אסטרטגיה בלי עלות
+              שריין לי שיחת אסטרטגיה
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
             </button>
           </form>
@@ -1566,7 +1301,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M9 14l2 2 4-4"/></svg>
       שיחת אסטרטגיה בלי עלות
     </a>
-    <span class="stickycta__sub" id="stickySub">הדגמה חיה · 8:40 · הטופס נפתח תוך כדי הצפייה</span>
+    <span class="stickycta__sub" id="stickySub">הדגמה חיה · 8:40 · השאר פרטים ונדבר</span>
   </div>
 
   <!-- ============ VSL WATCH GATE · form unlocks at 60% watched ============ -->
@@ -1604,7 +1339,10 @@
         if (lock) lock.hidden = true;
         if (form) form.hidden = false;
         if (fill) fill.style.width = '100%';
-        /* the buttons now really do lead to the form · say so */
+        /* הודעת "נפתח" רלוונטית רק כשבאמת הייתה נעילה לפני (שער פעיל).
+           כשהשער כבוי מלכתחילה (הלל, 19.8: בלי שום ניסוח של "הטופס נפתח") -
+           הטופס פשוט שם מהתחלה, בלי שום סיפור סביב "פתיחה". */
+        if (!GATE_ENABLED) return;
         var micro = document.getElementById('heroMicro');
         if (micro) micro.classList.add('is-hidden');
         var sticky = document.getElementById('stickySub');
