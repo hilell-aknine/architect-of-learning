@@ -1545,6 +1545,10 @@
             <strong>הפרטים התקבלו ✓</strong>
             <span>אחזור אליך אישית לתאם את השיחה.</span>
           </div>
+          <div class="lead__done" id="leadError" hidden>
+            <strong>הייתה תקלה בשליחה</strong>
+            <span>שלח לי ישר הודעה בוואטסאפ במקום: <a href="https://wa.me/972549116092" target="_blank" rel="noopener">972549116092</a></span>
+          </div>
         </div>
       </div>
     </section>
@@ -1711,12 +1715,19 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: name, phone: phone, source: 'landing-portal' })
-          }).catch(function () { /* show thank-you regardless; lead also logged client-side */ })
-            .finally(function () {
-              leadForm.hidden = true;
-              var done = document.getElementById('leadDone');
-              if (done) { done.hidden = false; done.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-            });
+          }).then(function (res) {
+            if (res.ok) {
+              /* real conversion → dedicated thank-you page (fires the Meta Lead pixel event there) */
+              window.location.href = '/thank-you.html';
+              return;
+            }
+            throw new Error('lead_not_delivered');
+          }).catch(function () {
+            /* per api/lead.js: never show a thank-you screen for a lead that wasn't actually saved */
+            leadForm.hidden = true;
+            var err = document.getElementById('leadError');
+            if (err) { err.hidden = false; err.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+          });
         });
       }
 
