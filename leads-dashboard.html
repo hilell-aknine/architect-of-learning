@@ -255,16 +255,17 @@ function renderCampaign(){
 
   const ads = campaign.ads || [];
   if (ads.length){
-    const topCtr = Math.max(...ads.map(a=>a.ctr||0));
+    const live = ads.filter(a=>!a.deleted);
+    const topCtr = Math.max(...live.map(a=>a.ctr||0));
     html += '<div class="camp-ads"><h3>לפי מודעה — מי באמת מנצחת</h3>' +
       ads.map(a => {
-        const isWin = ads.length > 1 && a.ctr === topCtr && topCtr > 0;
-        return `<div class="camp-ad-row${isWin?" win":""}">
+        const isWin = !a.deleted && live.length > 1 && a.ctr === topCtr && topCtr > 0;
+        return `<div class="camp-ad-row${isWin?" win":""}"${a.deleted?' style="opacity:.55"':""}>
           <div class="an">${a.name||"—"}${isWin?'<span class="win-tag">מוביל</span>':""}</div>
           <div class="m"><div class="v">₪${he(a.spend||0)}</div><div class="k">הוצאה</div></div>
           <div class="m"><div class="v">${he(a.impressions||0)}</div><div class="k">חשיפות</div></div>
-          <div class="m"><div class="v">${(a.ctr||0).toFixed(1)}%</div><div class="k">CTR</div></div>
-          <div class="m"><div class="v">${he(a.videoViews||0)}</div><div class="k">צפיות</div></div>
+          <div class="m"><div class="v">${a.ctr!=null?(a.ctr).toFixed(1)+"%":"—"}</div><div class="k">CTR</div></div>
+          <div class="m"><div class="v">${a.videoViews!=null?he(a.videoViews):"—"}</div><div class="k">צפיות</div></div>
         </div>`;
       }).join("") + '</div>';
   }
