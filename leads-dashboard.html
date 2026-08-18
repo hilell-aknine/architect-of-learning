@@ -53,6 +53,16 @@
   .camp-kpi .l{color:var(--soft);font-size:11px;margin-top:3px}
   .camp-kpi.cpl .n{color:var(--teal)}
   .camp-empty{color:var(--soft);font-size:14px;text-align:center;padding:10px}
+  .camp-ads{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+  .camp-ads h3{font-size:13px;color:var(--soft);font-weight:700;margin-bottom:8px}
+  .camp-ad-row{display:grid;grid-template-columns:1fr repeat(4,72px);gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .camp-ad-row:last-child{border-bottom:none}
+  .camp-ad-row.win{background:linear-gradient(90deg,rgba(31,138,143,.07),transparent);border-radius:8px}
+  .camp-ad-row .an{font-weight:700;display:flex;align-items:center;gap:6px}
+  .camp-ad-row .win-tag{font-size:11px;background:var(--teal);color:#fff;border-radius:999px;padding:1px 8px;font-weight:800}
+  .camp-ad-row .m{text-align:center}
+  .camp-ad-row .m .v{font-weight:800}
+  .camp-ad-row .m .k{color:var(--soft);font-size:10px}
   .camp-leads{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
   .camp-leads h3{font-size:13px;color:var(--soft);font-weight:700;margin-bottom:8px}
   .camp-lead-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
@@ -242,6 +252,22 @@ function renderCampaign(){
   let html = '<div class="camp-kpis">' + kpis.map(([n,l],i)=>
     `<div class="camp-kpi${i===5?" cpl":""}"><div class="n">${n}</div><div class="l">${l}</div></div>`
   ).join("") + '</div>';
+
+  const ads = campaign.ads || [];
+  if (ads.length){
+    const topCtr = Math.max(...ads.map(a=>a.ctr||0));
+    html += '<div class="camp-ads"><h3>לפי מודעה — מי באמת מנצחת</h3>' +
+      ads.map(a => {
+        const isWin = ads.length > 1 && a.ctr === topCtr && topCtr > 0;
+        return `<div class="camp-ad-row${isWin?" win":""}">
+          <div class="an">${a.name||"—"}${isWin?'<span class="win-tag">מוביל</span>':""}</div>
+          <div class="m"><div class="v">₪${he(a.spend||0)}</div><div class="k">הוצאה</div></div>
+          <div class="m"><div class="v">${he(a.impressions||0)}</div><div class="k">חשיפות</div></div>
+          <div class="m"><div class="v">${(a.ctr||0).toFixed(1)}%</div><div class="k">CTR</div></div>
+          <div class="m"><div class="v">${he(a.videoViews||0)}</div><div class="k">צפיות</div></div>
+        </div>`;
+      }).join("") + '</div>';
+  }
 
   if (campaignLeads.length){
     html += '<div class="camp-leads"><h3>לידים מדף הנחיתה של הקמפיין (' + campaignLeads.length + ')</h3>' +
