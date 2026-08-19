@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>הילל אקנין · מערכות למידה לבעלי קורסים דיגיטליים</title>
+<meta name="description" content="אני לוקח את הקורס הדיגיטלי שלך כמו שהוא, ובונה סביבו מערכת למידה שגורמת לתלמידים להיכנס, להתקדם ולסיים." />
+<meta name="theme-color" content="#F4EFE6" />
+<meta property="og:title" content="הילל אקנין · מערכות למידה לבעלי קורסים דיגיטליים" />
+<meta property="og:description" content="הקורס שלך כמו שהוא, במעטפת שגורמת לתלמידים לסיים." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="he_IL" />
+<meta property="og:image" content="https://architect-of-learning.vercel.app/assets/og.jpg" />
+
+<style>
+  :root{
+    --paper:#F4EFE6; --paper-2:#ECE5D7; --ink:#14110D; --ink-soft:#4A4339;
+    --rule:rgba(20,17,13,.14); --ember:#C2410C; --ember-2:#E2570F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+    background:var(--paper); color:var(--ink); line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:28px 20px 60px}
+  h1{font-size:clamp(1.6rem,5.4vw,2.3rem);line-height:1.22;font-weight:800;letter-spacing:-.01em}
+  .sub{margin-top:14px;font-size:1.05rem;color:var(--ink-soft)}
+  .video{margin:26px 0;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+  form{background:var(--paper-2);border:1px solid var(--rule);border-radius:14px;padding:20px}
+  form h2{font-size:1.18rem;font-weight:800;margin-bottom:14px;text-align:center}
+  input{
+    width:100%;padding:15px 16px;margin-bottom:11px;font:inherit;font-size:16px;
+    border:1.5px solid var(--rule);border-radius:10px;background:#fff;color:var(--ink);
+  }
+  input:focus{outline:none;border-color:var(--ember)}
+  button{
+    width:100%;padding:19px;font:inherit;font-size:1.15rem;font-weight:800;cursor:pointer;
+    border:0;border-radius:10px;background:var(--ink);color:var(--paper);
+  }
+  button:hover{background:var(--ember)}
+  button:disabled{opacity:.6;cursor:default}
+  .note{margin-top:11px;font-size:.85rem;color:var(--ink-soft);text-align:center}
+  .err{display:none;margin-top:14px;padding:14px;border-radius:10px;background:#fdecea;color:#a3271a;font-size:.95rem;text-align:center}
+  .err a{color:#a3271a;font-weight:800}
+
+  h2.sec{margin:44px 0 6px;font-size:1.35rem;font-weight:800}
+  .secsub{color:var(--ink-soft);font-size:.98rem;margin-bottom:18px}
+  .portals{display:grid;gap:14px}
+  @media(min-width:560px){.portals{grid-template-columns:1fr 1fr}}
+  .portal{
+    display:block;border:1px solid var(--rule);border-radius:12px;overflow:hidden;
+    background:var(--paper-2);text-decoration:none;color:inherit;
+  }
+  .portal img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+  .portal b{display:block;padding:12px 14px 3px;font-size:1rem}
+  .portal span{display:block;padding:0 14px 13px;font-size:.88rem;color:var(--ink-soft)}
+  .about p{margin-top:13px;color:var(--ink-soft)}
+  footer{margin-top:46px;padding-top:18px;border-top:1px solid var(--rule);font-size:.83rem;color:var(--ink-soft);text-align:center}
+</style>
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2132323570952002');fbq('track','PageView');
+</script>
+</head>
+<body>
+
+<div class="wrap">
+
+  <h1>מהפכת הלמידה של 2026: איך באמצעות אלגוריתם מסתורי</h1>
+  <p class="sub">בניתי לעסקים כמו איתן עזריה, סקייל רווחי, ומכללה ל-NLP ״פורטל לימודים דופמיני״ שגורם ללקוחות שלהם ״להתמכר״ לתכנים, לסיים את הקורסים ולהפוך ללקוחות מעריצים וממליצים.</p>
+
+  <div class="video">
+    <iframe id="yt" src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1"
+      title="הדגמה חיה" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+  <form id="f" novalidate>
+    <h2>שיחת אסטרטגיה קצרה, בלי עלות</h2>
+    <input id="n" type="text" placeholder="השם שלך" autocomplete="name" required />
+    <input id="p" type="tel" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required />
+    <button type="submit">שריין לי שיחת אסטרטגיה</button>
+    <p class="note">בשיחה תדע איך לשפר את הקורס שלך בלי לשנות בו מילה.</p>
+  </form>
+  <div class="err" id="e">
+    לא הצלחנו לשמור את הפרטים. <a href="https://wa.me/972549116092" target="_blank" rel="noopener">כתוב לי ישירות בוואטסאפ</a>
+  </div>
+
+  <h2 class="sec">פורטלים חיים שבניתי</h2>
+  <p class="secsub">מערכות אמיתיות שרצות עכשיו עם תלמידים אמיתיים. תיכנס ותסתכל בעצמך.</p>
+  <div class="portals">
+    <a class="portal" href="https://eitan-azaria-portal.vercel.app" target="_blank" rel="noopener">
+      <img src="assets/portals/eitan.jpg" alt="איתן עזריה" loading="lazy" />
+      <b>איתן עזריה</b><span>פורטל הפודקאסט, מאות פרקים עם חבילות לימוד</span>
+    </a>
+    <a class="portal" href="https://kagan-portal.vercel.app" target="_blank" rel="noopener">
+      <img src="assets/portals/kagan.jpg" alt="ד״ר אריה קגן" loading="lazy" />
+      <b>המכללה ללימודי NLP</b><span>מסלול למידה מלא עם מעקב התקדמות</span>
+    </a>
+    <a class="portal" href="https://scale-rovchi-app.vercel.app" target="_blank" rel="noopener">
+      <img src="assets/portals/scale.jpg" alt="סקייל רווחי" loading="lazy" />
+      <b>סקייל רווחי</b><span>למעלה ממאה שיעורים וכלים בתוך הפורטל</span>
+    </a>
+    <a class="portal" href="https://www.therapist-home.com/" target="_blank" rel="noopener">
+      <img src="assets/portals/therapist.jpg" alt="בית המטפלים" loading="lazy" />
+      <b>בית המטפלים</b><span>פורטל למידה לעשרות מטפלים</span>
+    </a>
+  </div>
+
+  <div class="about">
+    <h2 class="sec">מי אני</h2>
+    <p>אני הילל אקנין. יש לך קורס דיגיטלי? אני לוקח אותו כמו שהוא, בלי לשנות בו מילה, ובונה סביבו מערכת למידה שגורמת לתלמידים שלך להיכנס, להתקדם, ולסיים אותו.</p>
+    <p>רוב התלמידים בקורסים דיגיטליים לא מסיימים. זה לא כי הם עצלנים, אלא כי החוויה לא בנויה להחזיר אותם. בקורס אמיתי שבניתי לו מערכת כזו, מי שלמד עם חוויית תרגול משחקית השלים פי 4 יותר שיעורים. אותו תוכן בדיוק, חוויה אחרת.</p>
+  </div>
+
+  <footer>הילל אקנין · מערכות למידה לבעלי קורסים דיגיטליים</footer>
+</div>
+
+<script>
+/* מעקב צפייה בסרטון — נטען אחרי הדף, לא חוסם את הרינדור.
+   נשלח יחד עם הליד כדי לדעת אם הוא באמת ראה לפני שהשאיר פרטים. */
+var vp = { pct:0, seconds:0, completed:false };
+(function(){
+  var t = document.createElement('script');
+  t.src = 'https://www.youtube.com/iframe_api';
+  document.body.appendChild(t);
+})();
+window.onYouTubeIframeAPIReady = function(){
+  var pl = new YT.Player('yt', { events: {
+    onStateChange: function(e){
+      if (e.data === YT.PlayerState.ENDED) vp.completed = true;
+      if (e.data === YT.PlayerState.PLAYING) {
+        if (window.__t) return;
+        window.__t = setInterval(function(){
+          if (!pl.getDuration) return;
+          var d = pl.getDuration(); if (!d) return;
+          var c = pl.getCurrentTime();
+          if (c/d > vp.pct) vp.pct = c/d;
+          vp.seconds = c;
+        }, 1000);
+      }
+    }
+  }});
+};
+
+document.getElementById('f').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var n = document.getElementById('n'), p = document.getElementById('p');
+  var name = (n.value||'').trim(), phone = (p.value||'').trim();
+  if (!name) { n.focus(); return; }
+  if (phone.replace(/\D/g,'').length < 9) { p.focus(); return; }
+  var btn = this.querySelector('button');
+  btn.disabled = true; btn.textContent = 'שולח…';
+  fetch('/api/lead', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      name:name, phone:phone, source:'landing-simple', page:'simple',
+      videoWatchedPct: Math.round(vp.pct*100), videoSeconds: vp.seconds, videoCompleted: vp.completed
+    })
+  }).then(function(r){
+    if (r.ok) { location.href = '/thank-you.html'; return; }
+    throw new Error('not_delivered');
+  }).catch(function(){
+    document.getElementById('f').style.display = 'none';
+    document.getElementById('e').style.display = 'block';
+  });
+});
+</script>
+</body>
+</html>
