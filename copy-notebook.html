@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>פנקס עריכה — כותרות index-simple.html</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --paper: #F4EFE6;
+    --paper-2: #ECE5D7;
+    --card: #FFFFFF;
+    --ink: #14110D;
+    --ink-soft: #4A4339;
+    --ink-faint: #6E6557;
+    --rule: rgba(20,17,13,0.14);
+    --ember: #C2410C;
+    --ember-2: #E2570F;
+    --forest: #1E4D3B;
+    --gold: #B7862B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Heebo", system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 80px;
+  }
+  h1, h2, h3, .brand {
+    font-family: "Frank Ruhl Libre", serif;
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 clamp(18px, 5vw, 40px); }
+
+  /* top banner */
+  .banner {
+    background: var(--ink); color: var(--paper);
+    padding: 14px 0; font-size: 0.92rem; text-align: center;
+  }
+  .banner b { color: #F2C879; }
+
+  header.page-head {
+    padding: clamp(36px, 7vh, 64px) 0 clamp(24px, 4vh, 40px);
+    border-bottom: 1px solid var(--rule);
+  }
+  header.page-head h1 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    font-weight: 900; letter-spacing: -0.01em; line-height: 1.3;
+  }
+  header.page-head p {
+    margin-top: 14px; color: var(--ink-soft); font-size: 1.02rem; max-width: 640px;
+  }
+  .rules {
+    margin-top: 22px; background: var(--card); border: 1px solid var(--rule);
+    border-radius: 14px; padding: 18px 20px; font-size: 0.92rem; color: var(--ink-soft);
+  }
+  .rules b { color: var(--ink); }
+  .rules ul { margin: 8px 0 0 0; padding-inline-start: 20px; }
+  .rules li { margin-bottom: 4px; }
+
+  /* toc */
+  nav.toc {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px;
+  }
+  nav.toc a {
+    font-size: 0.85rem; font-weight: 600; color: var(--forest);
+    background: var(--paper-2); border: 1px solid var(--rule);
+    padding: 7px 14px; border-radius: 999px; text-decoration: none;
+  }
+  nav.toc a:hover { background: var(--forest); color: #fff; }
+
+  /* category sections */
+  section.cat {
+    padding: clamp(40px, 6vh, 64px) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cat-label {
+    display: inline-block; font-size: 0.8rem; font-weight: 700; color: var(--ember);
+    letter-spacing: 0.02em; margin-bottom: 8px;
+  }
+  section.cat h2 {
+    font-size: clamp(1.35rem, 3vw, 1.8rem); font-weight: 700; letter-spacing: -0.01em;
+  }
+  section.cat .cat-note {
+    margin-top: 8px; color: var(--ink-faint); font-size: 0.92rem; max-width: 620px;
+  }
+
+  .current-box {
+    margin-top: 20px; background: var(--paper-2);
+    border: 1px dashed var(--ink-faint); border-radius: 12px;
+    padding: 16px 20px;
+  }
+  .current-box .tag {
+    font-size: 0.78rem; font-weight: 700; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .current-box p {
+    margin-top: 6px; color: var(--ink-soft); font-size: 1rem;
+  }
+
+  .candidates {
+    margin-top: 24px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .cand {
+    background: var(--card); border: 1px solid var(--rule); border-radius: 14px;
+    padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start;
+    box-shadow: 0 1px 8px rgba(20,17,13,0.04);
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .cand:focus-within {
+    border-color: var(--ember); box-shadow: 0 4px 16px rgba(194,65,12,0.12);
+  }
+  .cand .num {
+    flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--paper-2); color: var(--ink-soft); font-weight: 700; font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .cand-body { flex: 1; min-width: 0; }
+  .cand .angle {
+    display: inline-block; font-size: 0.72rem; font-weight: 700; color: var(--forest);
+    background: rgba(30,77,59,0.08); border-radius: 6px; padding: 2px 8px; margin-bottom: 6px;
+  }
+  .cand-text {
+    font-size: 1.08rem; font-weight: 500; color: var(--ink);
+    outline: none; cursor: text; border-radius: 6px; padding: 2px 4px; margin: -2px -4px;
+  }
+  .cand-text:focus { background: rgba(194,65,12,0.05); }
+  .cand-text[data-cta="true"] {
+    display: inline-block; font-weight: 700; color: #fff; background: var(--ember);
+    padding: 10px 22px; border-radius: 999px; font-size: 1rem;
+  }
+  .cand-sub { margin-top: 6px; color: var(--ink-faint); font-size: 0.88rem; }
+  .cand-sub .cand-text { font-size: 0.95rem; font-weight: 400; color: var(--ink-soft); }
+
+  .footnote {
+    margin-top: 10px; font-size: 0.82rem; color: var(--ink-faint); background: var(--paper-2);
+    border-radius: 8px; padding: 8px 12px; border-inline-start: 3px solid var(--gold);
+  }
+
+  footer.page-foot {
+    text-align: center; padding: 40px 0; color: var(--ink-faint); font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+
+  <div class="banner">📝 פנקס עריכה מקומי — לא <b>index-simple.html</b> עצמו. עריכה בדפדפן בלבד, כלום לא נשמר אוטומטית. סמן/ערוך/העתק את מה שנבחר.</div>
+
+  <div class="wrap">
+    <header class="page-head">
+      <h1>פנקס בחירת כותרות — דף הנחיתה הפשוט</h1>
+      <p>10 זוויות ניסוח אמיתיות לכל אחד מ-6 האלמנטים בדף. הטקסט הקיים מסומן "נוכחי" בכל קטגוריה, לצדו הצעות חדשות בלבד. כל תיבת הצעה ניתנת לעריכה ישירה — אפשר לשנות מילה, למזג שתי הצעות, או פשוט לסמן את הזוכה.</p>
+
+      <div class="rules">
+        <b>מה נאמן כאן:</b>
+        <ul>
+          <li>אווטאר: בעלי עסקים עם קורס דיגיטלי, כמה מאות תלמידים לפחות (לא נכתב "30K לחודש" בקופי מוצג ללקוח — זה סינון פנימי בלבד).</li>
+          <li>אפס עדויות מומצאות, אפס מספרים מומצאים. המספר היחיד שמופיע כאן (פי 4) מגיע מניתוח דאטה אמיתי של פורטל בית המטפלים — מסומן בהערה נפרדת לבדיקה לפני שימוש.</li>
+          <li>מילים אסורות: בוט, צ'אטבוט, אוטומציה — לא הופיעו כאן.</li>
+          <li>"מערכת קורסים" / "מערכת למידה" מועדף על "פורטל" (החלטת פגישת רם 29.7 — פורטל נשמע זול).</li>
+        </ul>
+      </div>
+
+      <nav class="toc">
+        <a href="#c1">1. כותרת ראשית (H1)</a>
+        <a href="#c2">2. תת־כותרת</a>
+        <a href="#c3">3. CTA ראשי</a>
+        <a href="#c4">4. כותרת הדוגמאות</a>
+        <a href="#c5">5. כותרת ההתנגדות</a>
+        <a href="#c6">6. כותרת הטופס</a>
+      </nav>
+    </header>
+
+    <!-- 1. HERO H1 -->
+    <section class="cat" id="c1">
+      <span class="cat-label">קטגוריה 1 · הכי חשוב</span>
+      <h2>כותרת ראשית (Hero H1)</h2>
+      <p class="cat-note">השורה הראשונה שכל מבקר רואה. חייבת לפגוע ב-A1 (אחוזי סיום על הרצפה) או ב-A2 (הספקנות "אני מוכר אוויר טכנולוגי") תוך שנייה וחצי.</p>
+
+      <div class="current-box">
+        <span class="tag">נוכחי בדף</span>
+        <p>מכרת את הקורס. אז למה רוב מי ששילם בקושי פתח אותו?</p>
+      </div>
+
+      <div class="candidates">
+        <div class="cand"><div class="num">1</div><div class="cand-body">
+          <span class="angle">שאלה ישירה</span>
+          <div class="cand-text" contenteditable="true">כמה מהתלמידים ששילמו לך החודש בכלל פתחו שיעור שני?</div>
+        </div></div>
+
+        <div class="cand"><div class="num">2</div><div class="cand-body">
+          <span class="angle">ניגוד / היפוך ציפייה</span>
+          <div class="cand-text" contenteditable="true">הבעיה בקורס שלך היא לא התוכן. היא מה שקורה אחרי שהוא נמכר.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">3</div><div class="cand-body">
+          <span class="angle">מספר קשה — מהפורטל החי</span>
+          <div class="cand-text" contenteditable="true">בפורטל שבניתי, מספר השיעורים שמושלמים קפץ פי 4. אותו קורס, אותם אנשים, רק חוויה אחרת.</div>
+          <div class="footnote">⚠️ לבדוק לפני שימוש: פי 4 = ניתוח דאטה אמיתי (17.6 מול 4.4 שיעורים בממוצע, בית המטפלים, קורס חינם, n=41 מול 299 — primer.md 22.7.2026). אל תשלב עם המספר הישן פי 3.4 שהופיע בגרסה קודמת של אותו סקשן.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">4</div><div class="cand-body">
+          <span class="angle">סיפור מיני / דימוי מוכר</span>
+          <div class="cand-text" contenteditable="true">התלמיד שלך סיים אתמול שלושה פרקים בנטפליקס, ולא פתח שיעור אחד ששילם עליו אלפי שקלים.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">5</div><div class="cand-body">
+          <span class="angle">תוצאה / הבטחה</span>
+          <div class="cand-text" contenteditable="true">אני בונה לבעלי קורסים דיגיטליים מערכת שגורמת ללקוחות שלהם לסיים, לא רק לקנות.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">6</div><div class="cand-body">
+          <span class="angle">ניגוד / היפוך</span>
+          <div class="cand-text" contenteditable="true">אתה לא צריך עוד מודול. אתה צריך שהתלמיד יפתח את מה שכבר צילמת.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">7</div><div class="cand-body">
+          <span class="angle">כאב — הכנסה עתידית</span>
+          <div class="cand-text" contenteditable="true">בלי תלמידים שסיימו, אין לך עדות אחת, ואין למי למכור את המוצר הבא.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">8</div><div class="cand-body">
+          <span class="angle">דחיפות רכה</span>
+          <div class="cand-text" contenteditable="true">בעוד שנה כל אחד יבנה מערכת קורסים עם AI. השאלה שתישאר היא מי גורם לתלמידים להישאר בפנים.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">9</div><div class="cand-body">
+          <span class="angle">הפתעה</span>
+          <div class="cand-text" contenteditable="true">אתה לא מתחרה על הזמן של התלמיד שלך מול קורסים אחרים. אתה מתחרה מולו כל ערב מול טיקטוק.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">10</div><div class="cand-body">
+          <span class="angle">כאב ישיר — וריאציה חדה</span>
+          <div class="cand-text" contenteditable="true">מכרת קורס דיגיטלי. כמה מהקונים בכלל זוכרים שהוא קיים?</div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- 2. HERO SUBTITLE -->
+    <section class="cat" id="c2">
+      <span class="cat-label">קטגוריה 2</span>
+      <h2>תת־כותרת Hero</h2>
+      <p class="cat-note">מסבירה מה הילל בדיוק עושה, מיד אחרי שה-H1 תפס תשומת לב.</p>
+
+      <div class="current-box">
+        <span class="tag">נוכחי בדף</span>
+        <p>אני הילל אקנין. אני לוקח קורסים דיגיטליים קיימים ובונה להם מערכת קורסים שגורמת ללקוחות לצפות בשיעורים, לסיים אותם, להמליץ לחברים ולחזור לקנות עוד.</p>
+      </div>
+
+      <div class="candidates">
+        <div class="cand"><div class="num">1</div><div class="cand-body">
+          <span class="angle">תוצאה</span>
+          <div class="cand-text" contenteditable="true">אני הילל אקנין. אני בונה לבעלי קורסים דיגיטליים מערכת שגורמת ללקוח לפתוח שיעור אחרי שיעור, במקום לשלם ולהיעלם.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">2</div><div class="cand-body">
+          <span class="angle">שרשרת תועלות מדויקת</span>
+          <div class="cand-text" contenteditable="true">אני לוקח את הקורס שכבר צילמת ובונה סביבו מערכת שמניעה את הלקוח שלך לצפות, לסיים, להמליץ ולחזור לקנות עוד.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">3</div><div class="cand-body">
+          <span class="angle">כאב ישיר</span>
+          <div class="cand-text" contenteditable="true">רוב הקורסים הדיגיטליים נגמרים באותו מקום: הלקוח משלם, פותח שיעור אחד או שניים, ונעלם. אני בונה את החלק שמונע את זה.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">4</div><div class="cand-body">
+          <span class="angle">ניגוד</span>
+          <div class="cand-text" contenteditable="true">אני לא בונה עוד קורס. אני בונה את הסיבה שהתלמיד שלך יפתח את הקורס שכבר יש לך שוב מחר.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">5</div><div class="cand-body">
+          <span class="angle">פשטות / ישיר</span>
+          <div class="cand-text" contenteditable="true">אני הילל אקנין, ואני עוזר לבעלי קורסים דיגיטליים לגרום ללקוחות שלהם באמת לסיים את מה שקנו.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">6</div><div class="cand-body">
+          <span class="angle">סקרנות</span>
+          <div class="cand-text" contenteditable="true">יש הבדל אחד בין קורס שנשכח לקורס שנגמר, וזה לא התוכן. זה מה שאני בונה סביבו.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">7</div><div class="cand-body">
+          <span class="angle">תוצאה עסקית</span>
+          <div class="cand-text" contenteditable="true">אני בונה לבעלי קורסים דיגיטליים מערכת שהופכת לקוחות ששילמו פעם אחת ללקוחות שממליצים, חוזרים וקונים עוד.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">8</div><div class="cand-body">
+          <span class="angle">ניגוד טכנולוגיה/פסיכולוגיה</span>
+          <div class="cand-text" contenteditable="true">לא עוד טכנולוגיה. אני בונה את החוויה שגורמת ללקוח שלך להישאר בקורס, לא רק לקנות אותו.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">9</div><div class="cand-body">
+          <span class="angle">כאב ספציפי</span>
+          <div class="cand-text" contenteditable="true">אם יש לך קורס דיגיטלי ורוב הקונים לא מסיימים אותו, אני בונה את המערכת שמחזירה אותם פנימה שיעור אחר שיעור.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">10</div><div class="cand-body">
+          <span class="angle">ישיר וקצר</span>
+          <div class="cand-text" contenteditable="true">אני הילל אקנין. לוקח קורס דיגיטלי קיים ובונה לו מערכת שגורמת ללקוחות באמת להשתמש בו.</div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- 3. CTA -->
+    <section class="cat" id="c3">
+      <span class="cat-label">קטגוריה 3</span>
+      <h2>CTA הראשי (טקסט הכפתור)</h2>
+      <p class="cat-note">חייב להישאר קצר מספיק לכפתור. הכל כאן ניתן לעריכה ישירה, כולל בתצוגת הכפתור.</p>
+
+      <div class="current-box">
+        <span class="tag">נוכחי בדף</span>
+        <p>רוצה מערכת כזאת? דבר איתי</p>
+      </div>
+
+      <div class="candidates">
+        <div class="cand"><div class="num">1</div><div class="cand-body">
+          <span class="angle">ישיר</span>
+          <div class="cand-text" data-cta="true" contenteditable="true">דבר איתי על הקורס שלך</div>
+        </div></div>
+
+        <div class="cand"><div class="num">2</div><div class="cand-body">
+          <span class="angle">סקרנות</span>
+          <div class="cand-text" data-cta="true" contenteditable="true">רוצה לראות איך זה עובד?</div>
+        </div></div>
+
+        <div class="cand"><div class="num">3</div><div class="cand-body">
+          <span class="angle">מוקד בלקוח שלו</span>
+          <div class="cand-text" data-cta="true" contenteditable="true">בוא נדבר על התלמידים שלך</div>
+        </div></div>
+
+        <div class="cand"><div class="num">4</div><div class="cand-body">
+          <span class="angle">הצעת ערך</span>
+          <div class="cand-text" data-cta="true" contenteditable="true">תראה לי את הקורס, אני אראה לך את הפער</div>
+        </div></div>
+
+        <div class="cand"><div class="num">5</div><div class="cand-body">
+          <span class="angle">שאלה / תוצאה</span>
+          <div class="cand-text" data-cta="true" contenteditable="true">רוצה שהתלמידים שלך יתחילו לסיים?</div>
+        </div></div>
+
+        <div class="cand"><div class="num">6</div><div class="cand-body">
+          <span class="angle">ענייני</span>
+          <div class="cand-text" data-cta="true" contenteditable="true">קבע איתי שיחה קצרה</div>
+        </div></div>
+
+        <div class="cand"><div class="num">7</div><div class="cand-body">
+          <span class="angle">אישי</span>
+          <div class="cand-text" data-cta="true" contenteditable="true">ספר לי על הקורס שלך</div>
+        </div></div>
+
+        <div class="cand"><div class="num">8</div><div class="cand-body">
+          <span class="angle">קצר ובוטח</span>
+          <div class="cand-text" data-cta="true" contenteditable="true">בוא נבנה לך את זה</div>
+        </div></div>
+
+        <div class="cand"><div class="num">9</div><div class="cand-body">
+          <span class="angle">אישור מיידי</span>
+          <div class="cand-text" data-cta="true" contenteditable="true">כן, אני רוצה לדבר</div>
+        </div></div>
+
+        <div class="cand"><div class="num">10</div><div class="cand-body">
+          <span class="angle">דחיפות רכה</span>
+          <div class="cand-text" data-cta="true" contenteditable="true">דבר איתי, זה מתחיל בשיחה קצרה</div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- 4. SYSTEMS SECTION TITLE -->
+    <section class="cat" id="c4">
+      <span class="cat-label">קטגוריה 4</span>
+      <h2>כותרת סקשן הדוגמאות (.systems)</h2>
+      <p class="cat-note">מובילה לשלושת כרטיסי הדוגמאות (בית המטפלים / סקייל רווחי / איתן עזריה). לכל כותרת מוצעת נוספה גם הצעת תת־כותרת תואמת, שתיהן ניתנות לעריכה.</p>
+
+      <div class="current-box">
+        <span class="tag">נוכחי בדף</span>
+        <p>במקום שאני אספר לך, בוא תראה מבפנים<br><span style="font-size:0.9em">תת־כותרת: שלוש מערכות חיות שבניתי. לחץ ותסתכל בעצמך.</span></p>
+      </div>
+
+      <div class="candidates">
+        <div class="cand"><div class="num">1</div><div class="cand-body">
+          <span class="angle">ניגוד — לא הבטחה, הוכחה</span>
+          <div class="cand-text" contenteditable="true">שלוש מערכות שבניתי, לא שלוש הבטחות</div>
+          <div class="cand-sub">תת־כותרת: <span class="cand-text" contenteditable="true">כולן חיות עכשיו, עם תלמידים אמיתיים בפנים</span></div>
+        </div></div>
+
+        <div class="cand"><div class="num">2</div><div class="cand-body">
+          <span class="angle">ישיר</span>
+          <div class="cand-text" contenteditable="true">אל תיקח את המילה שלי. תיכנס ותבדוק בעצמך</div>
+          <div class="cand-sub">תת־כותרת: <span class="cand-text" contenteditable="true">שלוש מערכות, לחיצה אחת מכל אחת מהן</span></div>
+        </div></div>
+
+        <div class="cand"><div class="num">3</div><div class="cand-body">
+          <span class="angle">תוצאה</span>
+          <div class="cand-text" contenteditable="true">ככה נראית מערכת שהתלמידים באמת משתמשים בה</div>
+          <div class="cand-sub">תת־כותרת: <span class="cand-text" contenteditable="true">שלוש דוגמאות חיות, לא הדמיה</span></div>
+        </div></div>
+
+        <div class="cand"><div class="num">4</div><div class="cand-body">
+          <span class="angle">עובדתי</span>
+          <div class="cand-text" contenteditable="true">שלוש מערכות חיות. אתה יכול להיכנס אליהן עכשיו</div>
+          <div class="cand-sub">תת־כותרת: <span class="cand-text" contenteditable="true">בלי הרשמה, בלי המתנה</span></div>
+        </div></div>
+
+        <div class="cand"><div class="num">5</div><div class="cand-body">
+          <span class="angle">ניגוד — לא מוקאפ</span>
+          <div class="cand-text" contenteditable="true">לא מוקאפ, לא הדגמה. מערכות שרצות היום עם תלמידים אמיתיים</div>
+          <div class="cand-sub">תת־כותרת: <span class="cand-text" contenteditable="true">לחץ על אחת מהן ותסתכל בעצמך</span></div>
+        </div></div>
+
+        <div class="cand"><div class="num">6</div><div class="cand-body">
+          <span class="angle">הזמנה</span>
+          <div class="cand-text" contenteditable="true">תראה מה בניתי לפני שתחליט אם זה בשבילך</div>
+          <div class="cand-sub">תת־כותרת: <span class="cand-text" contenteditable="true">שלוש מערכות חיות, אפס מצגת</span></div>
+        </div></div>
+
+        <div class="cand"><div class="num">7</div><div class="cand-body">
+          <span class="angle">ניגוד — אפס מכירה</span>
+          <div class="cand-text" contenteditable="true">שלוש דוגמאות, אפס שקפי מכירה</div>
+          <div class="cand-sub">תת־כותרת: <span class="cand-text" contenteditable="true">מה שאתה רואה זה מה שיש</span></div>
+        </div></div>
+
+        <div class="cand"><div class="num">8</div><div class="cand-body">
+          <span class="angle">הפתעה — עצמאיות המערכת</span>
+          <div class="cand-text" contenteditable="true">כל אחת מהמערכות האלה עובדת היום, בלי שאני נמצא שם</div>
+          <div class="cand-sub">תת־כותרת: <span class="cand-text" contenteditable="true">שלוש מערכות חיות שבניתי. לחץ ותסתכל בעצמך</span></div>
+        </div></div>
+
+        <div class="cand"><div class="num">9</div><div class="cand-body">
+          <span class="angle">הזמנה — חברה טובה</span>
+          <div class="cand-text" contenteditable="true">בוא תסתכל מבפנים על מה שבעלי עסקים אחרים כבר מריצים</div>
+          <div class="cand-sub">תת־כותרת: <span class="cand-text" contenteditable="true">שלוש מערכות, כל אחת מנישה אחרת</span></div>
+        </div></div>
+
+        <div class="cand"><div class="num">10</div><div class="cand-body">
+          <span class="angle">הפתעה — תחושה</span>
+          <div class="cand-text" contenteditable="true">זה לא נראה כמו קורס. זה נראה כמו משהו שרוצים לפתוח</div>
+          <div class="cand-sub">תת־כותרת: <span class="cand-text" contenteditable="true">שלוש מערכות חיות, תשפוט בעצמך</span></div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- 5. OBJECTION SECTION TITLE -->
+    <section class="cat" id="c5">
+      <span class="cat-label">קטגוריה 5</span>
+      <h2>כותרת סקשן ההתנגדות ("בונה לבד")</h2>
+      <p class="cat-note">פוגעת ישירות ב-A2: הספקנות "בעוד שנה כל אחד יבנה דף כזה עם AI, אז למה לשלם להילל". הבידול = פסיכולוגיה/התמדה, לא טכנולוגיה.</p>
+
+      <div class="current-box">
+        <span class="tag">נוכחי בדף</span>
+        <p>כן, גם אתה תבנה דף כזה עם AI. השאלה אם התלמידים שלך יישארו בו.</p>
+      </div>
+
+      <div class="candidates">
+        <div class="cand"><div class="num">1</div><div class="cand-body">
+          <span class="angle">הודאה + היפוך</span>
+          <div class="cand-text" contenteditable="true">נכון, אתה יכול לבנות את זה לבד. השאלה מה קורה אחרי שבנית.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">2</div><div class="cand-body">
+          <span class="angle">דחיפות רכה — עתיד</span>
+          <div class="cand-text" contenteditable="true">בעוד שנה כל אחד יבנה מסך כזה עם AI תוך יום. הבעיה שלך לא במסך.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">3</div><div class="cand-body">
+          <span class="angle">ניגוד חד</span>
+          <div class="cand-text" contenteditable="true">לבנות מערכת יודע כל אחד. לגרום למישהו לחזור אליה, לא.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">4</div><div class="cand-body">
+          <span class="angle">מיצוב אישי</span>
+          <div class="cand-text" contenteditable="true">אתה לא צריך אותי כדי לבנות עמוד. אתה צריך אותי כדי שמישהו יישאר בו.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">5</div><div class="cand-body">
+          <span class="angle">הפתעה — גבול הטכנולוגיה</span>
+          <div class="cand-text" contenteditable="true">AI כבר בונה מסכים יפים לבד. הוא עדיין לא בונה סיבה לחזור מחר.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">6</div><div class="cand-body">
+          <span class="angle">שאלה ישירה</span>
+          <div class="cand-text" contenteditable="true">כן, זה נראה פשוט לבנות. השאלה שאתה לא שואל היא למה רוב התלמידים נוטשים גם ככה.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">7</div><div class="cand-body">
+          <span class="angle">מיצוב ישיר</span>
+          <div class="cand-text" contenteditable="true">אני לא מוכר לך טכנולוגיה שתתיישן בעוד שנה. אני מוכר לך את הסיבה שמישהו נשאר.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">8</div><div class="cand-body">
+          <span class="angle">הודאה חופשית</span>
+          <div class="cand-text" contenteditable="true">תבנה לבד אם בא לך. רק תדע שהמסך הוא הכי קטן מהאתגר.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">9</div><div class="cand-body">
+          <span class="angle">ניגוד — ידע נדיר</span>
+          <div class="cand-text" contenteditable="true">כל אחד יבנה עמוד עם AI. לא כל אחד יודע למה תלמיד עוזב אחרי שיעור שני.</div>
+        </div></div>
+
+        <div class="cand"><div class="num">10</div><div class="cand-body">
+          <span class="angle">מיקוד ברגע הקריטי</span>
+          <div class="cand-text" contenteditable="true">מה שאני מוכר לא נמצא במסך. הוא נמצא בשנייה שבה התלמיד מחליט אם להמשיך.</div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- 6. CONTACT FORM TITLE -->
+    <section class="cat" id="c6">
+      <span class="cat-label">קטגוריה 6</span>
+      <h2>כותרת סקשן הטופס</h2>
+      <p class="cat-note">הרגע האחרון לפני שהמבקר משאיר פרטים. חייבת להוריד חיכוך, לא להוסיף לחץ.</p>
+
+      <div class="current-box">
+        <span class="tag">נוכחי בדף</span>
+        <p>רוצה מערכת כזאת לקורס שלך?</p>
+      </div>
+
+      <div class="candidates">
+        <div class="cand"><div class="num">1</div><div class="cand-body">
+          <span class="angle">התאמה, לא מכירה</span>
+          <div class="cand-text" contenteditable="true">בוא נראה אם זה מתאים לקורס שלך</div>
+        </div></div>
+
+        <div class="cand"><div class="num">2</div><div class="cand-body">
+          <span class="angle">פעולה ברורה</span>
+          <div class="cand-text" contenteditable="true">תשאיר פרטים, אני מתקשר תוך יום</div>
+        </div></div>
+
+        <div class="cand"><div class="num">3</div><div class="cand-body">
+          <span class="angle">שאלה ישירה</span>
+          <div class="cand-text" contenteditable="true">מוכן לראות את זה על הקורס שלך?</div>
+        </div></div>
+
+        <div class="cand"><div class="num">4</div><div class="cand-body">
+          <span class="angle">הורדת חיכוך</span>
+          <div class="cand-text" contenteditable="true">שיחה קצרה, אפס עלות, אפס לחץ</div>
+        </div></div>
+
+        <div class="cand"><div class="num">5</div><div class="cand-body">
+          <span class="angle">תוצאה</span>
+          <div class="cand-text" contenteditable="true">רוצה שהתלמידים שלך יתחילו לסיים שיעורים?</div>
+        </div></div>
+
+        <div class="cand"><div class="num">6</div><div class="cand-body">
+          <span class="angle">ניגוד — לא טכנולוגיה</span>
+          <div class="cand-text" contenteditable="true">בוא נדבר על הקורס שלך, לא על טכנולוגיה</div>
+        </div></div>
+
+        <div class="cand"><div class="num">7</div><div class="cand-body">
+          <span class="angle">הצעת ערך קונקרטית</span>
+          <div class="cand-text" contenteditable="true">השאר טלפון, נראה יחד איפה אתה מאבד תלמידים</div>
+        </div></div>
+
+        <div class="cand"><div class="num">8</div><div class="cand-body">
+          <span class="angle">כאב A2 ישיר</span>
+          <div class="cand-text" contenteditable="true">מוכן להפסיק למכור אוויר?</div>
+        </div></div>
+
+        <div class="cand"><div class="num">9</div><div class="cand-body">
+          <span class="angle">בקשה קטנה</span>
+          <div class="cand-text" contenteditable="true">תן לי חמש דקות טלפון על הקורס שלך</div>
+        </div></div>
+
+        <div class="cand"><div class="num">10</div><div class="cand-body">
+          <span class="angle">פתוח, לא סוגר</span>
+          <div class="cand-text" contenteditable="true">כתוב לי, ובוא נראה אם יש כאן התאמה</div>
+        </div></div>
+      </div>
+    </section>
+
+    <footer class="page-foot">
+      פנקס עריכה מקומי · site/copy-notebook.html · לא מקושר ל-index-simple.html · לא נדחף, לא פורסם
+    </footer>
+  </div>
+
+</body>
+</html>

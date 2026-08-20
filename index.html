@@ -6,6 +6,10 @@
 <title>הילל אקנין · מערכות למידה לבעלי קורסים דיגיטליים</title>
 <meta name="description" content="אני לוקח את הקורס הדיגיטלי שלך כמו שהוא, ובונה סביבו מערכת למידה שגורמת לתלמידים להיכנס, להתקדם ולסיים." />
 <meta name="theme-color" content="#F4EFE6" />
+<link rel="preconnect" href="https://i.ytimg.com" />
+<link rel="preconnect" href="https://www.youtube.com" />
+<link rel="dns-prefetch" href="https://www.clarity.ms" />
+<link rel="dns-prefetch" href="https://connect.facebook.net" />
 <meta property="og:title" content="הילל אקנין · מערכות למידה לבעלי קורסים דיגיטליים" />
 <meta property="og:description" content="הקורס שלך כמו שהוא, במעטפת שגורמת לתלמידים לסיים." />
 <meta property="og:type" content="website" />
@@ -55,6 +59,15 @@
 
   .video{margin-top:24px;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
   .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* חזית סרטון: תמונה + כפתור נגן. הנגן האמיתי נטען רק בלחיצה
+     (חוסך כ-1MB וכ-2-3 שניות בטעינה הראשונה, בדיוק איפה שהמודעה נוחתת). */
+  .ytf{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:#000;cursor:pointer;display:block}
+  .ytf img{width:100%;height:100%;object-fit:cover;display:block}
+  .ytf span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:68px;height:48px;border-radius:12px;background:rgba(20,17,13,.78);
+    display:flex;align-items:center;justify-content:center;transition:background .18s}
+  .ytf:hover span,.ytf:focus-visible span{background:var(--ember)}
+  .ytf span svg{width:22px;height:22px;fill:#fff;margin-inline-start:3px}
 
   .portals{display:grid;gap:14px;margin-top:20px}
   @media(min-width:560px){.portals{grid-template-columns:1fr 1fr}}
@@ -116,9 +129,11 @@ fbq('init','2132323570952002');fbq('track','PageView');
     <p class="kicker">יש לך קורס/ים דיגיטלים עם כמה עשרות תלמידים לפחות, ואתה עדיין משתמש במערכת קורסים מיושנת ומשעממת?</p>
     <h1>מהפכת הלמידה של 2026: <em>איך באמצעות אלגוריתם חכם</em></h1>
     <p class="hero-sub">בניתי לעסקים כמו איתן עזריה, סקייל רווחי, ומכללה ל-NLP ״פורטל לימודים דופמיני״ שגורם ללקוחות שלהם ״להתמכר״ לתכנים, לסיים את הקורסים ולהפוך ללקוחות מעריצים וממליצים.</p>
-    <div class="video">
-      <iframe id="yt" src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1"
-        title="הדגמה חיה · 8:40" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="video" id="vwrap">
+      <button class="ytf" id="ytf" type="button" aria-label="נגן את הסרטון">
+        <img src="https://i.ytimg.com/vi/bF0atlGw0T4/maxresdefault.jpg" alt="הדגמה חיה של פורטל למידה" width="1280" height="720" fetchpriority="high" />
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+      </button>
     </div>
     <a href="#contact" class="btn">שיחת אסטרטגיה בלי עלות</a>
   </div>
@@ -197,11 +212,17 @@ document.getElementById('year').textContent = new Date().getFullYear();
 /* מעקב צפייה בסרטון — נטען אחרי הדף, לא חוסם רינדור.
    נשלח יחד עם הליד כדי לדעת אם הוא באמת ראה לפני שהשאיר פרטים. */
 var vp = { pct:0, seconds:0, completed:false };
-(function(){
+
+/* לחיצה על החזית = מחליפים לנגן אמיתי עם autoplay ורק אז מושכים את ה-API.
+   לפני הלחיצה הדף לא נוגע ביוטיוב בכלל. */
+document.getElementById('ytf').addEventListener('click', function(){
+  var w = document.getElementById('vwrap');
+  w.innerHTML = '<iframe id="yt" src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1&autoplay=1" ' +
+    'title="הדגמה חיה · 8:40" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
   var t = document.createElement('script');
   t.src = 'https://www.youtube.com/iframe_api';
   document.body.appendChild(t);
-})();
+}, { once:true });
 window.onYouTubeIframeAPIReady = function(){
   var pl = new YT.Player('yt', { events: {
     onStateChange: function(e){
