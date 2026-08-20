@@ -15,40 +15,48 @@
 <style>
   :root{
     --paper:#F4EFE6; --paper-2:#ECE5D7; --ink:#14110D; --ink-soft:#4A4339;
-    --rule:rgba(20,17,13,.14); --ember:#C2410C; --ember-2:#E2570F;
+    --ink-faint:#6E6557; --rule:rgba(20,17,13,.14); --ember:#C2410C; --ember-2:#E2570F;
   }
   *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{
     font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
     background:var(--paper); color:var(--ink); line-height:1.6;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:640px;margin:0 auto;padding:28px 20px 60px}
-  h1{font-size:clamp(1.6rem,5.4vw,2.3rem);line-height:1.22;font-weight:800;letter-spacing:-.01em}
-  .sub{margin-top:14px;font-size:1.05rem;color:var(--ink-soft)}
-  .video{margin:26px 0;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
+  .wrap{max-width:660px;margin:0 auto;padding:0 20px}
+  section{padding-block:clamp(38px,7vw,60px)}
+  section + section{border-top:1px solid var(--rule)}
+
+  .kicker{
+    display:block;font-weight:700;font-size:.95rem;color:var(--ember);
+    line-height:1.5;margin-bottom:16px;
+  }
+  h1{font-size:clamp(1.7rem,5.6vw,2.5rem);line-height:1.18;font-weight:800;letter-spacing:-.015em}
+  h1 em{font-style:normal;color:var(--ember)}
+  .hero-sub{margin-top:18px;font-size:1.06rem;color:var(--ink-soft)}
+  .hero{text-align:center;padding-top:clamp(34px,6vw,56px)}
+
+  .btn{
+    display:inline-block;width:100%;margin-top:26px;padding:19px 24px;
+    font:inherit;font-size:1.12rem;font-weight:800;text-align:center;cursor:pointer;
+    border:0;border-radius:10px;background:var(--ink);color:var(--paper);text-decoration:none;
+  }
+  .btn:hover{background:var(--ember)}
+  .btn:disabled{opacity:.6;cursor:default}
+
+  .proof{display:flex;flex-direction:column;gap:9px;font-size:.97rem;color:var(--ink-soft);text-align:center}
+  .proof b{color:var(--ink);font-weight:700}
+
+  h2{font-size:clamp(1.35rem,4vw,1.9rem);font-weight:800;line-height:1.25;letter-spacing:-.01em}
+  .lead-p{margin-top:14px;color:var(--ink-soft)}
+  .center{text-align:center}
+
+  .video{margin-top:22px;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
   .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .afterline{margin-top:20px;color:var(--ink-soft)}
 
-  form{background:var(--paper-2);border:1px solid var(--rule);border-radius:14px;padding:20px}
-  form h2{font-size:1.18rem;font-weight:800;margin-bottom:14px;text-align:center}
-  input{
-    width:100%;padding:15px 16px;margin-bottom:11px;font:inherit;font-size:16px;
-    border:1.5px solid var(--rule);border-radius:10px;background:#fff;color:var(--ink);
-  }
-  input:focus{outline:none;border-color:var(--ember)}
-  button{
-    width:100%;padding:19px;font:inherit;font-size:1.15rem;font-weight:800;cursor:pointer;
-    border:0;border-radius:10px;background:var(--ink);color:var(--paper);
-  }
-  button:hover{background:var(--ember)}
-  button:disabled{opacity:.6;cursor:default}
-  .note{margin-top:11px;font-size:.85rem;color:var(--ink-soft);text-align:center}
-  .err{display:none;margin-top:14px;padding:14px;border-radius:10px;background:#fdecea;color:#a3271a;font-size:.95rem;text-align:center}
-  .err a{color:#a3271a;font-weight:800}
-
-  h2.sec{margin:44px 0 6px;font-size:1.35rem;font-weight:800}
-  .secsub{color:var(--ink-soft);font-size:.98rem;margin-bottom:18px}
-  .portals{display:grid;gap:14px}
+  .portals{display:grid;gap:14px;margin-top:20px}
   @media(min-width:560px){.portals{grid-template-columns:1fr 1fr}}
   .portal{
     display:block;border:1px solid var(--rule);border-radius:12px;overflow:hidden;
@@ -57,8 +65,21 @@
   .portal img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
   .portal b{display:block;padding:12px 14px 3px;font-size:1rem}
   .portal span{display:block;padding:0 14px 13px;font-size:.88rem;color:var(--ink-soft)}
-  .about p{margin-top:13px;color:var(--ink-soft)}
-  footer{margin-top:46px;padding-top:18px;border-top:1px solid var(--rule);font-size:.83rem;color:var(--ink-soft);text-align:center}
+
+  .about p{margin-top:14px;color:var(--ink-soft)}
+
+  .finale{background:var(--paper-2);border-radius:0}
+  form{margin-top:24px}
+  input{
+    width:100%;padding:15px 16px;margin-bottom:11px;font:inherit;font-size:16px;
+    border:1.5px solid var(--rule);border-radius:10px;background:#fff;color:var(--ink);
+  }
+  input:focus{outline:none;border-color:var(--ember)}
+  form .btn{margin-top:4px}
+  .err{display:none;margin-top:16px;padding:14px;border-radius:10px;background:#fdecea;color:#a3271a;font-size:.95rem;text-align:center}
+  .err a{color:#a3271a;font-weight:800}
+
+  footer{padding:20px 0 34px;font-size:.83rem;color:var(--ink-faint);text-align:center;border-top:1px solid var(--rule)}
 </style>
 
 <!-- Meta Pixel -->
@@ -73,59 +94,99 @@ fbq('init','2132323570952002');fbq('track','PageView');
 </head>
 <body>
 
-<div class="wrap">
-
-  <h1>מהפכת הלמידה של 2026: איך באמצעות אלגוריתם מסתורי</h1>
-  <p class="sub">בניתי לעסקים כמו איתן עזריה, סקייל רווחי, ומכללה ל-NLP ״פורטל לימודים דופמיני״ שגורם ללקוחות שלהם ״להתמכר״ לתכנים, לסיים את הקורסים ולהפוך ללקוחות מעריצים וממליצים.</p>
-
-  <div class="video">
-    <iframe id="yt" src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1"
-      title="הדגמה חיה" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <p class="kicker">יש לך קורס/ים דיגיטלים עם כמה עשרות תלמידים לפחות, ואתה עדיין משתמש במערכת קורסים מיושנת ומשעממת?</p>
+    <h1>מהפכת הלמידה של 2026: <em>איך באמצעות אלגוריתם מסתורי</em></h1>
+    <p class="hero-sub">בניתי לעסקים כמו איתן עזריה, סקייל רווחי, ומכללה ל-NLP ״פורטל לימודים דופמיני״ שגורם ללקוחות שלהם ״להתמכר״ לתכנים, לסיים את הקורסים ולהפוך ללקוחות מעריצים וממליצים.</p>
+    <a href="#vsl" class="btn">אני רוצה לראות איך זה נראה בקורס אמיתי</a>
   </div>
+</section>
 
-  <form id="f" novalidate>
-    <h2>שיחת אסטרטגיה קצרה, בלי עלות</h2>
-    <input id="n" type="text" placeholder="השם שלך" autocomplete="name" required />
-    <input id="p" type="tel" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required />
-    <button type="submit">שריין לי שיחת אסטרטגיה</button>
-    <p class="note">בשיחה תדע איך לשפר את הקורס שלך בלי לשנות בו מילה.</p>
-  </form>
-  <div class="err" id="e">
-    לא הצלחנו לשמור את הפרטים. <a href="https://wa.me/972549116092" target="_blank" rel="noopener">כתוב לי ישירות בוואטסאפ</a>
+<!-- PROOF STRIP -->
+<section>
+  <div class="wrap proof">
+    <span>עדויות שמגיעות מעצמן, בלי לרדוף</span>
+    <span>פחות שאלות חוזרות בוואטסאפ ובזום</span>
+    <span>שקט: אתה רואה מי תקוע עוד לפני שהוא נושר</span>
   </div>
+</section>
 
-  <h2 class="sec">פורטלים חיים שבניתי</h2>
-  <p class="secsub">מערכות אמיתיות שרצות עכשיו עם תלמידים אמיתיים. תיכנס ותסתכל בעצמך.</p>
-  <div class="portals">
-    <a class="portal" href="https://eitan-azaria-portal.vercel.app" target="_blank" rel="noopener">
-      <img src="assets/portals/eitan.jpg" alt="איתן עזריה" loading="lazy" />
-      <b>איתן עזריה</b><span>פורטל הפודקאסט, מאות פרקים עם חבילות לימוד</span>
-    </a>
-    <a class="portal" href="https://kagan-portal.vercel.app" target="_blank" rel="noopener">
-      <img src="assets/portals/kagan.jpg" alt="ד״ר אריה קגן" loading="lazy" />
-      <b>המכללה ללימודי NLP</b><span>מסלול למידה מלא עם מעקב התקדמות</span>
-    </a>
-    <a class="portal" href="https://scale-rovchi-app.vercel.app" target="_blank" rel="noopener">
-      <img src="assets/portals/scale.jpg" alt="סקייל רווחי" loading="lazy" />
-      <b>סקייל רווחי</b><span>למעלה ממאה שיעורים וכלים בתוך הפורטל</span>
-    </a>
-    <a class="portal" href="https://www.therapist-home.com/" target="_blank" rel="noopener">
-      <img src="assets/portals/therapist.jpg" alt="בית המטפלים" loading="lazy" />
-      <b>בית המטפלים</b><span>פורטל למידה לעשרות מטפלים</span>
-    </a>
+<!-- VSL -->
+<section id="vsl">
+  <div class="wrap">
+    <div class="center">
+      <span class="kicker">הצצה מהירה</span>
+      <h2>שמונה דקות, ותראה את זה עובד</h2>
+      <p class="lead-p">אני נכנס למערכת קורסים חיה שבניתי, ומראה לך בדיוק מה קורה ללומד בכל נקודה שבה הוא בדרך כלל נעלם, ואיך מחזירים אותו. בלי שקפים, בלי הבטחות.</p>
+    </div>
+    <div class="video">
+      <iframe id="yt" src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1"
+        title="הדגמה חיה · 8:40" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <p class="afterline">בסרטון אני פותח את מערכת הקורסים החיה ואת המספרים שמאחוריה. מי שמגיע לשיחה אחרי שראה אותו לא מבזבז אותה על הסברים, אלא על הקורס שלו. השאר פרטים למטה ונקבע שיחה קצרה, בלי עלות.</p>
+    <a href="#contact" class="btn">שיחת אסטרטגיה בלי עלות</a>
   </div>
+</section>
 
-  <div class="about">
-    <h2 class="sec">מי אני</h2>
+<!-- PORTALS -->
+<section>
+  <div class="wrap center">
+    <h2>פורטלים חיים שבניתי</h2>
+    <p class="lead-p">מערכות אמיתיות שרצות עכשיו עם תלמידים אמיתיים, לא הדמיות. תיכנס ותסתכל בעצמך.</p>
+    <div class="portals">
+      <a class="portal" href="https://eitan-azaria-portal.vercel.app" target="_blank" rel="noopener">
+        <img src="assets/portals/eitan.jpg" alt="איתן עזריה, הפודקאסט הביולוגיה של הווינרים" loading="lazy" />
+        <b>איתן עזריה</b><span>פורטל הפודקאסט, מאות פרקים עם חבילות לימוד ומאמן אישי בתוך הפורטל</span>
+      </a>
+      <a class="portal" href="https://kagan-portal.vercel.app" target="_blank" rel="noopener">
+        <img src="assets/portals/kagan.jpg" alt="ד״ר אריה קגן מרצה מול אולם מלא" loading="lazy" />
+        <b>המכללה ללימודי NLP של אריה קגן</b><span>קורסי NLP ודמיון מודרך, מסלול למידה מלא עם מעקב התקדמות</span>
+      </a>
+      <a class="portal" href="https://scale-rovchi-app.vercel.app" target="_blank" rel="noopener">
+        <img src="assets/portals/scale.jpg" alt="ניב ויובל, סקייל רווחי" loading="lazy" />
+        <b>סקייל רווחי</b><span>למעלה ממאה שיעורים, לצד כלים שהתלמידים מפעילים בתוך הפורטל</span>
+      </a>
+      <a class="portal" href="https://www.therapist-home.com/" target="_blank" rel="noopener">
+        <img src="assets/portals/therapist.jpg" alt="רם מעביר שיעור בקורס NLP, בית המטפלים" loading="lazy" />
+        <b>בית המטפלים</b><span>פורטל למידה לעשרות מטפלים, הפורטל שממנו הגיעו המספרים בקייס סטאדי</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section>
+  <div class="wrap center about">
+    <h2>מי אני</h2>
     <p>אני הילל אקנין. יש לך קורס דיגיטלי? אני לוקח אותו כמו שהוא, בלי לשנות בו מילה, ובונה סביבו מערכת למידה שגורמת לתלמידים שלך להיכנס, להתקדם, ולסיים אותו.</p>
     <p>רוב התלמידים בקורסים דיגיטליים לא מסיימים. זה לא כי הם עצלנים, אלא כי החוויה לא בנויה להחזיר אותם. בקורס אמיתי שבניתי לו מערכת כזו, מי שלמד עם חוויית תרגול משחקית השלים פי 4 יותר שיעורים. אותו תוכן בדיוק, חוויה אחרת.</p>
   </div>
+</section>
 
-  <footer>הילל אקנין · מערכות למידה לבעלי קורסים דיגיטליים</footer>
-</div>
+<!-- FINALE + FORM -->
+<section class="finale" id="contact">
+  <div class="wrap center">
+    <h2>אז מה עושים עכשיו?</h2>
+    <p class="lead-p">אני קובע איתך שיחת אסטרטגיה קצרה, בלי עלות. בשיחה תדע בדיוק איך לשפר את הקורס שלך כך שהוא ייראה שונה מהמתחרים שלך, ויתן ללקוחות שלך ערך איכותי פי עשר, בלי לשנות אפילו מילה אחת בתוכן הקורס עצמו.</p>
+    <form id="f" novalidate>
+      <input id="n" type="text" placeholder="השם שלך" autocomplete="name" required />
+      <input id="p" type="tel" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required />
+      <button type="submit" class="btn">שריין לי שיחת אסטרטגיה</button>
+    </form>
+    <div class="err" id="e">
+      הייתה תקלה בשליחה. <a href="https://wa.me/972549116092" target="_blank" rel="noopener">שלח לי הודעה בוואטסאפ במקום</a>
+    </div>
+  </div>
+</section>
+
+<footer>© <span id="year">2026</span> · הילל אקנין</footer>
 
 <script>
-/* מעקב צפייה בסרטון — נטען אחרי הדף, לא חוסם את הרינדור.
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* מעקב צפייה בסרטון — נטען אחרי הדף, לא חוסם רינדור.
    נשלח יחד עם הליד כדי לדעת אם הוא באמת ראה לפני שהשאיר פרטים. */
 var vp = { pct:0, seconds:0, completed:false };
 (function(){
