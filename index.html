@@ -1035,8 +1035,15 @@
       padding-block: 16px;
       font-size: 0.9rem;
       color: rgba(244,239,230,0.82);
+      gap: 14px 26px;
     }
-    @media (max-width: 640px) { .proofstrip__dot { display: none; } }
+    /* וי ירוק לכל תועלת (הלל, 20.8) */
+    .proofstrip__inner--benefits span { display: inline-flex; align-items: center; gap: 8px; }
+    .proofstrip__inner--benefits svg { flex-shrink: 0; }
+    @media (max-width: 640px) {
+      .proofstrip__dot { display: none; }
+      .proofstrip__inner--benefits { flex-direction: column; align-items: flex-start; text-align: right; }
+    }
 
     .vsl__lead {
       max-inline-size: var(--measure);
@@ -1193,11 +1200,9 @@
     <section class="proofstrip" aria-label="הוכחה מהירה" data-area="proofstrip" data-src="index.html (פס הוכחה עליון)">
       <!-- FIX-ENGINE F-001 סבב-2 (2026-07-22): שורת המספרים הוסרה לבקשת הלל ("תסיר"); המספרים נשארים בסקשן ההוכחה #proof. שורת התועלות (F-002 סבב-1) נשארה. -->
       <div class="container proofstrip__inner proofstrip__inner--benefits">
-        <span>עדויות שמגיעות מעצמן, בלי לרדוף</span>
-        <span aria-hidden="true" class="proofstrip__dot"></span>
-        <span>פחות שאלות חוזרות בוואטסאפ ובזום</span>
-        <span aria-hidden="true" class="proofstrip__dot"></span>
-        <span>שקט: אתה רואה מי תקוע עוד לפני שהוא נושר</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#1E7A44" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>עדויות שמגיעות מעצמן, בלי לרדוף</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#1E7A44" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>פחות שאלות חוזרות בוואטסאפ ובזום</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#1E7A44" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>שקט: אתה רואה מי תקוע עוד לפני שהוא נושר</span>
       </div>
     </section>
 
@@ -1241,11 +1246,12 @@
     <section class="chapter about" id="about" data-area="about" data-src="index.html #about (מי אני)">
       <div class="container">
         <div class="about__body reveal" style="max-width:680px;margin-inline:auto;text-align:center">
-          <img src="assets/hillel-ig.jpg" alt="הילל אקנין" loading="lazy"
-               style="width:150px;height:150px;object-fit:cover;border-radius:50%;display:block;margin:0 auto 10px;border:3px solid var(--paper-2)" />
+          <img src="assets/hillel-family.jpg" alt="הילל אקנין עם המשפחה" loading="lazy"
+               style="width:100%;max-width:330px;aspect-ratio:3/4;object-fit:cover;border-radius:14px;display:block;margin:0 auto 20px" />
           <h2 class="chapter__title">מי אני</h2>
-          <p class="body">
-            אני הילל אקנין. יש לך קורס דיגיטלי? אני לוקח אותו כמו שהוא, בלי לשנות בו מילה,
+          <p class="body">היי, אני הילל אקנין. נשוי ואבא לשניים.</p>
+          <p class="body" style="margin-block-start:16px">
+            יש לך קורס דיגיטלי? אני לוקח אותו כמו שהוא, בלי לשנות בו מילה,
             ובונה סביבו מערכת למידה שגורמת לתלמידים שלך להיכנס, להתקדם, ולסיים אותו.
           </p>
           <p class="body" style="margin-block-start:16px">

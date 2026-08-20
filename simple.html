@@ -45,8 +45,9 @@
   .btn:hover{background:var(--ember)}
   .btn:disabled{opacity:.6;cursor:default}
 
-  .proof{display:flex;flex-direction:column;gap:9px;font-size:.97rem;color:var(--ink-soft);text-align:center}
-  .proof b{color:var(--ink);font-weight:700}
+  .proof{display:flex;flex-direction:column;gap:11px;font-size:.97rem;color:var(--ink-soft)}
+  .proof span{display:flex;align-items:flex-start;gap:10px;text-align:right}
+  .proof svg{flex-shrink:0;width:21px;height:21px;color:#1E7A44;margin-top:2px}
 
   h2{font-size:clamp(1.35rem,4vw,1.9rem);font-weight:800;line-height:1.25;letter-spacing:-.01em}
   .lead-p{margin-top:14px;color:var(--ink-soft)}
@@ -54,7 +55,6 @@
 
   .video{margin-top:24px;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
   .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-  .watchline{margin-top:10px;font-size:.9rem;color:var(--ink-faint)}
 
   .portals{display:grid;gap:14px;margin-top:20px}
   @media(min-width:560px){.portals{grid-template-columns:1fr 1fr}}
@@ -68,8 +68,8 @@
 
   .about p{margin-top:14px;color:var(--ink-soft)}
   .about img{
-    width:150px;height:150px;object-fit:cover;border-radius:50%;
-    margin:0 auto 6px;display:block;border:3px solid var(--paper-2);
+    width:100%;max-width:330px;aspect-ratio:3/4;object-fit:cover;border-radius:14px;
+    margin:0 auto 18px;display:block;
   }
 
   /* רם, 19.8: "צבע אחד אחיד" — אין רקע נפרד לסקשן הטופס */
@@ -108,7 +108,6 @@ fbq('init','2132323570952002');fbq('track','PageView');
       <iframe id="yt" src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1"
         title="הדגמה חיה · 8:40" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
-    <p class="watchline">לצפייה · הדגמה חיה, 8:40 דקות</p>
     <a href="#contact" class="btn">שיחת אסטרטגיה בלי עלות</a>
   </div>
 </section>
@@ -116,9 +115,9 @@ fbq('init','2132323570952002');fbq('track','PageView');
 <!-- PROOF STRIP -->
 <section>
   <div class="wrap proof">
-    <span>עדויות שמגיעות מעצמן, בלי לרדוף</span>
-    <span>פחות שאלות חוזרות בוואטסאפ ובזום</span>
-    <span>שקט: אתה רואה מי תקוע עוד לפני שהוא נושר</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>עדויות שמגיעות מעצמן, בלי לרדוף</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>פחות שאלות חוזרות בוואטסאפ ובזום</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>שקט: אתה רואה מי תקוע עוד לפני שהוא נושר</span>
   </div>
 </section>
 
@@ -151,9 +150,10 @@ fbq('init','2132323570952002');fbq('track','PageView');
 <!-- ABOUT -->
 <section>
   <div class="wrap center about">
-    <img src="assets/hillel-ig.jpg" alt="הילל אקנין" loading="lazy" />
+    <img src="assets/hillel-family.jpg" alt="הילל אקנין עם המשפחה" loading="lazy" />
     <h2>מי אני</h2>
-    <p>אני הילל אקנין. יש לך קורס דיגיטלי? אני לוקח אותו כמו שהוא, בלי לשנות בו מילה, ובונה סביבו מערכת למידה שגורמת לתלמידים שלך להיכנס, להתקדם, ולסיים אותו.</p>
+    <p>היי, אני הילל אקנין. נשוי ואבא לשניים.</p>
+    <p>יש לך קורס דיגיטלי? אני לוקח אותו כמו שהוא, בלי לשנות בו מילה, ובונה סביבו מערכת למידה שגורמת לתלמידים שלך להיכנס, להתקדם, ולסיים אותו.</p>
     <p>רוב התלמידים בקורסים דיגיטליים לא מסיימים. זה לא כי הם עצלנים, אלא כי החוויה לא בנויה להחזיר אותם. בקורס אמיתי שבניתי לו מערכת כזו, מי שלמד עם חוויית תרגול משחקית השלים פי 4 יותר שיעורים. אותו תוכן בדיוק, חוויה אחרת.</p>
   </div>
 </section>
