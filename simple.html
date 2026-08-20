@@ -52,9 +52,9 @@
   .lead-p{margin-top:14px;color:var(--ink-soft)}
   .center{text-align:center}
 
-  .video{margin-top:22px;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
+  .video{margin-top:24px;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
   .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-  .afterline{margin-top:20px;color:var(--ink-soft)}
+  .watchline{margin-top:10px;font-size:.9rem;color:var(--ink-faint)}
 
   .portals{display:grid;gap:14px;margin-top:20px}
   @media(min-width:560px){.portals{grid-template-columns:1fr 1fr}}
@@ -67,8 +67,12 @@
   .portal span{display:block;padding:0 14px 13px;font-size:.88rem;color:var(--ink-soft)}
 
   .about p{margin-top:14px;color:var(--ink-soft)}
+  .about img{
+    width:150px;height:150px;object-fit:cover;border-radius:50%;
+    margin:0 auto 6px;display:block;border:3px solid var(--paper-2);
+  }
 
-  .finale{background:var(--paper-2);border-radius:0}
+  /* רם, 19.8: "צבע אחד אחיד" — אין רקע נפרד לסקשן הטופס */
   form{margin-top:24px}
   input{
     width:100%;padding:15px 16px;margin-bottom:11px;font:inherit;font-size:16px;
@@ -94,13 +98,18 @@ fbq('init','2132323570952002');fbq('track','PageView');
 </head>
 <body>
 
-<!-- HERO -->
-<section class="hero">
+<!-- HERO + VIDEO (רם, 19.8: הסרטון ישר מתחת לכותרת, בלי כפתור חוצץ) -->
+<section class="hero" id="vsl">
   <div class="wrap">
     <p class="kicker">יש לך קורס/ים דיגיטלים עם כמה עשרות תלמידים לפחות, ואתה עדיין משתמש במערכת קורסים מיושנת ומשעממת?</p>
-    <h1>מהפכת הלמידה של 2026: <em>איך באמצעות אלגוריתם מסתורי</em></h1>
+    <h1>מהפכת הלמידה של 2026: <em>איך באמצעות אלגוריתם חכם</em></h1>
     <p class="hero-sub">בניתי לעסקים כמו איתן עזריה, סקייל רווחי, ומכללה ל-NLP ״פורטל לימודים דופמיני״ שגורם ללקוחות שלהם ״להתמכר״ לתכנים, לסיים את הקורסים ולהפוך ללקוחות מעריצים וממליצים.</p>
-    <a href="#vsl" class="btn">אני רוצה לראות איך זה נראה בקורס אמיתי</a>
+    <div class="video">
+      <iframe id="yt" src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1"
+        title="הדגמה חיה · 8:40" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <p class="watchline">לצפייה · הדגמה חיה, 8:40 דקות</p>
+    <a href="#contact" class="btn">שיחת אסטרטגיה בלי עלות</a>
   </div>
 </section>
 
@@ -110,23 +119,6 @@ fbq('init','2132323570952002');fbq('track','PageView');
     <span>עדויות שמגיעות מעצמן, בלי לרדוף</span>
     <span>פחות שאלות חוזרות בוואטסאפ ובזום</span>
     <span>שקט: אתה רואה מי תקוע עוד לפני שהוא נושר</span>
-  </div>
-</section>
-
-<!-- VSL -->
-<section id="vsl">
-  <div class="wrap">
-    <div class="center">
-      <span class="kicker">הצצה מהירה</span>
-      <h2>שמונה דקות, ותראה את זה עובד</h2>
-      <p class="lead-p">אני נכנס למערכת קורסים חיה שבניתי, ומראה לך בדיוק מה קורה ללומד בכל נקודה שבה הוא בדרך כלל נעלם, ואיך מחזירים אותו. בלי שקפים, בלי הבטחות.</p>
-    </div>
-    <div class="video">
-      <iframe id="yt" src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1"
-        title="הדגמה חיה · 8:40" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-    <p class="afterline">בסרטון אני פותח את מערכת הקורסים החיה ואת המספרים שמאחוריה. מי שמגיע לשיחה אחרי שראה אותו לא מבזבז אותה על הסברים, אלא על הקורס שלו. השאר פרטים למטה ונקבע שיחה קצרה, בלי עלות.</p>
-    <a href="#contact" class="btn">שיחת אסטרטגיה בלי עלות</a>
   </div>
 </section>
 
@@ -159,6 +151,7 @@ fbq('init','2132323570952002');fbq('track','PageView');
 <!-- ABOUT -->
 <section>
   <div class="wrap center about">
+    <img src="assets/hillel-ig.jpg" alt="הילל אקנין" loading="lazy" />
     <h2>מי אני</h2>
     <p>אני הילל אקנין. יש לך קורס דיגיטלי? אני לוקח אותו כמו שהוא, בלי לשנות בו מילה, ובונה סביבו מערכת למידה שגורמת לתלמידים שלך להיכנס, להתקדם, ולסיים אותו.</p>
     <p>רוב התלמידים בקורסים דיגיטליים לא מסיימים. זה לא כי הם עצלנים, אלא כי החוויה לא בנויה להחזיר אותם. בקורס אמיתי שבניתי לו מערכת כזו, מי שלמד עם חוויית תרגול משחקית השלים פי 4 יותר שיעורים. אותו תוכן בדיוק, חוויה אחרת.</p>
