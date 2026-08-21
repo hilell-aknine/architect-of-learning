@@ -242,20 +242,42 @@ export default async function handler(req, res) {
       notifyError = 'green_api_env_missing';
       console.error('[lead] Green API env vars missing — lead SAVED but not delivered. lead_id:', leadId);
     } else {
+      // wa.me needs the international form. Israeli leads arrive as 05X / 054-XXX-XXXX.
+      const waDigits = phoneDigits.startsWith('972')
+        ? phoneDigits
+        : '972' + phoneDigits.replace(/^0+/, '');
+
+      // Vercel functions run in UTC. Stamp Israel time explicitly or the hour is wrong.
+      const stamp = new Intl.DateTimeFormat('he-IL', {
+        timeZone: 'Asia/Jerusalem',
+        day: 'numeric', month: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      }).format(new Date());
+
+      // Which ad brought them. The browser sends the full UTM string in the referer header.
+      const adMatch = /utm_content=([^&\s]+)/.exec(referrer || '');
+      let adName = adSource;
+      if (adMatch) {
+        try { adName = decodeURIComponent(adMatch[1]); } catch { adName = adMatch[1]; }
+      }
+
       const lines = [
-        '🟢 ליד חדש · קמפיין בניית פורטלים',
-        `שם: ${name}`,
-        `טלפון: ${phone}`
+        'הילל, ליד חדש 🟢',
+        'בניית פורטלים',
+        '',
+        name,
+        phone
       ];
       if (business) lines.push(`עסק: ${business}`);
       if (students) lines.push(`תלמידים: ${students}`);
-      lines.push(`מקור: ${adSource}`);
+      lines.push(`${stamp} · ${adName}`);
       lines.push(
         `צפה ב-${videoWatchedPct}% מהסרטון` +
           (videoCompleted ? ' (סיים את כל הסרטון)' : '') +
           (videoSeconds ? ` · ${Math.round(videoSeconds)} שניות` : '')
       );
-      lines.push('רוצה לשריין שיחת אסטרטגיה.');
+      lines.push('');
+      lines.push(`פתח שיחה: https://wa.me/${waDigits}`);
       const message = lines.join('\n');
 
       try {
