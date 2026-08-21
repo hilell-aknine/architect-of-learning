@@ -115,6 +115,11 @@
   .barwrap{height:6px;background:#eee;border-radius:4px;width:90px;overflow:hidden;display:inline-block;vertical-align:middle}
   .bar{height:100%;background:linear-gradient(90deg,var(--amber),var(--teal))}
   .empty{text-align:center;color:var(--soft);padding:60px 20px;font-size:16px}
+  /* באנר תקלה. קיים כדי ש"לא הצלחתי לקרוא" לעולם לא ייראה כמו "אין לידים". */
+  .errbar{display:none;margin:0 0 16px;padding:14px 16px;border-radius:10px;
+    background:#7f1d1d;color:#fff;font-size:15px;line-height:1.5;font-weight:600}
+  .errbar.on{display:block}
+  .errbar small{display:block;font-weight:400;opacity:.85;margin-top:6px;word-break:break-word}
   @media(max-width:680px){.kpis{grid-template-columns:repeat(2,1fr)}.lead{grid-template-columns:1fr;gap:10px}.rank{text-align:right}.actions{flex-direction:row;min-width:0}}
 </style></head>
 <body>
@@ -142,6 +147,8 @@
       <button class="ghost" id="logout">יציאה</button>
     </div>
   </header>
+
+  <div class="errbar" id="errbar"></div>
 
   <div class="camp" id="camp">
     <div class="camp-head">
@@ -219,6 +226,15 @@ function waLink(l){
 
 function setStatus(id,v){ statusMap[id]=v; localStorage.setItem(SK_STATUS, JSON.stringify(statusMap)); render(); }
 
+// באנר תקלה אדום. כל מסלול כישלון עובר דרך כאן ומפסיק להציג מספרים,
+// כדי שלא נדווח שוב "0 לידים" כשבאמת פשוט לא הצלחנו לקרוא.
+function showError(title, detail){
+  const b = $("#errbar");
+  b.className = "errbar on";
+  b.innerHTML = '⚠️ ' + title + (detail ? '<small>' + String(detail).slice(0,300) + '</small>' : '');
+}
+function clearError(){ $("#errbar").className = "errbar"; $("#errbar").innerHTML = ""; }
+
 async function load(){
   const pass = sessionStorage.getItem(SK_PASS);
   $("#updated").textContent = "טוען…";
@@ -226,14 +242,32 @@ async function load(){
     const r = await fetch(ENDPOINT + "?inbox=" + encodeURIComponent(pass) + "&limit=500",
       { headers:{ "apikey":ANON, "Authorization":"Bearer "+ANON } });
     if (r.status===401){ logout("סיסמה שגויה"); return; }
+    if (!r.ok){
+      showError("השרת החזיר שגיאה " + r.status + " — המספרים למטה לא מעודכנים. אל תתייחס אליהם.",
+        await r.text().catch(()=>""));
+      $("#updated").textContent = "טעינה נכשלה";
+      return;
+    }
     const data = await r.json();
+    if (data.errors && data.errors.length){
+      showError("חלק מהנתונים לא נטענו — ייתכן שיש לידים שלא מוצגים כאן.", data.errors.join(" · "));
+    } else {
+      clearError();
+    }
     leads = (data.leads||[]).filter(l=>l.phone);     // רק לידים עם טלפון לחזרה
     campaign = data.campaign || null;
     campaignLeads = data.campaignLeads || [];
-    $("#updated").textContent = "עודכן " + new Date().toLocaleTimeString("he-IL") + " · " + leads.length + " לידים";
+    // סופרים גם את לידי הקמפיין — הם העיקר, וקודם הם לא נספרו בכותרת בכלל.
+    const total = leads.length + campaignLeads.length;
+    $("#updated").textContent = "עודכן " + new Date().toLocaleTimeString("he-IL") +
+      " · " + total + " לידים" +
+      (campaignLeads.length ? " (מתוכם " + campaignLeads.length + " מהקמפיין)" : "");
     renderCampaign();
     render();
-  }catch(e){ $("#updated").textContent = "שגיאת רשת · נסה רענון"; }
+  }catch(e){
+    showError("לא הצלחתי להתחבר לשרת — זה לא אומר שאין לידים. נסה רענון.", e && e.message);
+    $("#updated").textContent = "טעינה נכשלה";
+  }
 }
 
 function campWaLink(l){
@@ -311,9 +345,13 @@ function renderCampaign(){
         const pct = l.video_completed ? 100 : (l.video_watched_pct||0);
         const cls = l.video_completed || pct>=80 ? "full" : pct>0 ? "part" : "none";
         const watchLabel = l.video_completed ? "✓ סיים לצפות" : pct>0 ? "צפה ב-"+pct+"%" : "לא צפה";
+        // אם ההתראה לא יצאה — לומר את זה על הליד עצמו, לא להסתיר בעמודה בבסיס הנתונים.
+        const undelivered = l.notified === false
+          ? ' <span class="watch-tag none" title="' + (l.notify_error||"") + '">⚠️ לא נשלחה התראה</span>'
+          : '';
         return `
         <div class="camp-lead-row">
-          <div><span class="nm">${l.name||"ללא שם"}</span> <span class="ph">· ${l.phone||""} · ${timeAgo(l.created_at)}</span> <span class="watch-tag ${cls}">${watchLabel}</span></div>
+          <div><span class="nm">${l.name||"ללא שם"}</span> <span class="ph">· ${l.phone||""} · ${timeAgo(l.created_at)}</span> <span class="watch-tag ${cls}">${watchLabel}</span>${undelivered}</div>
           <a class="wa" href="${campWaLink(l)}" target="_blank">💬 וואטסאפ</a>
         </div>`;
       }).join("") +

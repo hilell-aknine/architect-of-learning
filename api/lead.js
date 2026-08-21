@@ -259,22 +259,53 @@ export default async function handler(req, res) {
       const message = lines.join('\n');
 
       try {
-        const gr = await fetchWithTimeout(
-          `${base}/waInstance${instance}/sendMessage/${token}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chatId, message })
-          },
-          9000
-        );
+        // A disconnected Green API instance still answers 200 with a valid-looking idMessage,
+        // so HTTP 200 is NOT proof of delivery. Two real leads (20-21.8) were written with
+        // notified=true and never reached anyone. Gate the send on the instance state first.
+        let state = null;
+        try {
+          const sr = await fetchWithTimeout(
+            `${base}/waInstance${instance}/getStateInstance/${token}`,
+            { method: 'GET' },
+            6000
+          );
+          if (sr.ok) state = (await sr.json().catch(() => ({})))?.stateInstance || null;
+          else state = `http_${sr.status}`;
+        } catch (e) {
+          state = `unreachable: ${e && e.message}`;
+        }
 
-        if (gr.ok) {
-          delivered = true;
+        if (state !== 'authorized') {
+          notifyError = `green_api_not_authorized (state=${state})`.slice(0, 500);
+          console.error(
+            '[lead] Green API instance is NOT authorized — lead SAVED but NOT delivered.',
+            'state:', state, 'lead_id:', leadId
+          );
         } else {
-          const detail = await gr.text().catch(() => '');
-          notifyError = `green_api_http_${gr.status}: ${detail}`.slice(0, 500);
-          console.error('[lead] Green API send failed', gr.status, detail, 'lead_id:', leadId);
+          const gr = await fetchWithTimeout(
+            `${base}/waInstance${instance}/sendMessage/${token}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ chatId, message })
+            },
+            9000
+          );
+
+          if (gr.ok) {
+            // Require the idMessage receipt too — an empty/!ok body is not a delivery.
+            const payload = await gr.json().catch(() => null);
+            if (payload && payload.idMessage) {
+              delivered = true;
+            } else {
+              notifyError = `green_api_no_id_message: ${JSON.stringify(payload)}`.slice(0, 500);
+              console.error('[lead] Green API returned 200 without idMessage', payload, 'lead_id:', leadId);
+            }
+          } else {
+            const detail = await gr.text().catch(() => '');
+            notifyError = `green_api_http_${gr.status}: ${detail}`.slice(0, 500);
+            console.error('[lead] Green API send failed', gr.status, detail, 'lead_id:', leadId);
+          }
         }
       } catch (e) {
         notifyError = `green_api_exception: ${e && e.message}`.slice(0, 500);
