@@ -20,7 +20,14 @@ t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init','2132323570952002');
 fbq('track','PageView');
-fbq('track','Lead');
+// The landing page passes ?eid=… — the same id the server sends to the Conversions API.
+// With it, Meta merges the two into one Lead; without it (someone opening this page directly)
+// the browser event still stands on its own.
+(function(){
+  var eid = new URLSearchParams(location.search).get('eid');
+  if (eid) fbq('track','Lead', {}, { eventID: eid });
+  else fbq('track','Lead');
+})();
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=2132323570952002&ev=Lead&noscript=1" alt="" /></noscript>

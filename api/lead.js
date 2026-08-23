@@ -19,6 +19,13 @@
 //     GREEN_API_INSTANCE          the idInstance (digits)
 //     GREEN_API_TOKEN             the apiTokenInstance
 //     LEAD_NOTIFY_CHAT            defaults to 972549116092@c.us
+//
+//   OPTIONAL (Meta Conversions API — server-side Lead event):
+//     META_PIXEL_ID               the pixel the campaign optimises on
+//     META_CAPI_TOKEN             a Conversions API access token for that pixel
+//     META_TEST_EVENT_CODE        only while testing in Events Manager; remove afterwards
+
+import { createHash } from 'node:crypto';
 
 const TABLE = 'campaign_leads';
 const DEFAULT_NOTIFY_CHAT = '972549116092@c.us';
@@ -81,6 +88,23 @@ function sanitizeUtm(raw) {
   return out;
 }
 
+// Meta wants every identifier normalised the same way on both ends, then SHA-256 hex.
+function sha256(v) {
+  return createHash('sha256').update(String(v)).digest('hex');
+}
+
+// E.164 without the plus. Israeli mobiles arrive as 05x-xxx-xxxx far more often than as 9725x…,
+// so a bare leading zero is expanded rather than hashed as-is — an unnormalised number simply
+// fails to match and the event lands with no identity attached.
+function normalizePhoneForMeta(raw) {
+  let d = digitsOnly(raw);
+  if (!d) return '';
+  if (d.startsWith('00')) d = d.slice(2);
+  if (d.startsWith('0')) d = '972' + d.slice(1);
+  else if (d.length === 9) d = '972' + d;
+  return d;
+}
+
 async function fetchWithTimeout(url, options, ms) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), ms);
@@ -117,6 +141,8 @@ export default async function handler(req, res) {
     const videoWatchedPct = clampPct(body.videoWatchedPct);
     const videoSeconds = toSeconds(body.videoSeconds);
     const videoCompleted = body.videoCompleted === true || body.videoCompleted === 'true';
+    // Shared with the browser pixel so Meta collapses the two into one Lead instead of counting two.
+    const eventId = str(body.eventId, 64);
 
     const phoneDigits = digitsOnly(phone);
     if (!name || phoneDigits.length < 9) {
@@ -356,6 +382,70 @@ export default async function handler(req, res) {
         // An enrichment miss costs context, not the lead. Log and move on.
         console.error('[lead] enrich trigger failed', e && e.message, 'lead_id:', leadId);
       }
+    }
+
+    // ---------- 3c. Meta Conversions API — the server's own Lead event ----------
+    // WHY THIS EXISTS: the browser already fires fbq('track','Lead') on thank-you.html, but that
+    // event only arrives if the visitor's browser lets it. Measured on 23.08.2026: 8 real leads in
+    // the table, 5 Lead events in Meta — a 37% gap. Several of these leads came through the
+    // Instagram in-app browser, which is exactly where third-party pixels get dropped.
+    //
+    // That gap is not a reporting nuisance. The ad set optimises for OFFSITE_CONVERSIONS, so Meta
+    // learns who to target FROM THE EVENTS IT RECEIVES — it was tuning delivery on 5 of 8 people.
+    //
+    // This call fires from the server, after the lead is already saved, so it cannot be blocked.
+    // Both events carry the same event_id and Meta deduplicates them into one.
+    // Best-effort like everything else here: a measurement miss must never cost the lead itself.
+    const pixelId = cleanEnv(process.env.META_PIXEL_ID);
+    const capiToken = cleanEnv(process.env.META_CAPI_TOKEN);
+    if (pixelId && capiToken && eventId) {
+      try {
+        const metaPhone = normalizePhoneForMeta(phone);
+        const nameParts = name.trim().split(/\s+/);
+        const userData = {
+          client_user_agent: userAgent || undefined,
+          client_ip_address:
+            str((req.headers?.['x-forwarded-for'] || '').split(',')[0].trim(), 64) || undefined
+        };
+        if (metaPhone) userData.ph = [sha256(metaPhone)];
+        if (nameParts[0]) userData.fn = [sha256(nameParts[0].toLowerCase())];
+        if (nameParts.length > 1) userData.ln = [sha256(nameParts.slice(1).join(' ').toLowerCase())];
+
+        const payload = {
+          data: [
+            {
+              event_name: 'Lead',
+              event_time: Math.floor(now / 1000),
+              event_id: eventId,
+              action_source: 'website',
+              event_source_url: referrer || undefined,
+              user_data: userData,
+              custom_data: { content_name: page, content_category: adSource }
+            }
+          ]
+        };
+        const testCode = cleanEnv(process.env.META_TEST_EVENT_CODE);
+        if (testCode) payload.test_event_code = testCode;
+
+        const capiRes = await fetchWithTimeout(
+          `https://graph.facebook.com/v21.0/${encodeURIComponent(pixelId)}/events?access_token=${encodeURIComponent(capiToken)}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          },
+          5000
+        );
+        if (!capiRes.ok) {
+          console.error('[lead] CAPI rejected', capiRes.status, await capiRes.text().catch(() => ''));
+        }
+      } catch (e) {
+        console.error('[lead] CAPI send failed', e && e.message, 'lead_id:', leadId);
+      }
+    } else if (!eventId) {
+      // A page posted without an eventId. The browser pixel still works; only dedup-safe
+      // server-side reporting is skipped, so this is worth seeing in the logs.
+      console.warn('[lead] no eventId on submit — CAPI skipped for', page);
     }
 
     // ---------- 3b. write the notification result back to the row ----------

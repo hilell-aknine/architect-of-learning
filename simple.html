@@ -249,14 +249,17 @@ document.getElementById('f').addEventListener('submit', function(ev){
   if (phone.replace(/\D/g,'').length < 9) { p.focus(); return; }
   var btn = this.querySelector('button');
   btn.disabled = true; btn.textContent = 'שולח…';
+  // One id shared by the server event and the browser event, so Meta counts ONE Lead, not two.
+  // Passed on to the thank-you page in the URL because that is where the pixel actually fires.
+  var eventId = 'lead-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
   fetch('/api/lead', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
-      name:name, phone:phone, source:'landing-simple', page:'simple',
+      name:name, phone:phone, source:'landing-simple', page:'simple', eventId: eventId,
       videoWatchedPct: Math.round(vp.pct*100), videoSeconds: vp.seconds, videoCompleted: vp.completed
     })
   }).then(function(r){
-    if (r.ok) { location.href = '/thank-you.html'; return; }
+    if (r.ok) { location.href = '/thank-you.html?eid=' + encodeURIComponent(eventId); return; }
     throw new Error('not_delivered');
   }).catch(function(){
     document.getElementById('f').style.display = 'none';
