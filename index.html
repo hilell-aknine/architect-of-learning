@@ -99,8 +99,14 @@
   footer{padding:20px 0 34px;font-size:.83rem;color:var(--ink-faint);text-align:center;border-top:1px solid var(--rule)}
 
   /* עדויות וידאו. אותה חזית כמו סרטון היוטיוב למעלה: תמונה + כפתור נגן,
-     והנגן האמיתי נולד רק בלחיצה. שני הסרטונים שוקלים יחד 16MB ואף בייט
-     מהם לא יורד בטעינת הדף. גם הפוסטרים lazy — הסקשן מתחת לקיפול. */
+     והנגן האמיתי נולד רק בלחיצה. שלושת הסרטונים שוקלים יחד 19.4MB ואף בייט
+     מהם לא יורד בטעינת הדף — הכתובת יושבת ב-data-src ולכן סורק הטעינה
+     המוקדמת של הדפדפן לא רואה אותה בכלל. הפוסטרים lazy.
+     23.8: הסקשן הוזז מעל גריד הפורטלים לבקשת הלל. עכשיו הוא מתחיל בערך
+     270px מתחת לקיפול, וזה בתוך טווח הטעינה-המוקדמת של כרום — כלומר
+     כשלוש תמונות (כ-40KB) כן יורדות בטעינה למרות ה-lazy. לכן נוסף להן
+     fetchpriority="low", שלא יתחרו בתמונת ההירו. אומת: ה-LCP נשאר
+     תמונת היוטיוב, ואפס בקשות וידאו. */
   .tgrid{display:grid;gap:14px;margin-top:22px;text-align:right}
   /* שתי עמודות מ-560. כרטיס שלישי בודד בשורה שנייה נשאר ממורכז ולא נדבק לצד. */
   @media(min-width:560px){
@@ -200,6 +206,94 @@ fbq('init','2132323570952002');fbq('track','PageView');
   </div>
 </section>
 
+<!-- עדויות
+     כל ציטוט הוא מילה במילה מתוך התמלול של הסרטון עצמו (ElevenLabs Scribe).
+     המספרים בכרטיסי האינסטגרם אומתו חי מול הפרופילים ב-23.8.2026.
+     אין כאן שורה אחת שהם לא אמרו. -->
+<section>
+  <div class="wrap center">
+    <h2>מה אומרים מי שעבדו איתי</h2>
+    <p class="lead-p">שלושה בעלי עסקים. לשניים מהם בניתי מערכת שרצה עכשיו, והשלישי ישב איתי על השיווק והתהליכים בעסק שלו.</p>
+
+    <div class="tgrid">
+
+      <figure class="tcard">
+        <blockquote>״הילל בנה לי פורטל לבית ספר ל-NLP שיש לי, ואני יכול להגיד לכם שזו <em>הרמה הגבוהה ביותר</em> של פורטל לימודים שאי פעם יצא לי לראות״</blockquote>
+        <div class="vwrap">
+          <button class="vfacade" type="button" data-src="assets/testimonials/ram-alus.mp4" aria-label="נגן את העדות של רם אלוס, שתי דקות וחמש שניות">
+            <img src="assets/testimonials/ram-alus.webp" width="540" height="960" loading="lazy" fetchpriority="low" decoding="async" alt="רם אלוס מספר על הפורטל שנבנה לו" />
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+          <span class="dur">2:05</span>
+        </div>
+        <figcaption class="ig">
+          <div class="ig-top">
+            <a class="ig-handle" href="https://www.instagram.com/ram.alus/" target="_blank" rel="noopener nofollow">ram.alus</a>
+            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
+          </div>
+          <div class="ig-body">
+            <img class="ig-av" src="assets/testimonials/avatar-ram.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של רם אלוס" />
+            <div>
+              <div class="ig-bio">רם אלוס · יועץ לעסקים ובעל בית ספר ל-NLP</div>
+              <div class="ig-stats"><div><b>25.4K</b> עוקבים</div><div><b>340</b> במעקב</div></div>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="tcard">
+        <blockquote>״שתי הנעות לפעולה, הבאנו לשם <em>ארבע מאות אנשים כבר בשבוע הראשון</em>. מתוך האנשים שצפו בפורטל וצרכו אותו נסגרו עסקאות פרימיום״</blockquote>
+        <div class="vwrap">
+          <button class="vfacade" type="button" data-src="assets/testimonials/yuval-palcovich.mp4" aria-label="נגן את העדות של יובל פלקוביץ׳, דקה ארבעים ושתיים">
+            <img src="assets/testimonials/yuval-palcovich.webp" width="540" height="960" loading="lazy" fetchpriority="low" decoding="async" alt="יובל פלקוביץ׳ מספר על הפורטל שנבנה לו" />
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+          <span class="dur">1:42</span>
+        </div>
+        <figcaption class="ig">
+          <div class="ig-top">
+            <a class="ig-handle" href="https://www.instagram.com/yuval_palcovich/" target="_blank" rel="noopener nofollow">yuval_palcovich</a>
+            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
+          </div>
+          <div class="ig-body">
+            <img class="ig-av" src="assets/testimonials/avatar-yuval.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של יובל פלקוביץ׳" />
+            <div>
+              <div class="ig-bio">יובל פלקוביץ׳ · סקייל רווחי, עסק שיוצר חופש</div>
+              <div class="ig-stats"><div><b>10.6K</b> עוקבים</div><div><b>197</b> במעקב</div></div>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <!-- ידידיה אינו לקוח פורטל אלא ייעוץ AI, ולכן הציטוט מדבר על יכולת
+           ולא על מערכת. אין לו סימון מאומת באינסטגרם, ולכן אין כאן וי כחול. -->
+      <figure class="tcard">
+        <blockquote>״הבן אדם הזה פשוט זרק עליי את כל המידע שיש לו, ואני בטוח שזה היה רק קצה המזלג. באמת, <em>דברים מטורפים שלא האמנתי אפילו שקיימים</em>״</blockquote>
+        <div class="vwrap">
+          <button class="vfacade" type="button" data-src="assets/testimonials/yedidya-tawil.mp4" aria-label="נגן את העדות של ידידיה טוויל, חמישים ושלוש שניות">
+            <img src="assets/testimonials/yedidya-tawil.webp" width="540" height="954" loading="lazy" fetchpriority="low" decoding="async" alt="ידידיה טוויל מספר על העבודה עם הילל" />
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+          <span class="dur">0:53</span>
+        </div>
+        <figcaption class="ig">
+          <div class="ig-top">
+            <a class="ig-handle" href="https://www.instagram.com/yedidya.tawil/" target="_blank" rel="noopener nofollow">yedidya.tawil</a>
+          </div>
+          <div class="ig-body">
+            <img class="ig-av" src="assets/testimonials/avatar-yedidya.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של ידידיה טוויל" />
+            <div>
+              <div class="ig-bio">ידידיה טוויל · חטובים לתמיד, ירידה במשקל</div>
+              <div class="ig-stats"><div><b>7,365</b> עוקבים</div><div><b>186</b> במעקב</div></div>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
 <!-- PORTALS -->
 <section>
   <div class="wrap center">
@@ -222,94 +316,6 @@ fbq('init','2132323570952002');fbq('track','PageView');
         <img src="assets/portals/therapist.jpg" alt="רם מעביר שיעור בקורס NLP, בית המטפלים" loading="lazy" />
         <b>בית המטפלים</b><span>פורטל למידה לעשרות מטפלים, הפורטל שממנו הגיעו המספרים בקייס סטאדי</span>
       </a>
-    </div>
-  </div>
-</section>
-
-<!-- עדויות
-     כל ציטוט הוא מילה במילה מתוך התמלול של הסרטון עצמו (ElevenLabs Scribe).
-     המספרים בכרטיסי האינסטגרם אומתו חי מול הפרופילים ב-23.8.2026.
-     אין כאן שורה אחת שהם לא אמרו. -->
-<section>
-  <div class="wrap center">
-    <h2>מה אומרים מי שעבדו איתי</h2>
-    <p class="lead-p">שלושה בעלי עסקים. לשניים מהם בניתי מערכת שרצה עכשיו, והשלישי ישב איתי על השיווק והתהליכים בעסק שלו.</p>
-
-    <div class="tgrid">
-
-      <figure class="tcard">
-        <blockquote>״הילל בנה לי פורטל לבית ספר ל-NLP שיש לי, ואני יכול להגיד לכם שזו <em>הרמה הגבוהה ביותר</em> של פורטל לימודים שאי פעם יצא לי לראות״</blockquote>
-        <div class="vwrap">
-          <button class="vfacade" type="button" data-src="assets/testimonials/ram-alus.mp4" aria-label="נגן את העדות של רם אלוס, שתי דקות וחמש שניות">
-            <img src="assets/testimonials/ram-alus.webp" width="540" height="960" loading="lazy" decoding="async" alt="רם אלוס מספר על הפורטל שנבנה לו" />
-            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-          </button>
-          <span class="dur">2:05</span>
-        </div>
-        <figcaption class="ig">
-          <div class="ig-top">
-            <a class="ig-handle" href="https://www.instagram.com/ram.alus/" target="_blank" rel="noopener nofollow">ram.alus</a>
-            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
-          </div>
-          <div class="ig-body">
-            <img class="ig-av" src="assets/testimonials/avatar-ram.webp" width="44" height="44" loading="lazy" decoding="async" alt="תמונת הפרופיל של רם אלוס" />
-            <div>
-              <div class="ig-bio">רם אלוס · יועץ לעסקים ובעל בית ספר ל-NLP</div>
-              <div class="ig-stats"><div><b>25.4K</b> עוקבים</div><div><b>340</b> במעקב</div></div>
-            </div>
-          </div>
-        </figcaption>
-      </figure>
-
-      <figure class="tcard">
-        <blockquote>״שתי הנעות לפעולה, הבאנו לשם <em>ארבע מאות אנשים כבר בשבוע הראשון</em>. מתוך האנשים שצפו בפורטל וצרכו אותו נסגרו עסקאות פרימיום״</blockquote>
-        <div class="vwrap">
-          <button class="vfacade" type="button" data-src="assets/testimonials/yuval-palcovich.mp4" aria-label="נגן את העדות של יובל פלקוביץ׳, דקה ארבעים ושתיים">
-            <img src="assets/testimonials/yuval-palcovich.webp" width="540" height="960" loading="lazy" decoding="async" alt="יובל פלקוביץ׳ מספר על הפורטל שנבנה לו" />
-            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-          </button>
-          <span class="dur">1:42</span>
-        </div>
-        <figcaption class="ig">
-          <div class="ig-top">
-            <a class="ig-handle" href="https://www.instagram.com/yuval_palcovich/" target="_blank" rel="noopener nofollow">yuval_palcovich</a>
-            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
-          </div>
-          <div class="ig-body">
-            <img class="ig-av" src="assets/testimonials/avatar-yuval.webp" width="44" height="44" loading="lazy" decoding="async" alt="תמונת הפרופיל של יובל פלקוביץ׳" />
-            <div>
-              <div class="ig-bio">יובל פלקוביץ׳ · סקייל רווחי, עסק שיוצר חופש</div>
-              <div class="ig-stats"><div><b>10.6K</b> עוקבים</div><div><b>197</b> במעקב</div></div>
-            </div>
-          </div>
-        </figcaption>
-      </figure>
-
-      <!-- ידידיה אינו לקוח פורטל אלא ייעוץ AI, ולכן הציטוט מדבר על יכולת
-           ולא על מערכת. אין לו סימון מאומת באינסטגרם, ולכן אין כאן וי כחול. -->
-      <figure class="tcard">
-        <blockquote>״הבן אדם הזה פשוט זרק עליי את כל המידע שיש לו, ואני בטוח שזה היה רק קצה המזלג. באמת, <em>דברים מטורפים שלא האמנתי אפילו שקיימים</em>״</blockquote>
-        <div class="vwrap">
-          <button class="vfacade" type="button" data-src="assets/testimonials/yedidya-tawil.mp4" aria-label="נגן את העדות של ידידיה טוויל, חמישים ושלוש שניות">
-            <img src="assets/testimonials/yedidya-tawil.webp" width="540" height="954" loading="lazy" decoding="async" alt="ידידיה טוויל מספר על העבודה עם הילל" />
-            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-          </button>
-          <span class="dur">0:53</span>
-        </div>
-        <figcaption class="ig">
-          <div class="ig-top">
-            <a class="ig-handle" href="https://www.instagram.com/yedidya.tawil/" target="_blank" rel="noopener nofollow">yedidya.tawil</a>
-          </div>
-          <div class="ig-body">
-            <img class="ig-av" src="assets/testimonials/avatar-yedidya.webp" width="44" height="44" loading="lazy" decoding="async" alt="תמונת הפרופיל של ידידיה טוויל" />
-            <div>
-              <div class="ig-bio">ידידיה טוויל · חטובים לתמיד, ירידה במשקל</div>
-              <div class="ig-stats"><div><b>7,365</b> עוקבים</div><div><b>186</b> במעקב</div></div>
-            </div>
-          </div>
-        </figcaption>
-      </figure>
-
     </div>
   </div>
 </section>
