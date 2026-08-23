@@ -335,6 +335,29 @@ export default async function handler(req, res) {
       }
     }
 
+    // ---------- 3a. kick off enrichment (best-effort, never blocks the lead) ----------
+    // The enricher looks the person up and sends Hillel a SECOND WhatsApp with who they are.
+    // It lives on Fly because the alert above must stay instant — speed-to-lead beats detail.
+    // Deliberately short timeout: the service answers 202 immediately and works in the background.
+    const enrichUrl = cleanEnv(process.env.ENRICH_URL);
+    const enrichToken = cleanEnv(process.env.ENRICH_TOKEN);
+    if (enrichUrl && enrichToken) {
+      try {
+        await fetchWithTimeout(
+          enrichUrl,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-enrich-token': enrichToken },
+            body: JSON.stringify({ id: leadId, name, phone })
+          },
+          4000
+        );
+      } catch (e) {
+        // An enrichment miss costs context, not the lead. Log and move on.
+        console.error('[lead] enrich trigger failed', e && e.message, 'lead_id:', leadId);
+      }
+    }
+
     // ---------- 3b. write the notification result back to the row ----------
     if (leadId) {
       try {
