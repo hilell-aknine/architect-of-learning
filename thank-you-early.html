@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>תודה · הלל אקנין</title>
+<meta name="robots" content="noindex" />
+
+<!-- ===================================================================
+     עמוד תודה למי שעוד לא השיק קורס.
+     🔴 בכוונה אין כאן פיקסל ואין אירוע Lead. אם מי שאינו האווטאר
+     היה יורה Lead, מטא הייתה ממשיכה לייעל בדיוק על הקהל הזה
+     ולהביא עוד כמוהו. הפרטים כן נשמרים במסד.
+     =================================================================== -->
+
+<style>
+  :root {
+    --paper: #F4EFE6;
+    --paper-2: #ECE5D7;
+    --ink: #14110D;
+    --ink-soft: #4A4339;
+    --ember: #C2410C;
+    --ember-2: #E2570F;
+    --forest: #1E4D3B;
+    --rule: rgba(20,17,13,0.14);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Rubik', 'Segoe UI', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    line-height: 1.7;
+  }
+  .card {
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    padding: 48px 32px;
+  }
+  .check {
+    width: 56px; height: 56px; margin: 0 auto 20px;
+    border-radius: 50%; background: var(--forest);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .check svg { width: 28px; height: 28px; stroke: var(--paper); }
+  h1 {
+    font-family: 'Amatic SC', 'Rubik', sans-serif;
+    font-weight: 700; font-size: 2.6rem; line-height: 1.15;
+    margin-bottom: 14px; color: var(--ink);
+  }
+  p.lead-sub { font-size: 1.05rem; color: var(--ink-soft); margin-bottom: 28px; }
+  .steps { text-align: right; margin: 0 auto 28px; max-width: 380px; }
+  .steps li { margin-bottom: 10px; color: var(--ink-soft); font-size: .96rem; }
+  .steps b { color: var(--ink); }
+  .wa {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ember); color: var(--paper);
+    font-weight: 700; font-size: 1rem;
+    padding: 13px 28px; border-radius: 999px; text-decoration: none;
+  }
+  .wa:hover { background: var(--ember-2); }
+  .foot { margin-top: 20px; font-size: .82rem; color: var(--ink-soft); opacity: .7; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h1>תודה, קיבלתי</h1>
+    <p class="lead-sub">אני עובד עם בעלי קורס שכבר מוכר, ולכן זה כנראה עוד לא השלב שלנו.</p>
+    <ul class="steps">
+      <li><b>1.</b> תשקיע עכשיו בלהשיק את הקורס ולמכור אותו לקבוצה ראשונה.</li>
+      <li><b>2.</b> כשיהיו לך עשרות תלמידים שקנו, שם מתחילה העבודה שלי.</li>
+      <li><b>3.</b> תחזור אליי אז, ונראה מה אפשר לבנות סביב מה שכבר עובד.</li>
+    </ul>
+    <a class="wa" href="https://wa.me/972549116092" target="_blank" rel="noopener">
+      יש לך שאלה בכל זאת? כתוב לי בוואטסאפ
+    </a>
+    <p class="foot">הלל אקנין · בניית מערכות קורסים לבעלי עסקים דיגיטליים</p>
+  </div>
+</body>
+</html>

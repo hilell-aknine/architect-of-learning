@@ -91,7 +91,15 @@
     width:100%;padding:15px 16px;margin-bottom:11px;font:inherit;font-size:16px;
     border:1.5px solid var(--rule);border-radius:10px;background:#fff;color:var(--ink);
   }
-  input:focus{outline:none;border-color:var(--ember)}
+  input:focus,select:focus{outline:none;border-color:var(--ember)}
+  select{width:100%;margin-bottom:10px;padding:15px 16px;border-radius:12px;
+    border:1.5px solid #d9d2c6;background:#fff;font:inherit;font-size:1rem;
+    color:#1c1a17;direction:rtl;appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,#8b8378 50%),
+      linear-gradient(135deg,#8b8378 50%,transparent 50%);
+    background-position:18px 50%,24px 50%;background-size:6px 6px,6px 6px;
+    background-repeat:no-repeat}
+  select:invalid{color:#8b8378}
   form .btn{margin-top:4px}
   .err{display:none;margin-top:16px;padding:14px;border-radius:10px;background:#fdecea;color:#a3271a;font-size:.95rem;text-align:center}
   .err a{color:#a3271a;font-weight:800}
@@ -196,6 +204,15 @@ fbq('init','2132323570952002');fbq('track','PageView');
     <form id="f" novalidate>
       <input id="n" type="text" placeholder="השם שלך" autocomplete="name" required />
       <input id="p" type="tel" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required />
+      <!-- שאלת הסינון. חמישה מתוך תשעה הלידים הראשונים נפסלו כי עוד לא
+           היה להם קורס שמוכר, והטופס לא שאל כלום. -->
+      <select id="s" required aria-label="כמה תלמידים כבר קנו ממך את הקורס">
+        <option value="" selected disabled>כמה תלמידים כבר קנו ממך את הקורס?</option>
+        <option value="not_launched">עוד לא השקתי קורס</option>
+        <option value="tens">עשרות</option>
+        <option value="hundreds">מאות</option>
+        <option value="thousands">אלפים</option>
+      </select>
       <button type="submit" class="btn">שריין לי שיחת אסטרטגיה</button>
     </form>
     <div class="err" id="e">
@@ -243,10 +260,15 @@ window.onYouTubeIframeAPIReady = function(){
 
 document.getElementById('f').addEventListener('submit', function(ev){
   ev.preventDefault();
-  var n = document.getElementById('n'), p = document.getElementById('p');
-  var name = (n.value||'').trim(), phone = (p.value||'').trim();
+  var n = document.getElementById('n'), p = document.getElementById('p'), s = document.getElementById('s');
+  var name = (n.value||'').trim(), phone = (p.value||'').trim(), students = s.value;
   if (!name) { n.focus(); return; }
   if (phone.replace(/\D/g,'').length < 9) { p.focus(); return; }
+  if (!students) { s.focus(); return; }
+  // מי שעוד לא השיק קורס אינו האווטאר. הוא נשמר במסד כדי שנדע כמה כאלה
+  // מגיעים, אבל לא נשלח לעמוד שיורה Lead בפיקסל. אחרת מטא ממשיכה
+  // לייעל על אותו קהל בדיוק ומביאה עוד כמוהו.
+  var qualified = students !== 'not_launched';
   var btn = this.querySelector('button');
   btn.disabled = true; btn.textContent = 'שולח…';
   // One id shared by the server event and the browser event, so Meta counts ONE Lead, not two.
@@ -255,11 +277,17 @@ document.getElementById('f').addEventListener('submit', function(ev){
   fetch('/api/lead', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
-      name:name, phone:phone, source:'landing-simple', page:'simple', eventId: eventId,
+      name:name, phone:phone, students:students, source:'landing-simple', page:'simple',
+      eventId: qualified ? eventId : '',
       videoWatchedPct: Math.round(vp.pct*100), videoSeconds: vp.seconds, videoCompleted: vp.completed
     })
   }).then(function(r){
-    if (r.ok) { location.href = '/thank-you.html?eid=' + encodeURIComponent(eventId); return; }
+    if (r.ok) {
+      location.href = qualified
+        ? '/thank-you.html?eid=' + encodeURIComponent(eventId)
+        : '/thank-you-early.html';
+      return;
+    }
     throw new Error('not_delivered');
   }).catch(function(){
     document.getElementById('f').style.display = 'none';
