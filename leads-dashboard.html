@@ -45,6 +45,55 @@
   .camp{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px;margin-bottom:18px}
   .camp-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px}
   .camp-head h2{font-size:17px;font-weight:800;display:flex;align-items:center;gap:8px}
+  /* ===== נוסף 28.08: שורה תחתונה, עומק צפייה, סטטוס במסד, סוכן ===== */
+  .camp-kpis.sec .camp-kpi{background:transparent;border-style:dashed}
+  .camp-kpi.good .n{color:#127a4d}
+  .truth-gap{background:#fff6e6;border:1px solid #f0d19a;border-radius:10px;
+    padding:10px 14px;margin:10px 0;font-size:13.5px;line-height:1.6}
+  .truth-drop{background:#fdecea;border:1px solid #f3bdb5;border-radius:10px;
+    padding:10px 14px;margin:10px 0;font-size:13.5px}
+  .camp-foot{color:var(--soft);font-size:12px;margin-top:8px;line-height:1.6}
+  .thin-tag{background:#eceff3;color:#5b6675;font-size:10.5px;font-weight:700;
+    border-radius:99px;padding:1px 7px;margin-inline-start:6px}
+  .camp-ad-row .m .v.good{color:#127a4d;font-weight:800}
+  .camp-seg{margin-top:18px}
+  .camp-lead-row{display:flex;align-items:center;gap:10px;justify-content:space-between}
+  .camp-lead-row.st-won{background:#f2fbf6}
+  .camp-lead-row.st-disqualified{opacity:.6}
+  .cl-main{min-width:0;flex:1}
+  .cl-note{color:var(--soft);font-size:12.5px;margin-top:3px}
+  .cl-act{display:flex;align-items:center;gap:7px;flex:none}
+  .cl-act select{font-family:inherit;font-size:12.5px;padding:4px 6px;
+    border:1px solid var(--line);border-radius:8px;background:#fff}
+  .cl-act .deal{color:#127a4d;font-weight:800;font-size:13px}
+  .stu{background:#eef4fb;color:#2c5b86;font-size:11px;font-weight:700;
+    border-radius:99px;padding:1px 8px;margin-inline-start:6px}
+  .ask{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:16px 18px;margin-bottom:16px;box-shadow:var(--shadow)}
+  .ask-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .ask-head h2{font-size:17px;margin:0}
+  .ask-note{color:var(--soft);font-size:12px}
+  .ask-row{display:flex;gap:8px;margin-top:10px}
+  .ask-row input{flex:1;font-family:inherit;font-size:14.5px;padding:11px 14px;
+    border:1px solid var(--line);border-radius:11px;background:#fff}
+  .ask-row button{font-family:inherit;font-size:14.5px;font-weight:800;padding:11px 22px;
+    border:0;border-radius:11px;background:var(--amber);color:#fff;cursor:pointer}
+  .ask-row button:disabled{opacity:.5;cursor:default}
+  .ask-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+  .ask-chip{background:#f2efe7;color:#5b6675;font-size:12px;border-radius:99px;
+    padding:4px 11px;cursor:pointer;border:1px solid transparent}
+  .ask-chip:hover{border-color:var(--amber);color:var(--amber-d)}
+  .ask-out{display:none} .ask-out.on{display:block;margin-top:12px}
+  .ask-ans{background:#f7f9fb;border-inline-start:3px solid var(--teal);
+    border-radius:10px;padding:12px 15px;font-size:14.5px;line-height:1.8}
+  .ask-wait{color:var(--soft);font-size:13.5px;padding:6px 2px}
+  .ask-err{background:#fdecea;border-inline-start:3px solid var(--hot);
+    border-radius:10px;padding:11px 15px;font-size:13.5px}
+  .ask-stamp{color:var(--soft);font-size:11.5px;margin-top:5px;text-align:end}
+  @media(max-width:640px){
+    .cl-act{flex-wrap:wrap;justify-content:flex-end}
+    .camp-lead-row{flex-wrap:wrap}
+  }
   .camp-status{font-size:12px;font-weight:800;border-radius:999px;padding:3px 10px;color:#fff;background:#2fa84f}
   .camp-status.off{background:var(--soft)}
   .camp-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
@@ -55,7 +104,12 @@
   .camp-empty{color:var(--soft);font-size:14px;text-align:center;padding:10px}
   .camp-ads{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
   .camp-ads h3{font-size:13px;color:var(--soft);font-weight:700;margin-bottom:8px}
-  .camp-ad-row{display:grid;grid-template-columns:1fr repeat(4,72px);gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  /* שמונה מדדים במקום ארבעה. עמודות צרות יותר, וגלילה אופקית בטלפון
+     במקום גלישה לשורה שנייה שמערבבת ערכים עם תוויות. */
+  .camp-ads{overflow-x:auto}
+  .camp-ad-row{display:grid;grid-template-columns:minmax(170px,1fr) repeat(8,64px);
+    gap:6px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line);
+    font-size:13px;min-width:660px}
   .camp-ad-row:last-child{border-bottom:none}
   .camp-ad-row.win{background:linear-gradient(90deg,rgba(31,138,143,.07),transparent);border-radius:8px}
   .camp-ad-row .an{font-weight:700;display:flex;align-items:center;gap:6px}
@@ -150,6 +204,25 @@
 
   <div class="errbar" id="errbar"></div>
 
+  <div class="ask" id="ask">
+    <div class="ask-head">
+      <h2>💬 שאל על הקמפיין</h2>
+      <span class="ask-note">עונה רק ממה שנמדד עכשיו. מספר שלא נמדד — יגיד לך שלא נמדד.</span>
+    </div>
+    <div class="ask-row">
+      <input id="ask-q" type="text" autocomplete="off"
+             placeholder="כמה עלה לי ליד השבוע? · איזו מודעה הכי מחזיקה אנשים? · מי פתוח וממתין לי?">
+      <button id="ask-go">שאל</button>
+    </div>
+    <div class="ask-chips">
+      <span class="ask-chip">איזו מודעה הכי משתלמת ולמה</span>
+      <span class="ask-chip">מי פתוח וממתין לי</span>
+      <span class="ask-chip">כמה הרווחתי מול כמה שרפתי</span>
+      <span class="ask-chip">איזה ליד נפל בין הכיסאות</span>
+    </div>
+    <div id="ask-out" class="ask-out"></div>
+  </div>
+
   <div class="camp" id="camp">
     <div class="camp-head">
       <h2>🎯 קמפיין מודעות</h2>
@@ -188,9 +261,47 @@ const ENDPOINT = "https://vrqtelhjuydocxcletel.supabase.co/functions/v1/lead";
 const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZycXRlbGhqdXlkb2N4Y2xldGVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTgxNDcsImV4cCI6MjEwMjA5NDE0N30.nj9TRQeDVoTgEmjqe6NR3UjW8FvDQmwVwTWg-Bb9SRA";
 const SK_PASS = "ec_inbox_pass", SK_STATUS = "ec_lead_status";
 
-let leads = [], filter = "all", campaign = null, campaignLeads = [];
+let leads = [], filter = "all", campaign = null, campaignLeads = [], truth = null;
 const statusMap = JSON.parse(localStorage.getItem(SK_STATUS) || "{}");
 const STATUSES = {new:"חדש", contacted:"יצרתי קשר", followup:"במעקב", won:"נסגר ✅", lost:"לא רלוונטי"};
+
+// סטטוסים של לידי הקמפיין. אלה נשמרים במסד ולא בדפדפן, כדי שסימון
+// במחשב ייראה גם בטלפון. אלה בדיוק הערכים שהעמודה status מקבלת בשרת.
+const CAMP_STATUS = {new:"טרם טופל", talking:"בשיחה", won:"נסגר ✅",
+                     later:"לא עכשיו", disqualified:"לא רלוונטי"};
+const STUDENTS_HE = {not_launched:"עוד לא השיק קורס", tens:"עשרות תלמידים",
+                     hundreds:"מאות תלמידים", thousands:"אלפי תלמידים"};
+
+// כתיבת סטטוס למסד. אם השרת מסרב, מחזירים את הבורר למה שהיה ומראים
+// שגיאה. לעולם לא לצבוע הצלחה על כתיבה שנכשלה.
+async function setCampStatus(id, value, el){
+  const prev = el.getAttribute("data-prev") || "";
+  el.disabled = true;
+  try{
+    const pass = sessionStorage.getItem(SK_PASS);
+    const r = await fetch(ENDPOINT + "?action=status&inbox=" + encodeURIComponent(pass), {
+      method:"POST",
+      headers:{ "Content-Type":"application/json", "apikey":ANON, "Authorization":"Bearer "+ANON },
+      body: JSON.stringify({ id: id, status: value })
+    });
+    if (!r.ok){
+      el.value = prev;
+      showError("לא הצלחתי לשמור את הסטטוס (" + r.status + "). הוא לא נשמר.",
+        await r.text().catch(()=>""));
+      return;
+    }
+    clearError();
+    el.setAttribute("data-prev", value);
+    const row = campaignLeads.find(l=>l.id===id);
+    if (row) row.status = value || null;
+    load();
+  }catch(e){
+    el.value = prev;
+    showError("הסטטוס לא נשמר — אין חיבור לשרת.", e && e.message);
+  }finally{
+    el.disabled = false;
+  }
+}
 
 const $ = s => document.querySelector(s);
 function he(n){ return (n==null?0:n).toLocaleString("he-IL"); }
@@ -257,6 +368,7 @@ async function load(){
     leads = (data.leads||[]).filter(l=>l.phone);     // רק לידים עם טלפון לחזרה
     campaign = data.campaign || null;
     campaignLeads = data.campaignLeads || [];
+    truth = data.truth || null;   // הצלבת מסד מול פיקסל. null = לא ניתן להצליב
     // סופרים גם את לידי הקמפיין — הם העיקר, וקודם הם לא נספרו בכותרת בכלל.
     const total = leads.length + campaignLeads.length;
     $("#updated").textContent = "עודכן " + new Date().toLocaleTimeString("he-IL") +
@@ -288,33 +400,76 @@ function renderCampaign(){
   st.textContent = live ? "🟢 פעיל" : (campaign.status || "—");
   st.classList.toggle("off", !live);
 
+  // ===== שורה תחתונה =====
+  // לידים והכנסה נספרים מהמסד (truth), לא מהפיקסל. הפיקסל סופר פחות,
+  // ומי שמסתכל רק עליו מקבל עלות ליד מנופחת ומחליט על סמך מספר שגוי.
+  let html = "";
+  if (truth){
+    const bottom = [
+      ["₪" + he(truth.revenue||0), "נכנס", "good"],
+      ["₪" + he(Math.round(truth.spend||0)), "נשרף", ""],
+      [truth.roas!=null ? truth.roas.toFixed(1)+"x" : "—", "החזר", truth.roas>=1?"good":""],
+      [he(truth.realLeads||0), "לידים במסד", ""],
+      [truth.realCpl!=null ? "₪"+he(Math.round(truth.realCpl)) : "—", "לליד באמת", ""],
+      [he(truth.deals||0), "עסקאות", ""],
+    ];
+    html += '<div class="camp-kpis">' + bottom.map(([n,l,c])=>
+      `<div class="camp-kpi ${c}"><div class="n">${n}</div><div class="l">${l}</div></div>`
+    ).join("") + '</div>';
+
+    if (truth.gap){
+      html += `<div class="truth-gap">⚠️ במסד <b>${truth.realLeads}</b> לידים, הפיקסל ספר <b>${truth.pixelLeads}</b>.
+        פער של ${truth.gap}. מטא מייעלת על המספר הנמוך, ולפיה ליד עולה
+        ₪${he(Math.round(truth.pixelCpl||0))} במקום ₪${he(Math.round(truth.realCpl||0))}.</div>`;
+    }
+    if ((truth.dropped||[]).length){
+      html += '<div class="truth-drop">🔴 נפלו בין הכיסאות (בלי התראה ובלי טיפול): ' +
+        truth.dropped.map(d=>`<b>${d.name}</b> ${d.phone}`).join(" · ") + '</div>';
+    }
+  }
+
   const kpis = [
-    ["₪" + he(campaign.spend||0), "הוצאה"],
     [he(campaign.impressions||0), "חשיפות"],
-    [he(campaign.clicks||0), "קליקים"],
+    [he(campaign.reach||0), "אנשים"],
+    [he(campaign.linkClicks||0), "קליקים לקישור"],
+    [he(campaign.landingPageViews||0), "נחתו בדף"],
     [(campaign.ctr||0).toFixed(1) + "%", "CTR"],
-    [he(campaign.leads||0), "לידים (Meta)"],
-    [campaign.cpl!=null ? "₪"+he(campaign.cpl) : "—", "עלות לליד"],
+    [campaign.landingPageViews && truth ? (truth.realLeads/campaign.landingPageViews*100).toFixed(1)+"%" : "—", "המרה בדף"],
   ];
-  let html = '<div class="camp-kpis">' + kpis.map(([n,l],i)=>
-    `<div class="camp-kpi${i===5?" cpl":""}"><div class="n">${n}</div><div class="l">${l}</div></div>`
+  html += '<div class="camp-kpis sec">' + kpis.map(([n,l])=>
+    `<div class="camp-kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`
   ).join("") + '</div>';
 
   const ads = campaign.ads || [];
   if (ads.length){
     const live = ads.filter(a=>!a.deleted);
     const topCtr = Math.max(...live.map(a=>a.ctr||0));
+    // "מוביל" ניתן רק למודעה שגם הובילה ב-CTR וגם רצה מספיק כדי שזה יהיה אמיתי.
+    // מתחת ל-500 חשיפות אחוז גבוה הוא רעש, וכינוי "מוביל" עליו מטעה.
+    const MIN_IMPR = 500;
     html += '<div class="camp-ads"><h3>לפי מודעה — מי באמת מנצחת</h3>' +
       ads.map(a => {
-        const isWin = !a.deleted && live.length > 1 && a.ctr === topCtr && topCtr > 0;
+        const solid = (a.impressions||0) >= MIN_IMPR;
+        const isWin = !a.deleted && live.length>1 && a.ctr===topCtr && topCtr>0 && solid;
+        // dbLeads/revenue מוצמדים למודעה בשרת. הדפדפן לא מצליב לפי שם.
+        const dLeads = a.dbLeads || 0;
+        const realCpl = a.realCpl!=null ? Math.round(a.realCpl) : null;
+        const pct = v => v==null ? "—" : v.toFixed(1)+"%";
         return `<div class="camp-ad-row${isWin?" win":""}"${a.deleted?' style="opacity:.55"':""}>
-          <div class="an">${a.name||"—"}${isWin?'<span class="win-tag">מוביל</span>':""}</div>
+          <div class="an">${a.name||"—"}${isWin?'<span class="win-tag">מוביל</span>':""}${
+            !solid && !a.deleted ? '<span class="thin-tag">מדגם קטן</span>' : ""}</div>
           <div class="m"><div class="v">₪${he(a.spend||0)}</div><div class="k">הוצאה</div></div>
-          <div class="m"><div class="v">${he(a.impressions||0)}</div><div class="k">חשיפות</div></div>
           <div class="m"><div class="v">${a.ctr!=null?(a.ctr).toFixed(1)+"%":"—"}</div><div class="k">CTR</div></div>
-          <div class="m"><div class="v">${a.videoViews!=null?he(a.videoViews):"—"}</div><div class="k">צפיות</div></div>
+          <div class="m"><div class="v">${pct(a.hook)}</div><div class="k">הוק</div></div>
+          <div class="m"><div class="v">${pct(a.p25)}</div><div class="k">רבע</div></div>
+          <div class="m"><div class="v">${pct(a.p100)}</div><div class="k">סיימו</div></div>
+          <div class="m"><div class="v">${dLeads||"—"}</div><div class="k">לידים</div></div>
+          <div class="m"><div class="v">${realCpl?"₪"+he(realCpl):"—"}</div><div class="k">לליד</div></div>
+          <div class="m"><div class="v ${a.revenue?"good":""}">${a.revenue?"₪"+he(a.revenue):"—"}</div><div class="k">הכנסה</div></div>
         </div>`;
-      }).join("") + '</div>';
+      }).join("") +
+      '<div class="camp-foot">הוק = אחוז מהנחשפים שהתחילו לצפות. רבע וסיימו = כמה מהם נשארו. ' +
+      'לידים והכנסה נספרים מהמסד לפי utm_content, לא מהפיקסל.</div></div>';
   }
 
   const segRow = (label, ctr, good) => `<div class="seg-row ${good?"good":"bad"}"><span class="nm">${label}</span><span class="ctr">${ctr.toFixed(1)}%</span></div>`;
@@ -340,8 +495,23 @@ function renderCampaign(){
   }
 
   if (campaignLeads.length){
+    // פילוח שאלת הסינון. מי שעונה "עוד לא השקתי קורס" נשמר כאן ולא מדווח
+    // למטא, כדי שהיא לא תלמד ללכת ולחפש עוד כמוהו.
+    const bs = (truth && truth.byStudents) || {};
+    const segs = Object.entries(bs).filter(([k])=>k!=="before_question");
+    if (segs.length){
+      html += '<div class="camp-seg"><h3>🎯 שאלת הסינון</h3>' +
+        segs.sort((a,b)=>b[1]-a[1]).map(([k,v])=>
+          `<div class="seg-row ${k==="not_launched"?"bad":"good"}">
+             <span class="nm">${STUDENTS_HE[k]||k}</span>
+             <span class="ctr">${v}${k==="not_launched"?" · לא נספר אצל מטא":""}</span>
+           </div>`).join("") +
+        (bs.before_question ? `<div class="camp-foot">${bs.before_question} נכנסו לפני שהשאלה נוספה ב-27.08.</div>` : "") +
+        '</div>';
+    }
+
     html += '<div class="camp-leads"><h3>לידים מדף הנחיתה של הקמפיין (' + campaignLeads.length + ')</h3>' +
-      campaignLeads.slice(0,10).map(l => {
+      campaignLeads.map(l => {
         const pct = l.video_completed ? 100 : (l.video_watched_pct||0);
         const cls = l.video_completed || pct>=80 ? "full" : pct>0 ? "part" : "none";
         const watchLabel = l.video_completed ? "✓ סיים לצפות" : pct>0 ? "צפה ב-"+pct+"%" : "לא צפה";
@@ -349,10 +519,23 @@ function renderCampaign(){
         const undelivered = l.notified === false
           ? ' <span class="watch-tag none" title="' + (l.notify_error||"") + '">⚠️ לא נשלחה התראה</span>'
           : '';
+        const st = l.status || "";
+        const opts = ['<option value="">— לא סווג —</option>'].concat(
+          Object.entries(CAMP_STATUS).map(([k,v])=>
+            `<option value="${k}" ${st===k?"selected":""}>${v}</option>`)).join("");
+        const stu = l.students ? `<span class="stu">${STUDENTS_HE[l.students]||l.students}</span>` : "";
         return `
-        <div class="camp-lead-row">
-          <div><span class="nm">${l.name||"ללא שם"}</span> <span class="ph">· ${l.phone||""} · ${timeAgo(l.created_at)}</span> <span class="watch-tag ${cls}">${watchLabel}</span>${undelivered}</div>
-          <a class="wa" href="${campWaLink(l)}" target="_blank">💬 וואטסאפ</a>
+        <div class="camp-lead-row ${st?("st-"+st):""}">
+          <div class="cl-main">
+            <div><span class="nm">${l.name||"ללא שם"}</span> <span class="ph">· ${l.phone||""} · ${timeAgo(l.created_at)}</span>
+              <span class="watch-tag ${cls}">${watchLabel}</span>${stu}${undelivered}</div>
+            ${l.notes?`<div class="cl-note">${l.notes}</div>`:""}
+          </div>
+          <div class="cl-act">
+            ${l.deal_value?`<span class="deal">₪${he(l.deal_value)}</span>`:""}
+            <select data-prev="${st}" onchange="setCampStatus('${l.id}',this.value,this)">${opts}</select>
+            <a class="wa" href="${campWaLink(l)}" target="_blank">💬</a>
+          </div>
         </div>`;
       }).join("") +
       '</div>';
@@ -431,6 +614,49 @@ function logout(msg){
   $("#gateErr").textContent = msg||"";
   $("#pass").value="";
 }
+// ----- הסוכן -----
+// שולח את השאלה לשרת. השרת שולף נתונים חיים, מצרף אותם לשאלה ומחזיר תשובה.
+// הדפדפן לא מחזיק מפתח ולא מחשב שום מספר בעצמו.
+async function ask(q){
+  const out = $("#ask-out"), btn = $("#ask-go");
+  if (!q) return;
+  out.className = "ask-out on"; out.innerHTML = '<div class="ask-wait">חושב…</div>';
+  btn.disabled = true;
+  try{
+    const pass = sessionStorage.getItem(SK_PASS);
+    const r = await fetch(ENDPOINT + "?action=ask&inbox=" + encodeURIComponent(pass), {
+      method:"POST",
+      headers:{ "Content-Type":"application/json", "apikey":ANON, "Authorization":"Bearer "+ANON },
+      body: JSON.stringify({ question: q })
+    });
+    const d = await r.json().catch(()=>({}));
+    if (!r.ok){
+      // מצב חסר-נתונים מקבל ניסוח משלו. עדיף לומר "לא הצלחתי לקרוא"
+      // מאשר לתת תשובה שנשמעת בטוחה ומבוססת על כלום.
+      const msg = d.error === "data_unavailable"
+        ? "לא הצלחתי לקרוא את הנתונים החיים ולכן אני לא עונה. עדיף בלי תשובה מאשר תשובה מנוחשת."
+        : d.error === "agent_not_configured"
+        ? "הסוכן לא מוגדר בשרת (חסר ANTHROPIC_API_KEY)."
+        : "השרת החזיר שגיאה " + r.status + ".";
+      out.innerHTML = '<div class="ask-err">⚠️ ' + msg + '</div>';
+      return;
+    }
+    const when = d.asOf ? new Date(d.asOf).toLocaleTimeString("he-IL") : "";
+    out.innerHTML = '<div class="ask-ans">' +
+      String(d.answer||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\n/g,"<br>") +
+      '</div>' + (when ? '<div class="ask-stamp">נשלף חי ב-' + when + '</div>' : "");
+  }catch(e){
+    out.innerHTML = '<div class="ask-err">⚠️ אין חיבור לשרת. ' + (e&&e.message||"") + '</div>';
+  }finally{
+    btn.disabled = false;
+  }
+}
+$("#ask-go").onclick = ()=>ask($("#ask-q").value.trim());
+$("#ask-q").addEventListener("keydown", e=>{ if(e.key==="Enter") ask($("#ask-q").value.trim()); });
+document.querySelectorAll(".ask-chip").forEach(c=>c.onclick=()=>{
+  $("#ask-q").value = c.textContent; ask(c.textContent);
+});
+
 $("#enter").onclick = enter;
 $("#pass").addEventListener("keydown",e=>{ if(e.key==="Enter") enter(); });
 $("#logout").onclick = ()=>logout();
