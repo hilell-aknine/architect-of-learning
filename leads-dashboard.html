@@ -269,8 +269,12 @@ const STATUSES = {new:"חדש", contacted:"יצרתי קשר", followup:"במע�
 // במחשב ייראה גם בטלפון. אלה בדיוק הערכים שהעמודה status מקבלת בשרת.
 const CAMP_STATUS = {new:"טרם טופל", talking:"בשיחה", won:"נסגר ✅",
                      later:"לא עכשיו", disqualified:"לא רלוונטי"};
-const STUDENTS_HE = {not_launched:"עוד לא השיק קורס", tens:"עשרות תלמידים",
-                     hundreds:"מאות תלמידים", thousands:"אלפי תלמידים"};
+const STUDENTS_HE = {not_launched:"אין תוכן ואין לקוחות", content_no_system:"יש תוכן, אין מערכת",
+                     tens:"עשרות לקוחות", hundreds:"הרבה לקוחות",
+                     thousands:"אלפי תלמידים"};
+// שתי התשובות האלה נשמרות ומתריעות, אבל בכוונה לא נספרות כליד אצל מטא.
+// thousands נשאר במפה בשביל רשומות היסטוריות בלבד, הוא הוסר מהטופס ב-02.09.
+const NOT_AT_META = ["not_launched", "content_no_system"];
 
 // כתיבת סטטוס למסד. אם השרת מסרב, מחזירים את הבורר למה שהיה ומראים
 // שגיאה. לעולם לא לצבוע הצלחה על כתיבה שנכשלה.
@@ -502,9 +506,9 @@ function renderCampaign(){
     if (segs.length){
       html += '<div class="camp-seg"><h3>🎯 שאלת הסינון</h3>' +
         segs.sort((a,b)=>b[1]-a[1]).map(([k,v])=>
-          `<div class="seg-row ${k==="not_launched"?"bad":"good"}">
+          `<div class="seg-row ${NOT_AT_META.includes(k)?"bad":"good"}">
              <span class="nm">${STUDENTS_HE[k]||k}</span>
-             <span class="ctr">${v}${k==="not_launched"?" · לא נספר אצל מטא":""}</span>
+             <span class="ctr">${v}${NOT_AT_META.includes(k)?" · לא נספר אצל מטא":""}</span>
            </div>`).join("") +
         (bs.before_question ? `<div class="camp-foot">${bs.before_question} נכנסו לפני שהשאלה נוספה ב-27.08.</div>` : "") +
         '</div>';

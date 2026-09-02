@@ -360,13 +360,17 @@ fbq('init','2132323570952002');fbq('track','PageView');
       <input id="n" type="text" placeholder="השם שלך" autocomplete="name" required />
       <input id="p" type="tel" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required />
       <!-- שאלת הסינון. חמישה מתוך תשעה הלידים הראשונים נפסלו כי עוד לא
-           היה להם קורס שמוכר, והטופס לא שאל כלום. -->
-      <select id="s" required aria-label="כמה תלמידים כבר קנו ממך את הקורס">
-        <option value="" selected disabled>כמה תלמידים כבר קנו ממך את הקורס?</option>
-        <option value="not_launched">עוד לא השקתי קורס</option>
-        <option value="tens">עשרות</option>
-        <option value="hundreds">מאות</option>
-        <option value="thousands">אלפים</option>
+           היה להם קורס שמוכר, והטופס לא שאל כלום.
+           עודכן 02.09.2026: נוספה האפשרות "יש תוכן, אין מערכת". עד היום היא
+           נבלעה בתוך "עוד לא השקתי קורס", ולכן מי שכבר יושב על כל חומר הגלם
+           נראה במסד בדיוק כמו מי שאין לו כלום. אלה שני אנשים שונים לגמרי.
+           "אלפים" הוסר ואוחד עם "הרבה" — אף ליד מעולם לא בחר בו. -->
+      <select id="s" required aria-label="איפה אתה נמצא היום עם הקורס">
+        <option value="" selected disabled>איפה אתה נמצא היום?</option>
+        <option value="hundreds">יש לי הרבה לקוחות שקנו את הקורס</option>
+        <option value="tens">יש לי עשרות לקוחות שקנו את הקורס</option>
+        <option value="content_no_system">יש לי את כל התוכן, אבל אין לי מערכת</option>
+        <option value="not_launched">אין לי תוכן ואין לי לקוחות עדיין</option>
       </select>
       <button type="submit" class="btn">שריין לי שיחת אסטרטגיה</button>
     </form>
@@ -420,10 +424,18 @@ document.getElementById('f').addEventListener('submit', function(ev){
   if (!name) { n.focus(); return; }
   if (phone.replace(/\D/g,'').length < 9) { p.focus(); return; }
   if (!students) { s.focus(); return; }
-  // מי שעוד לא השיק קורס אינו האווטאר. הוא נשמר במסד כדי שנדע כמה כאלה
-  // מגיעים, אבל לא נשלח לעמוד שיורה Lead בפיקסל. אחרת מטא ממשיכה
-  // לייעל על אותו קהל בדיוק ומביאה עוד כמוהו.
-  var qualified = students !== 'not_launched';
+  // שלושה מסלולים, לא שניים.
+  //   qualified  — כבר יש לו לקוחות משלמים. זה האווטאר. יורה Lead בפיקסל.
+  //   content_no_system — יש לו את חומר הגלם ואין לו מערכת. נשמר ומתריע
+  //     בוואטסאפ בדיוק כמו ליד רגיל, אבל בכוונה לא יורה Lead. הסיבה זהה
+  //     לסיבה המקורית: מטא לומדת את הקהל מאירועי Lead בלבד, ואנחנו רוצים
+  //     שהיא תמשיך לחפש קונים מוכחים. אם יתברר שהקבוצה הזו סוגרת עסקאות,
+  //     ההיפוך הוא הוספת 'content_no_system' לשורה של qualified כאן.
+  //   not_launched — אין תוכן ואין לקוחות. נשמר בלבד.
+  var qualified = students === 'hundreds' || students === 'tens';
+  var thanksPage = qualified ? '/thank-you.html'
+                 : students === 'content_no_system' ? '/thank-you-content.html'
+                 : '/thank-you-early.html';
   var btn = this.querySelector('button');
   btn.disabled = true; btn.textContent = 'שולח…';
   // One id shared by the server event and the browser event, so Meta counts ONE Lead, not two.
@@ -439,8 +451,8 @@ document.getElementById('f').addEventListener('submit', function(ev){
   }).then(function(r){
     if (r.ok) {
       location.href = qualified
-        ? '/thank-you.html?eid=' + encodeURIComponent(eventId)
-        : '/thank-you-early.html';
+        ? thanksPage + '?eid=' + encodeURIComponent(eventId)
+        : thanksPage;
       return;
     }
     throw new Error('not_delivered');
