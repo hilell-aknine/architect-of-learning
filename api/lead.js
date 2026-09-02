@@ -364,7 +364,17 @@ export default async function handler(req, res) {
     // ---------- 3a. kick off enrichment (best-effort, never blocks the lead) ----------
     // The enricher looks the person up and sends Hillel a SECOND WhatsApp with who they are.
     // It lives on Fly because the alert above must stay instant — speed-to-lead beats detail.
-    // Deliberately short timeout: the service answers 202 immediately and works in the background.
+    // ⚠️ ROOT CAUSE FOUND live 2026-08-30: lead-enricher-hillel.fly.dev runs with
+    // auto_stop_machines=stop / min_machines_running=0, so it fully sleeps between leads.
+    // Live-measured cold start: 4.74s for a bare GET /health. This block used to abort at
+    // 4000ms — SHORTER than the cold start itself — so on a cold machine (the normal case,
+    // since leads arrive sporadically) the POST to /enrich was killed before the Fly proxy
+    // even finished waking the machine. Result verified against campaign_leads: every one of
+    // the last 13 leads (2026-08-20 through today) had enrichment/enriched_at/enrich_error ALL
+    // null — the request never reached the Node handler, so neither the 2nd WhatsApp nor the
+    // DB write-back ever ran. This call only needs to survive long enough to receive the 202
+    // ack (the enricher does the actual work async on its own after that), so 12s covers a
+    // cold start plus margin without materially lengthening this handler's own runtime.
     const enrichUrl = cleanEnv(process.env.ENRICH_URL);
     const enrichToken = cleanEnv(process.env.ENRICH_TOKEN);
     if (enrichUrl && enrichToken) {
@@ -376,7 +386,7 @@ export default async function handler(req, res) {
             headers: { 'Content-Type': 'application/json', 'x-enrich-token': enrichToken },
             body: JSON.stringify({ id: leadId, name, phone })
           },
-          4000
+          12000
         );
       } catch (e) {
         // An enrichment miss costs context, not the lead. Log and move on.
