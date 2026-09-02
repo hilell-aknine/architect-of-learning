@@ -103,6 +103,28 @@ src="https://www.facebook.com/tr?id=2132323570952002&ev=Lead&noscript=1" alt="" 
   }
   .wa:hover { background: var(--ember-2); }
   .foot { margin-top: 20px; font-size: .82rem; color: var(--ink-soft); opacity: .7; }
+
+  /* ---- הסרטון ----------------------------------------------------------
+     נמדד ב-02.09.2026 מול campaign_leads: 14 מתוך 16 הלידים השאירו פרטים
+     אחרי 0% צפייה, והכי גבוה הגיע ל-10%. אף אחד לא סיים. כלומר הסרטון
+     כמעט לא נצפה בדף הנחיתה, והרגע הזה, אחרי שהוא כבר השאיר פרטים והוא
+     עוד מחכה לתשובה, הוא ההזדמנות השנייה והזולה ביותר להראות לו אותו.
+     אותה תבנית חזית כמו בדף הנחיתה: תמונה + כפתור, והנגן נטען רק בלחיצה. */
+  .vid-block { margin: 4px 0 26px; padding-top: 24px; border-top: 1px solid var(--rule); }
+  .vid-block h2 { font-size: 1.12rem; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
+  .vid-block p { font-size: .95rem; color: var(--ink-soft); margin-bottom: 16px; }
+  .vid { position: relative; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; }
+  .vid iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .ytf { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: #000; cursor: pointer; display: block; }
+  .ytf img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ytf span {
+    position: absolute; inset-block-start: 50%; inset-inline-start: 50%;
+    transform: translate(50%, -50%);
+    width: 60px; height: 44px; border-radius: 12px; background: rgba(20,17,13,.78);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ytf:hover span, .ytf:focus-visible span { background: var(--ember); }
+  .ytf span svg { width: 20px; height: 20px; fill: #fff; margin-inline-start: 3px; }
 </style>
 </head>
 <body>
@@ -117,10 +139,34 @@ src="https://www.facebook.com/tr?id=2132323570952002&ev=Lead&noscript=1" alt="" 
       <li><b>2.</b> אני חוזר אליך בוואטסאפ או בטלפון תוך יום עסקים.</li>
       <li><b>3.</b> קובעים ביחד שיחה קצרה ומדברים על הקורס שלך.</li>
     </ul>
+
+    <div class="vid-block">
+      <h2>עד שאני חוזר אליך, תן לזה שמונה דקות</h2>
+      <p>זו הדגמה חיה של מערכת קורסים אמיתית, מבפנים. אם תראה אותה לפני שנדבר, השיחה בינינו תתחיל כבר מהמקום המעניין.</p>
+      <div class="vid" id="vwrap">
+        <button class="ytf" id="ytf" type="button" aria-label="נגן את ההדגמה החיה, שמונה דקות וארבעים שניות">
+          <img src="https://i.ytimg.com/vi/bF0atlGw0T4/maxresdefault.jpg" width="1280" height="720" alt="הדגמה חיה של מערכת קורסים" />
+          <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+        </button>
+      </div>
+    </div>
+
     <a class="wa" href="https://wa.me/972549116092" target="_blank" rel="noopener">
       רוצה לזרז? כתוב לי עכשיו בוואטסאפ
     </a>
     <p class="foot">הלל אקנין · בניית מערכות קורסים לבעלי עסקים דיגיטליים</p>
   </div>
+
+<script>
+// חזית הסרטון. הנגן האמיתי נטען רק בלחיצה, כך שעמוד התודה נשאר קל
+// ולא מוריד כמגה בייט של יוטיוב למי שלא לחץ בכלל.
+document.getElementById('ytf').addEventListener('click', function(){
+  document.getElementById('vwrap').innerHTML =
+    '<iframe src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&autoplay=1" ' +
+    'title="הדגמה חיה · 8:40" ' +
+    'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+    'allowfullscreen></iframe>';
+});
+</script>
 </body>
 </html>
