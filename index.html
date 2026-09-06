@@ -111,6 +111,10 @@
   form .btn{margin-top:4px}
   .err{display:none;margin-top:16px;padding:14px;border-radius:10px;background:#fdecea;color:#a3271a;font-size:.95rem;text-align:center}
   .err a{color:#a3271a;font-weight:800}
+  /* שגיאת שדה. נפרדת מ-.err כדי שהטופס יישאר גלוי ואפשר יהיה לתקן במקום. */
+  .fielderr{display:none;margin:-6px 0 10px;padding:9px 12px;border-radius:9px;
+    background:#fdecea;color:#a3271a;font-size:.88rem;text-align:right;line-height:1.5}
+  input.bad{border-color:#a3271a!important;box-shadow:0 0 0 2px rgba(163,39,26,.12)}
 
   footer{padding:20px 0 34px;font-size:.83rem;color:var(--ink-faint);text-align:center;border-top:1px solid var(--rule)}
 
@@ -358,7 +362,9 @@ fbq('init','2132323570952002');fbq('track','PageView');
     <p class="lead-p">אני קובע איתך שיחת אסטרטגיה קצרה, בלי עלות. בשיחה תדע בדיוק איך לשפר את הקורס שלך כך שהוא ייראה שונה מהמתחרים שלך, ויתן ללקוחות שלך ערך איכותי פי עשר, בלי לשנות אפילו מילה אחת בתוכן הקורס עצמו.</p>
     <form id="f" novalidate>
       <input id="n" type="text" placeholder="השם שלך" autocomplete="name" required />
-      <input id="p" type="tel" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required />
+      <input id="p" type="tel" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required
+             aria-describedby="pe" /><!-- ולידציה ישראלית ב-validPhone(). ראה הערה למטה. -->
+      <div class="fielderr" id="pe">מספר הטלפון לא נראה תקין. נייד 05 ואחריו 8 ספרות, או קווי עם קידומת.</div>
       <!-- שאלת הסינון. חמישה מתוך תשעה הלידים הראשונים נפסלו כי עוד לא
            היה להם קורס שמוכר, והטופס לא שאל כלום.
            עודכן 02.09.2026: נוספה האפשרות "יש תוכן, אין מערכת". עד היום היא
@@ -417,12 +423,48 @@ window.onYouTubeIframeAPIReady = function(){
   }});
 };
 
+// ── ולידציית טלפון ישראלי ─────────────────────────────────────────────
+// למה זה קיים: הבדיקה הקודמת הייתה "לפחות 9 ספרות" בלי גבול עליון ובלי
+// צורה. ב-05.09 נכנס ליד עם 13 ספרות (9725333720009), הוא עלה כסף מלא
+// ולא היה ניתן ליצירת קשר. ספרה עודפת אחת = ליד שרוף.
+// מנרמלים קודם, ורק אז בודקים, כדי ש-+972 ורווחים ומקפים לא ייפסלו.
+function normalizePhone(raw) {
+  var d = String(raw || '').replace(/\D/g, '');
+  if (d.indexOf('00972') === 0) d = d.slice(5);
+  else if (d.indexOf('972') === 0) d = d.slice(3);
+  else if (d.charAt(0) === '0') d = d.slice(1);
+  return '0' + d;
+}
+function validPhone(raw) {
+  var d = normalizePhone(raw);
+  return /^05\d{8}$/.test(d)            // נייד, 10 ספרות
+      || /^07\d{8}$/.test(d)            // נייד וירטואלי, 10 ספרות
+      || /^0(2|3|4|8|9)\d{7}$/.test(d); // קווי, 9 ספרות
+}
+
+// השגיאה נעלמת ברגע שהוא מתקן, ולא נשארת אדומה מולו בזמן ההקלדה.
+document.getElementById('p').addEventListener('input', function(){
+  if (this.classList.contains('bad') && validPhone(this.value)) {
+    this.classList.remove('bad');
+    document.getElementById('pe').style.display = 'none';
+  }
+});
+
 document.getElementById('f').addEventListener('submit', function(ev){
   ev.preventDefault();
   var n = document.getElementById('n'), p = document.getElementById('p'), s = document.getElementById('s');
+  var pe = document.getElementById('pe');
   var name = (n.value||'').trim(), phone = (p.value||'').trim(), students = s.value;
   if (!name) { n.focus(); return; }
-  if (phone.replace(/\D/g,'').length < 9) { p.focus(); return; }
+  if (!validPhone(phone)) {
+    pe.style.display = 'block';
+    p.classList.add('bad');
+    p.focus();
+    return;
+  }
+  pe.style.display = 'none';
+  p.classList.remove('bad');
+  phone = normalizePhone(phone);
   if (!students) { s.focus(); return; }
   // שלושה מסלולים, לא שניים.
   //   qualified  — כבר יש לו לקוחות משלמים. זה האווטאר. יורה Lead בפיקסל.

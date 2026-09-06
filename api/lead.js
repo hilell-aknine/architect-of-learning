@@ -56,6 +56,27 @@ function digitsOnly(v) {
   return String(v || '').replace(/\D/g, '');
 }
 
+// Israeli phone: normalize to a local 0-prefixed form, then require a real shape.
+// WHY: the old rule was "at least 9 digits" with no upper bound and no shape check.
+// On 05.09 a 13-digit number (9725333720009) was accepted, paid for at full lead
+// price, and could never be contacted. The client validates too, but a bot, a
+// cached page, or a direct POST bypasses the browser entirely — so the server
+// has to fail closed on its own.
+function normalizeIL(raw) {
+  let d = digitsOnly(raw);
+  if (d.startsWith('00972')) d = d.slice(5);
+  else if (d.startsWith('972')) d = d.slice(3);
+  else if (d.startsWith('0')) d = d.slice(1);
+  return '0' + d;
+}
+
+function isValidILPhone(raw) {
+  const d = normalizeIL(raw);
+  return /^05\d{8}$/.test(d)            // mobile, 10 digits
+      || /^07\d{8}$/.test(d)            // virtual mobile, 10 digits
+      || /^0[23489]\d{7}$/.test(d);     // landline, 9 digits
+}
+
 function clampPct(v) {
   const n = Number(v);
   if (!Number.isFinite(n)) return 0;
@@ -129,7 +150,7 @@ export default async function handler(req, res) {
 
     // ---------- 1. validate ----------
     const name = str(body.name, 120);
-    const phone = str(body.phone, 40);
+    const phoneRaw = str(body.phone, 40);
     const business = str(body.business, 200);
     const students = str(body.students, 120);
     // Backward compatible: index.html still sends `source`, campaign.html sends `adSource`.
@@ -144,10 +165,19 @@ export default async function handler(req, res) {
     // Shared with the browser pixel so Meta collapses the two into one Lead instead of counting two.
     const eventId = str(body.eventId, 64);
 
-    const phoneDigits = digitsOnly(phone);
-    if (!name || phoneDigits.length < 9) {
+    if (!name) {
       return res.status(400).json({ error: 'missing_or_invalid' });
     }
+    if (!isValidILPhone(phoneRaw)) {
+      // Logged loudly on purpose: a spike here means the form or an ad link is broken,
+      // and that shows up as "leads stopped coming" rather than as an error.
+      console.warn('[lead] rejected invalid phone', { phoneRaw, adSource, page });
+      return res.status(400).json({ error: 'invalid_phone' });
+    }
+    // Everything downstream uses one canonical local form, so the same person typed
+    // as 054-..., +97254..., or 97254... is one row and one dedup key, not three.
+    const phone = normalizeIL(phoneRaw);
+    const phoneDigits = digitsOnly(phone);
 
     // ---------- 1b. flood guard (in-process fast path) ----------
     const now = Date.now();
