@@ -164,6 +164,9 @@ export default async function handler(req, res) {
     const videoCompleted = body.videoCompleted === true || body.videoCompleted === 'true';
     // Shared with the browser pixel so Meta collapses the two into one Lead instead of counting two.
     const eventId = str(body.eventId, 64);
+    // גרסת הקופי שהמבקר ראה. רשימה סגורה: כל דבר אחר נשמר כ-null ולא מזהם את ההשוואה.
+    const variantRaw = str(body.variant, 4).toUpperCase();
+    const variant = (variantRaw === 'A' || variantRaw === 'B') ? variantRaw : null;
 
     if (!name) {
       return res.status(400).json({ error: 'missing_or_invalid' });
@@ -247,6 +250,7 @@ export default async function handler(req, res) {
       students: students || null,
       ad_source: adSource,
       utm,
+      variant,
       video_watched_pct: videoWatchedPct,
       video_seconds: videoSeconds,
       video_completed: videoCompleted,
@@ -272,7 +276,31 @@ export default async function handler(req, res) {
 
         if (!insertRes.ok) {
           const detail = await insertRes.text().catch(() => '');
-          console.error('[lead] Supabase insert FAILED', insertRes.status, detail, { name, phone, page, adSource });
+
+          // רשת ביטחון לסדר הפעולות: אם הקוד נפרס לפני שהמיגרציה של
+          // campaign_leads.variant רצה, PostgREST דוחה את השורה כולה בגלל עמודה
+          // לא מוכרת, וליד אמיתי היה נאבד. במקרה הזה בלבד מנסים שוב בלי השדה.
+          // עדיף ליד בלי תיוג גרסה מאשר ליד שלא נשמר.
+          if (/variant/i.test(detail) && row.variant !== undefined) {
+            console.warn('[lead] variant column missing, retrying without it. הרץ את המיגרציה 20260906120000.');
+            const { variant: _dropped, ...rowNoVariant } = row;
+            const retryRes = await fetchWithTimeout(
+              restBase,
+              {
+                method: 'POST',
+                headers: { ...sbHeaders, Prefer: 'return=representation' },
+                body: JSON.stringify(rowNoVariant)
+              },
+              9000
+            );
+            if (retryRes.ok) {
+              const inserted2 = await retryRes.json().catch(() => null);
+              leadId = Array.isArray(inserted2) && inserted2[0] ? inserted2[0].id : null;
+              saved = true;
+            }
+          }
+
+          if (!saved) console.error('[lead] Supabase insert FAILED', insertRes.status, detail, { name, phone, page, adSource });
           // Deliberately NOT returning here: WhatsApp is still a live chance to deliver this lead.
           // The final check at the bottom fails the request only if BOTH channels failed.
         } else {

@@ -199,6 +199,10 @@ fbq('init','2132323570952002');fbq('track','PageView');
   })(window,document,"clarity","script","xf3ucswd1s");
 })();
 </script>
+
+<!-- שכבת המדידה: שיוך גרסת קופי + אירועי ביניים (קליק, סרטון, גלילה, תחילת טופס).
+     defer בכוונה, כדי שלא תעכב את הרינדור. הקובץ לעולם לא זורק שגיאה. -->
+<script src="analytics.js" defer></script>
 </head>
 <body>
 
@@ -466,15 +470,26 @@ document.getElementById('f').addEventListener('submit', function(ev){
   p.classList.remove('bad');
   phone = normalizePhone(phone);
   if (!students) { s.focus(); return; }
-  // שלושה מסלולים, לא שניים.
-  //   qualified  — כבר יש לו לקוחות משלמים. זה האווטאר. יורה Lead בפיקסל.
-  //   content_no_system — יש לו את חומר הגלם ואין לו מערכת. נשמר ומתריע
-  //     בוואטסאפ בדיוק כמו ליד רגיל, אבל בכוונה לא יורה Lead. הסיבה זהה
-  //     לסיבה המקורית: מטא לומדת את הקהל מאירועי Lead בלבד, ואנחנו רוצים
-  //     שהיא תמשיך לחפש קונים מוכחים. אם יתברר שהקבוצה הזו סוגרת עסקאות,
-  //     ההיפוך הוא הוספת 'content_no_system' לשורה של qualified כאן.
-  //   not_launched — אין תוכן ואין לקוחות. נשמר בלבד.
+  // שלושה מסלולים, לא שניים. ומ-07.09.2026 שני דגלים נפרדים, לא אחד:
+  //   qualified — קובע לאיזה עמוד תודה שולחים, כלומר איזה קופי האדם רואה.
+  //   fireLead  — קובע אם מטא מקבלת אירוע Lead.
+  //
+  // 🔴 למה הופרדו (החלטת הלל 07.09.2026, על בסיס נתוני 21 ימי קמפיין):
+  //   השער המקורי ירה Lead רק על 'hundreds'/'tens'. בפועל, מתוך 13 לידים
+  //   מאז שהשדה נכנס (27.08), **שניים בלבד** ענו כך ואף אחד לא ענה 'tens'.
+  //   מ-01.09 נכנסו 8 לידים ואפס מהם כשירים, כלומר מטא לא קיבלה אות אחד
+  //   במשך שישה ימים. היא צריכה בערך 50 המרות בשבוע כדי לצאת משלב הלמידה
+  //   וקיבלה פחות מאחת, ולכן ה-CPM טיפס ל-₪194 וההגשה קרסה ל-16% מהתקציב.
+  //   ההרחבה ל-'content_no_system' היא בדיוק ההיפוך שתועד כאן מראש.
+  //
+  //   ⚠️ 'not_launched' נשאר בחוץ בכוונה. הנימוק המקורי עומד בעינו: מי שאין
+  //   לו תוכן ואין לו לקוחות אינו קונה, ואירוע Lead עליו ישלח את מטא להביא
+  //   עוד כמוהו. ההרחבה היא צעד אחד, לא פתיחת השער.
+  //
+  //   ↩️ להיפוך: להחזיר את fireLead ל-`= qualified` ולהסיר את הפיקסל
+  //   מ-thank-you-content.html. שני מקומות, שניהם מתועדים.
   var qualified = students === 'hundreds' || students === 'tens';
+  var fireLead  = qualified || students === 'content_no_system';
   var thanksPage = qualified ? '/thank-you.html'
                  : students === 'content_no_system' ? '/thank-you-content.html'
                  : '/thank-you-early.html';
@@ -487,12 +502,16 @@ document.getElementById('f').addEventListener('submit', function(ev){
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
       name:name, phone:phone, students:students, source:'landing-simple', page:'simple',
-      eventId: qualified ? eventId : '',
+      eventId: fireLead ? eventId : '',
+      // גרסת הקופי שהמבקר ראה. זה מה שמחבר בין הליד לבין המשפך ב-page_events.
+      variant: (window.EC_VARIANT || ''),
       videoWatchedPct: Math.round(vp.pct*100), videoSeconds: vp.seconds, videoCompleted: vp.completed
     })
   }).then(function(r){
     if (r.ok) {
-      location.href = qualified
+      // ה-eid עובר גם ל-thank-you-content.html, ולכן שני העמודים שיורים Lead
+      // מקבלים את אותו מזהה שהשרת שולח ל-Conversions API. בלעדיו מטא סופרת פעמיים.
+      location.href = fireLead
         ? thanksPage + '?eid=' + encodeURIComponent(eventId)
         : thanksPage;
       return;
