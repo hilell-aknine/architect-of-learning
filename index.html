@@ -395,6 +395,55 @@ fbq('init','2132323570952002');fbq('track','PageView');
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
+/* שיוך מקור הליד (utm) — נלכד ברגע הנחיתה ונשמר לכל הסשן.
+   ⚠️ למה זה קיים: עד 08.09.2026 הטופס לא שלח utm כלל, ולכן כל 22 הלידים
+   הראשונים נשמרו במסד עם שדה שיוך ריק. אי אפשר היה לדעת איזו מודעה מביאה
+   קונים ואיזו שורפת תקציב, וזה שיתק כל אופטימיזציה של הקמפיין.
+   הגיבוי היחיד היה document.referrer, ששרד במקרה ולא בתכנון.
+
+   נשמר ב-sessionStorage כי המבקר נוחת עם הפרמטרים בכתובת, ועד שהוא מגיע
+   לטופס location.search כבר יכול להיות ריק. ה-Storage שורד את המעבר.
+   ⚠️ אסור לזרוק שגיאה כאן. הטופס חייב להישלח גם אם ה-Storage חסום
+   (גלישה פרטית, דפדפן פנימי של אינסטגרם), ולכן הכל עטוף ב-try. */
+var LEAD_UTM = (function () {
+  var KEY = 'ec_utm';
+  function safe(fn, fallback) { try { return fn(); } catch (e) { return fallback; } }
+
+  var fromUrl = safe(function () {
+    var q = new URLSearchParams(location.search), o = {}, n = 0;
+    q.forEach(function (val, key) {
+      // מגבילים לשדות utm בלבד ולאורך סביר. השדה במסד הוא jsonb שטוח.
+      if (key.indexOf('utm_') === 0 && val && n < 10) { o[key] = String(val).slice(0, 120); n++; }
+    });
+    return o;
+  }, {});
+
+  if (Object.keys(fromUrl).length) {
+    safe(function () { sessionStorage.setItem(KEY, JSON.stringify(fromUrl)); });
+    return fromUrl;
+  }
+
+  // אין פרמטרים בכתובת — מנסים את מה שנשמר קודם בסשן.
+  var saved = safe(function () {
+    var raw = sessionStorage.getItem(KEY);
+    var parsed = raw ? JSON.parse(raw) : null;
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  }, {});
+  if (Object.keys(saved).length) return saved;
+
+  // מוצא אחרון: הכתובת שממנה הגענו. זה מה שהציל את השיוך של 22 הלידים הראשונים.
+  return safe(function () {
+    var ref = document.referrer || '';
+    if (ref.indexOf('utm_') === -1) return {};
+    var qs = ref.slice(ref.indexOf('?') + 1);
+    var q = new URLSearchParams(qs), o = {}, n = 0;
+    q.forEach(function (val, key) {
+      if (key.indexOf('utm_') === 0 && val && n < 10) { o[key] = String(val).slice(0, 120); n++; }
+    });
+    return o;
+  }, {});
+})();
+
 /* מעקב צפייה בסרטון — נטען אחרי הדף, לא חוסם רינדור.
    נשלח יחד עם הליד כדי לדעת אם הוא באמת ראה לפני שהשאיר פרטים. */
 var vp = { pct:0, seconds:0, completed:false };
@@ -505,6 +554,10 @@ document.getElementById('f').addEventListener('submit', function(ev){
       eventId: fireLead ? eventId : '',
       // גרסת הקופי שהמבקר ראה. זה מה שמחבר בין הליד לבין המשפך ב-page_events.
       variant: (window.EC_VARIANT || ''),
+      // מאיזו מודעה הליד הגיע. השרת כבר יודע לקלוט את זה (sanitizeUtm),
+      // רק הדף לא טרח לשלוח עד 08.09.2026.
+      utm: LEAD_UTM,
+      referrer: (document.referrer || ''),
       videoWatchedPct: Math.round(vp.pct*100), videoSeconds: vp.seconds, videoCompleted: vp.completed
     })
   }).then(function(r){
