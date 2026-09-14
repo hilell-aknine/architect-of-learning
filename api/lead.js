@@ -164,6 +164,17 @@ export default async function handler(req, res) {
     const videoCompleted = body.videoCompleted === true || body.videoCompleted === 'true';
     // Shared with the browser pixel so Meta collapses the two into one Lead instead of counting two.
     const eventId = str(body.eventId, 64);
+
+    // מזהה קליק ומזהה דפדפן, נוסף 14.09.2026. נשלחים ל-CAPI ללא גיבוב, כך דורשת מטא.
+    // ⚠️ למה זה נוסף: איכות ההתאמה של אירוע Lead נמדדה במנהל האירועים כ-5.2/10,
+    // עם חמישה פרמטרים בלבד. fbc הוא זה שקושר את ההמרה למודעה שהביאה את הקליק.
+    // בלעדיו מטא מנחשת מ-IP ומשם, וזה מה שייצר את הפער 8 מול 22.
+    // ולידציה: פורמט fb.N.<זמן>.<מזהה>. מחרוזת שאינה בפורמט נזרקת ולא נשלחת,
+    // כי פרמטר משובש פוגע באיכות ההתאמה במקום לשפר אותה.
+    const fbcRaw = str(body.fbc, 500);
+    const fbpRaw = str(body.fbp, 200);
+    const fbc = /^fb\.\d+\.\d+\..+/.test(fbcRaw) ? fbcRaw : '';
+    const fbp = /^fb\.\d+\.\d+\.\d+$/.test(fbpRaw) ? fbpRaw : '';
     // גרסת הקופי שהמבקר ראה. רשימה סגורה: כל דבר אחר נשמר כ-null ולא מזהם את ההשוואה.
     const variantRaw = str(body.variant, 4).toUpperCase();
     const variant = (variantRaw === 'A' || variantRaw === 'B') ? variantRaw : null;
@@ -478,6 +489,10 @@ export default async function handler(req, res) {
         if (metaPhone) userData.ph = [sha256(metaPhone)];
         if (nameParts[0]) userData.fn = [sha256(nameParts[0].toLowerCase())];
         if (nameParts.length > 1) userData.ln = [sha256(nameParts.slice(1).join(' ').toLowerCase())];
+        // ללא גיבוב, במפורש. fbc/fbp הם מזהים של מטא עצמה ולא נתון אישי,
+        // וגיבוב שלהם היה הופך אותם לחסרי ערך.
+        if (fbc) userData.fbc = fbc;
+        if (fbp) userData.fbp = fbp;
 
         const payload = {
           data: [
