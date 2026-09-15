@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>הילל אקנין · מערכות למידה לבעלי קורסים דיגיטליים</title>
-<meta name="description" content="אני לוקח את הקורס הדיגיטלי שלך כמו שהוא, ובונה סביבו מערכת למידה שגורמת לתלמידים להיכנס, להתקדם ולסיים." />
+<title>הילל אקנין · מערכות לימוד דופמיניות לבעלי מוצרים דיגיטליים</title>
+<meta name="description" content="מערכת לימוד דופמינית שגורמת ללקוחות שלך להתמכר לתכנים, לסיים את הקורס, ליישם ולהמליץ עליו הלאה." />
 <meta name="theme-color" content="#F4EFE6" />
 <link rel="preconnect" href="https://i.ytimg.com" />
 <link rel="preconnect" href="https://www.youtube.com" />
 <link rel="dns-prefetch" href="https://www.clarity.ms" />
 <link rel="dns-prefetch" href="https://connect.facebook.net" />
-<meta property="og:title" content="הילל אקנין · מערכות למידה לבעלי קורסים דיגיטליים" />
-<meta property="og:description" content="הקורס שלך כמו שהוא, במעטפת שגורמת לתלמידים לסיים." />
+<meta property="og:title" content="הילל אקנין · מערכות לימוד דופמיניות לבעלי מוצרים דיגיטליים" />
+<meta property="og:description" content="התוכן שלך נשאר כמו שהוא. מה שמשתנה זה כמה מהתלמידים שלך באמת מסיימים אותו." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="he_IL" />
 <meta property="og:image" content="https://architect-of-learning.vercel.app/assets/og.jpg" />
@@ -65,6 +65,9 @@
   .lead-p{margin-top:14px;color:var(--ink-soft)}
   .center{text-align:center}
 
+  /* כיתוב ההפעלה מעל הסרטון. רם, 28:21: "כיתוב קטן למעלה מעל הסרטון,
+     כמו לחץ על הפליי תפעיל את הרמקול. זה משהו שעוזר קצת בצפיות." */
+  .vhint{margin-top:22px;margin-bottom:-6px;font-size:.92rem;color:var(--ink-soft);opacity:.9}
   .video{margin-top:24px;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
   .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   /* חזית סרטון: תמונה + כפתור נגן. הנגן האמיתי נטען רק בלחיצה
@@ -257,13 +260,29 @@ fbq('init','2132323570952002');fbq('track','PageView');
 <!-- HERO + VIDEO (רם, 19.8: הסרטון ישר מתחת לכותרת, בלי כפתור חוצץ) -->
 <section class="hero" id="vsl">
   <div class="wrap">
-        <!-- הכותרת, התת-כותרת והקיקר נכתבו על ידי הילל, 27.08, מילה במילה.
-         ⚠️ "להתמכר" נמצאת ברשימה האדומה של הפרויקט ורם פסל אותה במפורש
-         ב-05.08 ("הופך את זה גדול מדי"). הילל בחר להשאיר אותה במרכאות
-         כציטוט מרוכך. ההחלטה שלו, מתועדת כאן כדי שלא תיקרא כטעות. -->
-    <p class="kicker">יש לך קורס/ים דיגיטלים עם כמה עשרות תלמידים לפחות<br>ואתה עדיין משתמש במערכת קורסים מיושנת ומשעממת?</p>
-    <h1>מהפכת הלמידה של 2026: <em>איך באמצעות אלגוריתם מסתורי</em></h1>
-    <p class="hero-sub">בניתי לעסקים כמו: איתן עזריה, סקייל רווחי, מכללה ל-NLP ״פורטל לימודים חדשני״ שגורם ללקוחות שלהם ״להתמכר״ לתכנים, לסיים את הקורסים ולהפוך ללקוחות מעריצים וממליצים</p>
+        <!-- 🔴 נכתב מחדש 15.09.2026 לפי הכתבה של רם בפגישת הזום, דקות 25:42-28:21.
+         מקור מלא עם חותמות זמן: לקוחות\בניית פורטלים מקצועים\calls\2026-09-15-ram-fixes.md
+
+         מה נפסל ולמה:
+           · "אלגוריתם מסתורי" — "מרגיש לי פשוט" (26:00). רם העדיף "מערכת לימוד
+             דופמינית", ואמר שזה לא ניסוח אלא הבידול עצמו: "זה ה-B2 שאתה מציע.
+             מה שהופך אותך לשונה ממישהו שיודע קצת קלוד קוד" (27:23).
+           · "קורס/ים דיגיטלים" בקיקר — רם ביקש "מוצרים דיגיטליים", רחב יותר,
+             "כי היום רוב בעלי העסקים שמוכרים מוצר נותנים גם תוכן דיגיטלי,
+             כמעט כולם" (19:51). ה"לפחות" בקו תחתון, לבקשתו המפורשת (27:04).
+           · ההוכחה החברתית ירדה אל מתחת לכותרת: "ואז למטה הייתי עושה
+             כמו שבניתי לעסקים" (26:40).
+
+         ⚠️ על "להתמכר": המילה נפסלה ע"י רם ב-05.08 ("הופך את זה גדול מדי")
+         ונכנסה לרשימה האדומה. בפגישת 15.09 רם עצמו הכתיב אותה שוב ושוב
+         ("להתמכר לתכנים שלך", 26:28 ו-27:51). הפגישה האחרונה גוברת,
+         והמרכאות הוסרו. זה כבר לא ציטוט מרוכך אלא ניסוח מאושר. -->
+    <p class="kicker">יש לך מוצרים דיגיטליים עם כמה עשרות תלמידים <u>לפחות</u><br>ואתה עדיין משתמש במערכת קורסים מיושנת ומשעממת?</p>
+    <!-- ההדגשה יושבת רק על הבידול עצמו. כשעטפתי את כל החצי השני ב-em,
+         ארבע שורות יצאו מודגשות והכותרת נראתה כבדה במסך טלפון. -->
+    <h1>מהפכת הלמידה של 2026: איך באמצעות טכנולוגיה מתקדמת בניתי <em>מערכת לימוד דופמינית</em></h1>
+    <p class="hero-sub">מערכת שגורמת ללקוחות שלך להתמכר לתכנים, לסיים את הקורס, ליישם ולהמליץ עליו הלאה.<br>בדיוק כמו שבניתי לעסקים כמו איתן עזריה, סקייל רווחי והמכללה ל-NLP.</p>
+    <p class="vhint">▶ לחץ על הפליי והפעל את הרמקול</p>
     <div class="video" id="vwrap">
       <button class="ytf" id="ytf" type="button" aria-label="נגן את הסרטון">
         <!-- טמבנייל משלנו, 14.09.2026. קודם ישבה כאן תמונת ברירת המחדל של יוטיוב,
@@ -379,15 +398,22 @@ fbq('init','2132323570952002');fbq('track','PageView');
 <section id="fit">
   <div class="wrap wrap--wide">
     <h2 class="fit-narrow">למי זה מתאים, ולמי לא</h2>
-    <p class="lead-p fit-narrow">אני לא מוכר מערכת מוכנה שאתה נכנס אליה. אני בונה מערכת סביב הקורס שכבר יש לך, סביב התלמידים שלך ובדרך שבה אתה מלמד.<br>זה מתאים מאוד לחלק מהאנשים, ובכלל לא לאחרים.</p>
+    <!-- 🔴 נכתב מחדש 15.09.2026. רם על הנוסח הקודם, 24:26: "הפסקה הראשונה
+         לא מובנת בכלל לדעתי... 'אני בונה מערכת סביב' — ממש לא ברור."
+         הוא ביקש להחליף הסבר על מה אני עושה בתוצאה שהלקוח מקבל. -->
+    <p class="lead-p fit-narrow">התוכן שלך נשאר בדיוק כמו שהוא. מה שמשתנה זה כמה מהתלמידים שלך באמת מסיימים אותו, מיישמים אותו וממליצים עליו הלאה.<br>זה מתאים מאוד לחלק מהאנשים, ובכלל לא לאחרים.</p>
 
     <div class="fit-lists">
       <div class="fit-card fit-yes">
         <h3><span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>זה בשבילך אם</h3>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>כבר יש לך <b>קורס דיגיטלי שאנשים שילמו עליו</b>, עשרות תלמידים ומעלה</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>אתה יודע בדיוק איך הקורס שלך צריך לעבוד, <b>והמערכת שיש לך היום לא נותנת לך</b></span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>אתה רוצה את <b>היכולות שעולם ה-AI פתח</b>, בלי להפוך בעצמך למומחה בזה</span></li>
+          <!-- 🔴 שתי השורות האמצעיות נכתבו מחדש 15.09.2026 לפי רם, 24:39-25:19.
+               על "אתה יודע בדיוק איך הקורס שלך צריך לעבוד" הוא אמר "לא מספיק ברור",
+               ועל "היכולות שעולם ה-AI פתח" אמר "זה מאוד פיצ'רי ולא ראשי".
+               הנוסח שהחליף אותן הוא כמעט מילה במילה מה שהוא הכתיב. -->
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>כבר יש לך <b>מוצר דיגיטלי שאנשים שילמו עליו</b>, עשרות תלמידים ומעלה</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>אתה רוצה ש<b>כל מי שנרשם לקורס שלך יסיים אותו</b>, ולא ייעלם אחרי השיעור הראשון</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>אתה רוצה ש<b>מי שסיים ימליץ עליך לחבר</b>, בצורה פשוטה וקלה</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>אתה רוצה <b>מערכת שנבנתה לתוכן שלך</b>, ולא תבנית שכל אחד מקבל את אותה</span></li>
         </ul>
       </div>
