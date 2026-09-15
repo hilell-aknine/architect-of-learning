@@ -456,19 +456,24 @@ fbq('init','2132323570952002');fbq('track','PageView');
       <input id="p" type="tel" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required
              aria-describedby="pe" /><!-- ולידציה ישראלית ב-validPhone(). ראה הערה למטה. -->
       <div class="fielderr" id="pe">מספר הטלפון לא נראה תקין. נייד 05 ואחריו 8 ספרות, או קווי עם קידומת.</div>
-      <!-- שאלת הסינון. חמישה מתוך תשעה הלידים הראשונים נפסלו כי עוד לא
-           היה להם קורס שמוכר, והטופס לא שאל כלום.
-           עודכן 02.09.2026: נוספה האפשרות "יש תוכן, אין מערכת". עד היום היא
-           נבלעה בתוך "עוד לא השקתי קורס", ולכן מי שכבר יושב על כל חומר הגלם
-           נראה במסד בדיוק כמו מי שאין לו כלום. אלה שני אנשים שונים לגמרי.
-           "אלפים" הוסר ואוחד עם "הרבה" — אף ליד מעולם לא בחר בו. -->
-      <select id="s" required aria-label="איפה אתה נמצא היום עם הקורס">
-        <option value="" selected disabled>איפה אתה נמצא היום?</option>
-        <option value="hundreds">יש לי הרבה לקוחות שקנו את הקורס</option>
-        <option value="tens">יש לי עשרות לקוחות שקנו את הקורס</option>
-        <option value="content_no_system">יש לי את כל התוכן, אבל אין לי מערכת</option>
-        <option value="not_launched">אין לי תוכן ואין לי לקוחות עדיין</option>
-      </select>
+      <!-- 🔴 שאלת הסינון הוסרה 15.09.2026 בהחלטת הלל.
+           הרקע: הדף נמדד ב-465 כניסות מ-07.09 ואפס לידים. 90% נוטשים לפני
+           חצי דף, ומי שכן הגיע לטופס נתקל בשלושה שדות במקום שניים.
+           הסינון עובר לשיחת הטלפון, שממילא התקיימה עם 15 מתוך 22 הלידים.
+
+           מה שהשתנה יחד איתה, ואי אפשר להשאיר אחד בלי השני:
+             · כל הנרשמים מגיעים עכשיו ל-/thank-you.html (היו שלושה עמודי תודה).
+             · אירוע Lead נשלח על כל נרשם. השער הישן ירה רק על שתי אפשרויות
+               מתוך ארבע, וזה מה שהרעיב את מטא מסיגנל.
+             · עמודת students בטבלה תהיה null מכאן והלאה. הפילוח "3 מתוך 22
+               בקהל היעד" לא ימשיך להתעדכן מהטופס.
+
+           ↩️ להיפוך: להחזיר את ה-select הזה, ואת qualified/fireLead/thanksPage
+           בסקריפט למטה. שני מקומות, שניהם מתועדים.
+
+           ⚠️ מה שצפוי להשתנות לרעה: מטא תלמד מכל נרשם, כולל מי שאין לו עדיין
+           תוכן ולקוחות (6 מתוך 22 בתקופה שנמדדה). אם חלק הלידים הלא רלוונטיים
+           יקפוץ, זו הסיבה, וההיפוך למעלה. -->
       <button type="submit" class="btn">שריין לי שיחת אסטרטגיה</button>
     </form>
     <div class="err" id="e">
@@ -631,9 +636,9 @@ document.getElementById('p').addEventListener('input', function(){
 
 document.getElementById('f').addEventListener('submit', function(ev){
   ev.preventDefault();
-  var n = document.getElementById('n'), p = document.getElementById('p'), s = document.getElementById('s');
+  var n = document.getElementById('n'), p = document.getElementById('p');
   var pe = document.getElementById('pe');
-  var name = (n.value||'').trim(), phone = (p.value||'').trim(), students = s.value;
+  var name = (n.value||'').trim(), phone = (p.value||'').trim();
   if (!name) { n.focus(); return; }
   if (!validPhone(phone)) {
     pe.style.display = 'block';
@@ -644,30 +649,20 @@ document.getElementById('f').addEventListener('submit', function(ev){
   pe.style.display = 'none';
   p.classList.remove('bad');
   phone = normalizePhone(phone);
-  if (!students) { s.focus(); return; }
-  // שלושה מסלולים, לא שניים. ומ-07.09.2026 שני דגלים נפרדים, לא אחד:
-  //   qualified — קובע לאיזה עמוד תודה שולחים, כלומר איזה קופי האדם רואה.
-  //   fireLead  — קובע אם מטא מקבלת אירוע Lead.
+  // 🔴 עודכן 15.09.2026 יחד עם הסרת שאלת הסינון מהטופס (ראה ההערה ליד הטופס).
+  //   היו כאן שני דגלים ושלושה עמודי תודה, וכולם נגזרו מהתשובה לשאלה שכבר לא
+  //   נשאלת. בלי מקור, גזירה כזו הופכת לניחוש, ולכן היא הוסרה ולא הושארה
+  //   על ברירת מחדל שקטה.
   //
-  // 🔴 למה הופרדו (החלטת הלל 07.09.2026, על בסיס נתוני 21 ימי קמפיין):
-  //   השער המקורי ירה Lead רק על 'hundreds'/'tens'. בפועל, מתוך 13 לידים
-  //   מאז שהשדה נכנס (27.08), **שניים בלבד** ענו כך ואף אחד לא ענה 'tens'.
-  //   מ-01.09 נכנסו 8 לידים ואפס מהם כשירים, כלומר מטא לא קיבלה אות אחד
-  //   במשך שישה ימים. היא צריכה בערך 50 המרות בשבוע כדי לצאת משלב הלמידה
-  //   וקיבלה פחות מאחת, ולכן ה-CPM טיפס ל-₪194 וההגשה קרסה ל-16% מהתקציב.
-  //   ההרחבה ל-'content_no_system' היא בדיוק ההיפוך שתועד כאן מראש.
+  //   ההיסטוריה שהובילה לכאן, כי היא עדיין הנימוק: השער המקורי ירה Lead רק
+  //   על 'hundreds'/'tens'. מתוך 13 לידים מאז 27.08 שניים בלבד ענו כך. מ-01.09
+  //   נכנסו 8 לידים ואפס כשירים, כלומר מטא לא קיבלה אות אחד במשך שישה ימים,
+  //   ה-CPM טיפס ל-₪194 וההגשה קרסה ל-16% מהתקציב. עכשיו כל נרשם הוא אות.
   //
-  //   ⚠️ 'not_launched' נשאר בחוץ בכוונה. הנימוק המקורי עומד בעינו: מי שאין
-  //   לו תוכן ואין לו לקוחות אינו קונה, ואירוע Lead עליו ישלח את מטא להביא
-  //   עוד כמוהו. ההרחבה היא צעד אחד, לא פתיחת השער.
-  //
-  //   ↩️ להיפוך: להחזיר את fireLead ל-`= qualified` ולהסיר את הפיקסל
-  //   מ-thank-you-content.html. שני מקומות, שניהם מתועדים.
-  var qualified = students === 'hundreds' || students === 'tens';
-  var fireLead  = qualified || students === 'content_no_system';
-  var thanksPage = qualified ? '/thank-you.html'
-                 : students === 'content_no_system' ? '/thank-you-content.html'
-                 : '/thank-you-early.html';
+  //   ↩️ להיפוך: להחזיר את ה-select בטופס ואת qualified/fireLead/thanksPage כאן.
+  //   עמודי thank-you-content.html ו-thank-you-early.html נשארו על הדיסק ולא נמחקו.
+  var fireLead   = true;
+  var thanksPage = '/thank-you.html';
   var btn = this.querySelector('button');
   btn.disabled = true; btn.textContent = 'שולח…';
   // One id shared by the server event and the browser event, so Meta counts ONE Lead, not two.
@@ -676,7 +671,9 @@ document.getElementById('f').addEventListener('submit', function(ev){
   fetch('/api/lead', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
-      name:name, phone:phone, students:students, source:'landing-simple', page:'simple',
+      // students לא נשלח יותר. השרת שומר null, וזה עדיף על מחרוזת ריקה
+      // שנראית בטבלה כמו תשובה שניתנה.
+      name:name, phone:phone, source:'landing-simple', page:'simple',
       eventId: fireLead ? eventId : '',
       // גרסת הקופי שהמבקר ראה. זה מה שמחבר בין הליד לבין המשפך ב-page_events.
       variant: (window.EC_VARIANT || ''),
