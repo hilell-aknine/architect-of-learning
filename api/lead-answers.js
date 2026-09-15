@@ -11,9 +11,17 @@
 //
 // ארבע נעילות, כולן נכשלות סגור:
 //   1. רשימת ערכים סגורה. ערך שלא ברשימה נזרק, לא נשמר כמות שהוא.
-//   2. פעם אחת בלבד. שורה שכבר יש לה intake לא מתעדכנת שוב.
+//   2. תשובה נכתבת פעם אחת. שדה שכבר נענה לא נדרס לעולם.
 //   3. חלון זמן. רק שורות שנוצרו בשעתיים האחרונות.
 //   4. שום שדה אחר לא ניתן לכתיבה מכאן. אין מעבר גנרי על גוף הבקשה.
+//
+// 🔴 תוקן 15.09.2026, אחרי בדיקה חיה מקצה לקצה על הדף הפרוס.
+// הגרסה הראשונה נעלה את השורה כולה ברגע שנכתב intake, ולכן רק התשובה
+// הראשונה מתוך השלוש נשמרה. השתיים הבאות חזרו updated:false בשקט.
+// בקריאת קוד זה נראה תקין: "כתיבה חד-פעמית" נשמע כמו הגנה. בפועל זה
+// סתר את עצם התכנון של שאלון מתקדם שנשמר שאלה-שאלה.
+// הנעילה עברה מרמת השורה לרמת השדה הבודד, והכתיבה נעשית כ-compare-and-swap
+// על intake_at, כדי שלא ייפתח חלון בין הקריאה לכתיבה.
 
 const TABLE = 'campaign_leads';
 const WINDOW_MS = 2 * 60 * 60 * 1000;
@@ -85,40 +93,70 @@ export default async function handler(req, res) {
     };
     const base = `${supabaseUrl}/rest/v1/${TABLE}`;
 
-    // כל ארבע הנעילות נאכפות בתנאי ה-PATCH עצמו ולא בקוד שלפניו,
-    // כך שאין חלון בין הבדיקה לכתיבה. שורה שלא עומדת בתנאים פשוט
-    // לא מתעדכנת, ו-PostgREST מחזיר מערך ריק.
     const since = new Date(Date.now() - WINDOW_MS).toISOString();
-    const url =
-      `${base}?id=eq.${encodeURIComponent(id)}` +
-      `&intake=is.null` +
-      `&created_at=gte.${encodeURIComponent(since)}`;
+    const answers = { students, platform, urgency };
 
-    const payload = { intake: { students, platform, urgency }, intake_at: new Date().toISOString() };
-    // students מתמלא רק אם הוא עדיין ריק. ליד ישן שכבר נושא ערך
-    // מהטופס הקודם לא נדרס.
-    if (students) payload.students = students;
+    // קורא, ממזג, וכותב עם compare-and-swap על intake_at. אם שורה אחרת
+    // הספיקה לכתוב בין הקריאה לכתיבה, ה-PATCH פשוט לא יתפוס ונחזור שוב.
+    // שני סיבובים מספיקים בהחלט: המבקר לוחץ תשובה אחת בכל פעם.
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const readUrl =
+        `${base}?id=eq.${encodeURIComponent(id)}` +
+        `&created_at=gte.${encodeURIComponent(since)}` +
+        `&select=id,intake,intake_at,students&limit=1`;
 
-    const r = await fetchWithTimeout(
-      url,
-      { method: 'PATCH', headers: { ...headers, Prefer: 'return=representation' }, body: JSON.stringify(payload) },
-      8000
-    );
+      const readRes = await fetchWithTimeout(readUrl, { method: 'GET', headers }, 8000);
+      if (!readRes.ok) {
+        console.error('[lead-answers] read failed', readRes.status);
+        return res.status(500).json({ error: 'save_failed' });
+      }
+      const found = await readRes.json().catch(() => []);
+      // אין שורה, או שהיא ישנה מהחלון. כלפי חוץ אלה אותו מקרה בדיוק,
+      // ואין סיבה לעזור למישהו להבחין ביניהם.
+      if (!Array.isArray(found) || found.length === 0) {
+        return res.status(200).json({ ok: true, updated: false });
+      }
 
-    if (!r.ok) {
-      const detail = await r.text().catch(() => '');
-      console.error('[lead-answers] patch failed', r.status, detail);
-      return res.status(500).json({ error: 'save_failed' });
+      const row = found[0];
+      const prev = (row.intake && typeof row.intake === 'object') ? row.intake : {};
+      const merged = { ...prev };
+      let changed = false;
+      for (const [k, v] of Object.entries(answers)) {
+        // שדה שכבר נענה לא נדרס. זו הנעילה, והיא ברמת השדה ולא ברמת השורה.
+        if (v && merged[k] == null) { merged[k] = v; changed = true; }
+      }
+      if (!changed) return res.status(200).json({ ok: true, updated: false });
+
+      const payload = { intake: merged, intake_at: new Date().toISOString() };
+      // students מתמלא רק אם הוא עדיין ריק. ליד שכבר נושא ערך מהטופס
+      // הישן לא נדרס.
+      if (students && row.students == null) payload.students = students;
+
+      const casUrl =
+        `${base}?id=eq.${encodeURIComponent(id)}` +
+        `&created_at=gte.${encodeURIComponent(since)}` +
+        (row.intake_at
+          ? `&intake_at=eq.${encodeURIComponent(row.intake_at)}`
+          : `&intake_at=is.null`);
+
+      const w = await fetchWithTimeout(
+        casUrl,
+        { method: 'PATCH', headers: { ...headers, Prefer: 'return=representation' }, body: JSON.stringify(payload) },
+        8000
+      );
+      if (!w.ok) {
+        const detail = await w.text().catch(() => '');
+        console.error('[lead-answers] patch failed', w.status, detail);
+        return res.status(500).json({ error: 'save_failed' });
+      }
+      const rows = await w.json().catch(() => []);
+      if (Array.isArray(rows) && rows.length > 0) {
+        return res.status(200).json({ ok: true, updated: true });
+      }
+      // לא תפס, כלומר מישהו כתב בינתיים. סיבוב נוסף על הערך העדכני.
     }
 
-    const rows = await r.json().catch(() => []);
-    if (!Array.isArray(rows) || rows.length === 0) {
-      // כבר ענה, או שהחלון נסגר, או שה-id לא קיים. מבחינת המבקר זה
-      // אותו דבר ואין סיבה להבחין בין המקרים כלפי חוץ.
-      return res.status(200).json({ ok: true, updated: false });
-    }
-
-    return res.status(200).json({ ok: true, updated: true });
+    return res.status(200).json({ ok: true, updated: false });
   } catch (e) {
     console.error('[lead-answers] handler error', e && e.message);
     return res.status(500).json({ error: 'server_error' });
