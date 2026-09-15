@@ -125,6 +125,40 @@ src="https://www.facebook.com/tr?id=2132323570952002&ev=Lead&noscript=1" alt="" 
   }
   .ytf:hover span, .ytf:focus-visible span { background: var(--ember); }
   .ytf span svg { width: 20px; height: 20px; fill: #fff; margin-inline-start: 3px; }
+
+  /* ===== שאלון אחרי הטופס — 15.09.2026 =====
+     רם, 24:01: "תוריד את השאלה הזאת, תעשה לו שאלון אחרי שהוא ממלא פרטים."
+     שאלה אחת על המסך בכל רגע, כפתורים גדולים לאצבע, ואפשר לדלג בכל שלב.
+     הליד כבר נשמר, ולכן שום דבר כאן לא רשאי להרגיש כמו חובה. */
+  .intake { margin: 22px 0 4px; padding: 18px; border: 1px solid var(--rule);
+            border-radius: 14px; background: var(--paper-2); text-align: start; }
+  .intake[hidden] { display: none; }
+  .intake .ttl { font-weight: 700; font-size: 1.02rem; margin-bottom: 4px; }
+  .intake .sub { font-size: .86rem; color: var(--ink-soft); margin-bottom: 14px; }
+  .intake .q { font-weight: 600; margin-bottom: 10px; line-height: 1.5; }
+  .intake .opts { display: grid; gap: 8px; }
+  .intake button.opt {
+    font: inherit; text-align: start; cursor: pointer;
+    padding: 13px 15px; border-radius: 11px; border: 1px solid var(--rule);
+    background: #fff; color: var(--ink); line-height: 1.45;
+    transition: border-color .15s, background .15s;
+  }
+  .intake button.opt:hover, .intake button.opt:focus-visible {
+    border-color: var(--ember); background: #fff8f4; outline: none;
+  }
+  /* display מפורש גובר על תכונת hidden, ולכן צריך לבטל אותו במפורש.
+     בלי שתי השורות האלה המחוונים וכפתור הדילוג נשארים על המסך
+     גם אחרי שהשאלון נגמר. נתפס ברינדור, לא בקריאת קוד. */
+  .intake .dots[hidden], .intake .skip[hidden] { display: none; }
+  .intake .dots { display: flex; gap: 5px; margin-bottom: 12px; }
+  .intake .dots i { width: 22px; height: 3px; border-radius: 2px; background: var(--rule); }
+  .intake .dots i.on { background: var(--ember); }
+  .intake .skip {
+    display: inline-block; margin-top: 12px; font-size: .84rem;
+    color: var(--ink-soft); background: none; border: 0; cursor: pointer;
+    text-decoration: underline; font-family: inherit;
+  }
+  .intake .done { font-weight: 600; line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -139,6 +173,19 @@ src="https://www.facebook.com/tr?id=2132323570952002&ev=Lead&noscript=1" alt="" 
       <li><b>2.</b> אני חוזר אליך בוואטסאפ או בטלפון תוך יום עסקים.</li>
       <li><b>3.</b> קובעים ביחד שיחה קצרה ומדברים על הקורס שלך.</li>
     </ul>
+
+    <!-- השאלון נשאר מוסתר אם אין lid בכתובת, למשל כשמגיעים לעמוד ישירות.
+         שאלון בלי שורה לצרף אליה הוא בזבוז זמן של המבקר. -->
+    <section class="intake" id="intake" hidden>
+      <div class="ttl">שאלה קצרה לפני שנדבר</div>
+      <div class="sub">שתי-שלוש שניות. זה עוזר לי להגיע לשיחה כשאני כבר מבין מאיפה אתה בא.</div>
+      <div class="dots" id="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+      <div id="qbox">
+        <div class="q" id="qtext"></div>
+        <div class="opts" id="qopts"></div>
+      </div>
+      <button class="skip" id="skip" type="button">אני מעדיף לדבר על זה בשיחה</button>
+    </section>
 
     <div class="vid-block">
       <h2>עד שאני חוזר אליך, תן לזה שמונה דקות</h2>
@@ -158,6 +205,90 @@ src="https://www.facebook.com/tr?id=2132323570952002&ev=Lead&noscript=1" alt="" 
   </div>
 
 <script>
+/* ===== שאלון אחרי הטופס =====
+   רם, 15.09 דקה 24:01: "תוריד את השאלה הזאת, תעשה לו שאלון אחרי שהוא ממלא פרטים."
+
+   שלושה כללים שהנחו את המימוש:
+   1. הליד כבר נשמר. שום דבר כאן לא חוסם, לא נכשל בקול, ולא מונע מהמבקר
+      לראות את עמוד התודה. כישלון רשת = השאלון נעלם בשקט.
+   2. שאלה אחת על המסך. שלוש שאלות בבת אחת בעמוד תודה נראות כמו עוד טופס.
+   3. כל שאלה נשמרת בנפרד, מיד. מי שעונה על הראשונה ונוטש עדיין תרם
+      את הנתון החשוב ביותר, בדיוק זה שהיה בטופס הישן.
+
+   הערכים זהים לאלה שהיו ב-select הישן, כדי ש-22 הלידים הקודמים יישארו
+   ברי השוואה. ראה api/lead-answers.js ואת המיגרציה 20260915120000. */
+(function(){
+  var lid = new URLSearchParams(location.search).get('lid');
+  if (!lid) return;
+
+  var QUESTIONS = [
+    { key: 'students', q: 'כמה אנשים כבר שילמו על התוכן הדיגיטלי שלך?', opts: [
+      ['hundreds',          'הרבה. מאות ומעלה'],
+      ['tens',              'עשרות'],
+      ['content_no_system', 'יש לי את כל התוכן, אבל עוד לא מכרתי אותו'],
+      ['not_launched',      'עוד אין לי תוכן מוכן']
+    ]},
+    { key: 'platform', q: 'איפה התוכן שלך יושב היום?', opts: [
+      ['course_system', 'במערכת קורסים'],
+      ['whatsapp',      'בוואטסאפ'],
+      ['youtube_drive', 'ביוטיוב או בדרייב'],
+      ['nowhere',       'עוד לא במקום מסודר']
+    ]},
+    { key: 'urgency', q: 'מה הכי היית רוצה לפתור?', opts: [
+      ['not_finishing', 'התלמידים נרשמים ולא מסיימים'],
+      ['manual_work',   'אני עושה יותר מדי ידנית בכל מחזור'],
+      ['new_launch',    'אני רוצה להשיק מוצר חדש'],
+      ['other',         'משהו אחר']
+    ]}
+  ];
+
+  var box = document.getElementById('intake');
+  var qtext = document.getElementById('qtext');
+  var qopts = document.getElementById('qopts');
+  var dots = document.getElementById('dots').children;
+  var step = 0;
+
+  function save(key, value){
+    var payload = { id: lid }; payload[key] = value;
+    // נשלח ונשכח. התשובה של השרת לא משנה כלום עבור המבקר.
+    fetch('/api/lead-answers', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload), keepalive: true
+    }).catch(function(){});
+  }
+
+  function finish(){
+    document.getElementById('qbox').innerHTML =
+      '<div class="done">תודה. זה בדיוק מה שהייתי שואל בשיחה, אז חסכנו את זה.</div>';
+    document.getElementById('dots').hidden = true;
+    document.getElementById('skip').hidden = true;
+  }
+
+  function render(){
+    if (step >= QUESTIONS.length) return finish();
+    var cur = QUESTIONS[step];
+    qtext.textContent = cur.q;
+    qopts.innerHTML = '';
+    cur.opts.forEach(function(o){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'opt'; b.textContent = o[1];
+      b.addEventListener('click', function(){
+        save(cur.key, o[0]);
+        step++; render();
+      });
+      qopts.appendChild(b);
+    });
+    for (var i=0;i<dots.length;i++) dots[i].className = (i <= step ? 'on' : '');
+  }
+
+  document.getElementById('skip').addEventListener('click', function(){
+    box.hidden = true;
+  });
+
+  box.hidden = false;
+  render();
+})();
+
 // חזית הסרטון. הנגן האמיתי נטען רק בלחיצה, כך שעמוד התודה נשאר קל
 // ולא מוריד כמגה בייט של יוטיוב למי שלא לחץ בכלל.
 document.getElementById('ytf').addEventListener('click', function(){

@@ -563,7 +563,11 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'not_delivered' });
     }
 
-    return res.status(200).json({ ok: true, saved, delivered });
+    // leadId חוזר לדפדפן כדי שעמוד התודה יוכל לצרף את תשובות השאלון
+    // לאותה שורה. זה מזהה אטום בלי משמעות, וכל מה שאפשר לעשות איתו
+    // נמצא ב-/api/lead-answers, שמעדכן רשימה סגורה של שדות, פעם אחת,
+    // ורק בשעתיים הראשונות. ראה את ההערה שם.
+    return res.status(200).json({ ok: true, saved, delivered, leadId });
   } catch (e) {
     // Unknown failure before/around the save — report it honestly, generic message to the client.
     console.error('[lead] handler error', e);

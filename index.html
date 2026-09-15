@@ -714,15 +714,17 @@ document.getElementById('f').addEventListener('submit', function(ev){
       videoWatchedPct: Math.round(vp.pct*100), videoSeconds: vp.seconds, videoCompleted: vp.completed
     })
   }).then(function(r){
-    if (r.ok) {
-      // ה-eid עובר גם ל-thank-you-content.html, ולכן שני העמודים שיורים Lead
-      // מקבלים את אותו מזהה שהשרת שולח ל-Conversions API. בלעדיו מטא סופרת פעמיים.
-      location.href = fireLead
-        ? thanksPage + '?eid=' + encodeURIComponent(eventId)
-        : thanksPage;
-      return;
-    }
-    throw new Error('not_delivered');
+    if (!r.ok) throw new Error('not_delivered');
+    // eid — אותו מזהה שהשרת שולח ל-Conversions API, כדי שמטא לא תספור פעמיים.
+    // lid — מזהה השורה, כדי שעמוד התודה יוכל לצרף אליה את תשובות השאלון
+    //       שרם ביקש להזיז לשם (24:01). נוסף 15.09.2026.
+    // הקריאה ל-json נכשלת בשקט בכוונה: אם הגוף לא נקרא, הליד כבר נשמר
+    // ואין שום סיבה להעניש את המבקר במסך שגיאה. הוא פשוט לא יראה שאלון.
+    return r.json().catch(function(){ return {}; }).then(function(j){
+      var qs = '?eid=' + encodeURIComponent(eventId);
+      if (j && j.leadId) qs += '&lid=' + encodeURIComponent(j.leadId);
+      location.href = thanksPage + qs;
+    });
   }).catch(function(){
     document.getElementById('f').style.display = 'none';
     document.getElementById('e').style.display = 'block';
