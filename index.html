@@ -57,9 +57,13 @@
   .btn:hover{background:var(--ember)}
   .btn:disabled{opacity:.6;cursor:default}
 
-  .proof{display:flex;flex-direction:column;gap:11px;font-size:.97rem;color:var(--ink-soft)}
-  .proof span{display:flex;align-items:flex-start;gap:10px;text-align:right}
-  .proof svg{flex-shrink:0;width:21px;height:21px;color:#1E7A44;margin-top:2px}
+  .proof{display:flex;flex-direction:column;gap:18px;font-size:.97rem;color:var(--ink-soft)}
+  /* ⚠️ `>` חובה. בלעדיו הכלל חל גם על ה-span הפנימי, שהופך לפלקס
+     ומעמיד את הכותרת המודגשת כעמודה צרה לצד הטקסט במקום מעליו. */
+  .proof > span{display:flex;align-items:flex-start;gap:10px;text-align:right}
+  .proof svg{flex-shrink:0;width:21px;height:21px;color:#1E7A44;margin-top:3px}
+  .proof .ptxt{display:block}
+  .proof .ptxt b{display:block;color:var(--ink);font-weight:800;margin-bottom:3px}
 
   h2{font-size:clamp(1.35rem,4vw,1.9rem);font-weight:800;line-height:1.25;letter-spacing:-.01em}
   .lead-p{margin-top:14px;color:var(--ink-soft)}
@@ -298,12 +302,18 @@ fbq('init','2132323570952002');fbq('track','PageView');
   </div>
 </section>
 
-<!-- PROOF STRIP -->
+<!-- PROOF STRIP
+     🔴 נכתב מחדש 16.09.2026 בהכתבת הילל. שלוש התועלות הקצרות שישבו כאן
+     ("עדויות שמגיעות מעצמן" / "פחות שאלות חוזרות" / "אתה רואה מי תקוע")
+     היו הבטחת-תוצאה בלי מנגנון. הגרסה הזו נותנת לכל תועלת את הפיצ'ר
+     שמייצר אותה — מורה AI, פופאפ ברגע הסיום, וואטסאפ — כי 90% מהנכנסים
+     לא גללו חצי דף וצריך שהשליש העליון יסביר מה בעצם קונים.
+     המבנה: שורה מודגשת = ההבטחה, שורה רכה = המנגנון. -->
 <section>
   <div class="wrap proof">
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>עדויות שמגיעות מעצמן, בלי לרדוף</span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>פחות שאלות חוזרות בוואטסאפ ובזום</span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>שקט: אתה רואה מי תקוע עוד לפני שהוא נושר</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span class="ptxt"><b>אפס שאלות שחוזרות על עצמן</b>מורה AI מובנה שמכיר כל פסיק בשיעורים שלך עונה לתלמידים מיד, מסכם להם את החומר, ומרכז לך בדוח חודשי בדיוק איפה כולם הסתבכו כדי שתוכל לשפר.</span></span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span class="ptxt"><b>עדויות, שיתופים ולידים בשיא ההתלהבות</b>פופאפ חכם שקופץ לתלמיד בדיוק ברגע שהוא סיים משימה או שיעור, ומוציא ממנו המלצה חמה, שיתוף לחברים או מספר טלפון לאפסל, בלי שתצטרך לרדוף.</span></span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span class="ptxt"><b>שליטה והצלת נוטשים ישירות מהוואטסאפ</b>אתה רואה מי חם ומוכן לקנייה הבאה, ומי התחיל להיעלם מקבל אוטומטית הודעת וואטסאפ אישית שמחזירה אותו ללמוד לפי מה שחשוב לו, בלי שתצטרך להיכנס לממשקים מסובכים.</span></span>
   </div>
 </section>
 
@@ -422,9 +432,9 @@ fbq('init','2132323570952002');fbq('track','PageView');
       <div class="fit-card fit-no">
         <h3><span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></span>זה לא בשבילך אם</h3>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><span><b>עוד לא צילמת את הקורס</b>, ואין לך עדיין לקוחות ששילמו עליו</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><span><b>אתה מחפש ללמוד לבנות את זה בעצמך</b>, ונהנה מהצד הטכני</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><span><b>מה שיש לך היום עובד בדיוק כמו שצריך</b>, ואין שום דבר שהיית משנה בו</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><span class="ptxt"><b>עוד לא צילמת את הקורס</b>, ואין לך עדיין לקוחות ששילמו עליו</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><span class="ptxt"><b>אתה מחפש ללמוד לבנות את זה בעצמך</b>, ונהנה מהצד הטכני</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><span class="ptxt"><b>מה שיש לך היום עובד בדיוק כמו שצריך</b>, ואין שום דבר שהיית משנה בו</span></li>
         </ul>
         <!-- הערת הסיום ("אם אתה בקבוצה הזאת, זה לגיטימי לגמרי") הוסרה
              15.09.2026 בהחלטת הלל. הרשימה עצמה כבר אומרת את זה. -->
