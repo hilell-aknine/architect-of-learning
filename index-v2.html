@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>הילל אקנין · מערכות לימוד דופמיניות לבעלי מוצרים דיגיטליים</title>
+<meta name="description" content="מערכת לימוד דופמינית שגורמת ללקוחות שלך להתמכר לתכנים, לסיים את הקורס, ליישם ולהמליץ עליו הלאה." />
+<meta name="theme-color" content="#F4EFE6" />
+<link rel="preconnect" href="https://i.ytimg.com" />
+<link rel="preconnect" href="https://www.youtube.com" />
+<!-- ===== v2, 16.09.2026 — שכבת העיצוב =====
+     הדף המקורי נשאר חי ב-index.html. זה קובץ מקביל, כי רענון עיצוב כבד
+     במקום שכבר רץ עליו קמפיין הוא בדיוק מה שבוטל פעמיים בעבר.
+     מה שהשתנה כאן הוא עומק ויזואלי בלבד. סדר הסקשנים לא זז, והסרטון
+     נשאר ישר מתחת לכותרת כפי שרם הכתיב ב-15.09. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700;800;900&family=Heebo:wght@400;500;700;800&display=swap" />
+<!-- מונוגרם. עיגול דיו עם קשת ענבר שלא נסגרת — לולאת הלמידה.
+     SVG ולא תמונה מיוצרת, כי לוגו מיוצר מתפרק בגודל פאביקון. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314110D'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23F4EFE6' stroke-width='2.2' stroke-opacity='.45'/%3E%3Cpath d='M16 7a9 9 0 0 1 8.3 5.5' fill='none' stroke='%23E2570F' stroke-width='2.8' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%23E2570F'/%3E%3C/svg%3E" />
+<link rel="dns-prefetch" href="https://www.clarity.ms" />
+<link rel="dns-prefetch" href="https://connect.facebook.net" />
+<meta property="og:title" content="הילל אקנין · מערכות לימוד דופמיניות לבעלי מוצרים דיגיטליים" />
+<meta property="og:description" content="התוכן שלך נשאר כמו שהוא. מה שמשתנה זה כמה מהתלמידים שלך באמת מסיימים אותו." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="he_IL" />
+<meta property="og:image" content="https://architect-of-learning.vercel.app/assets/og.jpg" />
+
+<style>
+  :root{
+    --paper:#F4EFE6; --paper-2:#ECE5D7; --ink:#14110D; --ink-soft:#4A4339;
+    --ink-faint:#6E6557; --rule:rgba(20,17,13,.14); --ember:#C2410C; --ember-2:#E2570F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  /* גוף: Heebo. כותרות: Frank Ruhl Libre.
+     זה השינוי הכי גדול בדף. קודם כל הטקסט רץ על Segoe UI / Arial,
+     כלומר על ברירת המחדל של ווינדוס, וזה הסימן הכי חזק ל"גנרי". */
+  body{
+    font-family:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+    background:var(--paper); color:var(--ink); line-height:1.65;
+    font-size:1.06rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* ⚠️ מרקם הנייר. הגרסה הראשונה שמתי אותו כרקע של body עם
+     background-blend-mode, והדף יצא כמו שק יוטה. המרקם חייב לשבת
+     בשכבה נפרדת עם mix-blend-mode ואטימות נמוכה מאוד, אחרת הוא
+     נקרא כלכלוך ולא כנייר. 10% זה הגבול. */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:url("assets/v2/paper-grain.webp");
+    background-size:620px auto;background-repeat:repeat;
+    opacity:.10;mix-blend-mode:multiply;
+  }
+  body > *{position:relative;z-index:1}
+  .wrap{max-width:660px;margin:0 auto;padding:0 20px}
+  section{padding-block:clamp(44px,8vw,74px)}
+  /* הקו המפריד ירד מברירת המחדל. קודם כל סקשן נראה זהה לקודמו,
+     ורק קו שיער של פיקסל אחד סימן שזזנו. עכשיו המעבר נעשה במשטח. */
+  section + section{border-top:0}
+  section.ruled + section.ruled{border-top:1px solid var(--rule)}
+
+  /* ===== משטחים. שלושה, לא אחד ===== */
+  .surf-2{background:var(--paper-2)}
+  .surf-ink{
+    background:var(--ink) url("assets/v2/ink-stage.webp") center/cover no-repeat;
+    color:var(--paper);
+  }
+  .surf-ink h2{color:var(--paper)}
+  .surf-ink .lead-p{color:rgba(244,239,230,.72)}
+
+  .kicker{
+    display:block;font-weight:700;font-size:.95rem;color:var(--ember);
+    line-height:1.5;margin-bottom:16px;
+  }
+  h1{font-family:"Frank Ruhl Libre",Georgia,serif;
+     /* המינימום נשמר קרוב למקור בכוונה. Frank Ruhl גבוה יותר מ-Heebo
+        באותו גודל, וכל חצי רם כאן דוחף את הסרטון אל מתחת לקיפול. */
+     font-size:clamp(1.78rem,5.9vw,2.9rem);line-height:1.15;font-weight:800;letter-spacing:-.02em}
+  /* הדגשה בכותרת: שחור עם קו תחתון, לא כתום. החלטת הילל 27.08.
+     הכתום נשאר לכפתורים ולאלמנטים אינטראקטיביים בלבד. */
+  h1 em{
+    font-style:normal;color:var(--ink);
+    text-decoration:underline;
+    text-decoration-color:var(--ink);
+    text-decoration-thickness:.075em;
+    text-underline-offset:.17em;
+  }
+  .hero-sub{margin-top:18px;font-size:1.06rem;color:var(--ink-soft)}
+  .hero{text-align:center;padding-top:clamp(34px,6vw,56px)}
+
+  /* הכפתור עבר משחור לענבר. שחור מלא נקרא כשורת טקסט כבדה ולא
+     כדבר שלוחצים עליו, במיוחד על נייר קרם. הענבר הוא הצבע היחיד
+     בדף שאינו דיו, ולכן הוא מסמן לבד "כאן לוחצים". */
+  .btn{
+    display:inline-block;width:100%;margin-top:22px;min-height:56px;padding:17px 24px;
+    font:inherit;font-family:"Heebo",sans-serif;font-size:1.14rem;font-weight:800;
+    text-align:center;cursor:pointer;letter-spacing:-.01em;
+    border:0;border-radius:12px;background:var(--ember);color:#fff;text-decoration:none;
+    box-shadow:0 1px 0 rgba(255,255,255,.22) inset, 0 8px 20px -10px rgba(194,65,12,.75);
+    transition:background .16s, transform .16s, box-shadow .16s;
+  }
+  .btn:hover{background:var(--ember-2);transform:translateY(-1px);
+    box-shadow:0 1px 0 rgba(255,255,255,.22) inset, 0 12px 26px -10px rgba(194,65,12,.8)}
+  .btn:active{transform:translateY(0)}
+  .surf-ink .btn{box-shadow:0 8px 24px -8px rgba(0,0,0,.6)}
+  /* שורת הרגעה מתחת לכפתור. קודקס העיר שהכפתור לא אומר מה קורה
+     אחרי הלחיצה, וזה חיכוך שלא עולה כלום לתקן. */
+  .btn-note{margin-top:10px;font-size:.87rem;color:var(--ink-faint);text-align:center}
+  .surf-ink .btn-note{color:rgba(244,239,230,.6)}
+  .btn:disabled{opacity:.6;cursor:default}
+
+  /* ===== שורות המנגנון (החליפו את שלושת הוי-ים הירוקים) =====
+     וי ירוק ליד טקסט הוא האלמנט הגנרי ביותר שקיים ברשת, והוא גם
+     לא מראה כלום. כאן כל תועלת מקבלת דיאגרמה קטנה שמציירת את
+     השרשרת עצמה: טריגר ← פעולה ← תוצאה, מימין לשמאל.
+     הדיאגרמות כתובות ב-SVG ביד ולא מיוצרות ב-AI, כי צריך קריאות
+     חדה ברוחב 390 פיקסל וזה בדיוק מה שתמונה מיוצרת מפספסת. */
+  .mechs{display:grid;gap:16px;margin-top:8px}
+  .mech{
+    display:grid;gap:14px;padding:20px 18px 18px;
+    background:rgba(255,255,255,.5);border:1px solid var(--rule);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.7) inset, 0 10px 24px -20px rgba(20,17,13,.5);
+  }
+  @media(min-width:620px){
+    .mech{grid-template-columns:186px 1fr;align-items:center;gap:22px;padding:22px 24px}
+  }
+  .mech-art{width:100%;max-width:186px;margin-inline:auto;display:block}
+  .mech-t{font-family:"Frank Ruhl Libre",Georgia,serif;font-size:1.16rem;font-weight:800;
+    line-height:1.3;letter-spacing:-.01em;margin-bottom:6px}
+  .mech-b{font-size:.98rem;line-height:1.62;color:var(--ink-soft)}
+  /* שלד הדיאגרמה */
+  .dg-line{stroke:var(--ink);stroke-opacity:.34;stroke-width:1.6;fill:none}
+  .dg-fill{fill:var(--ink);fill-opacity:.055}
+  .dg-em{stroke:var(--ember);stroke-width:2.2;fill:none;stroke-linecap:round}
+  .dg-emf{fill:var(--ember)}
+  .dg-dot{fill:var(--ink);fill-opacity:.3}
+  .dg-arrow{stroke:var(--ink);stroke-opacity:.42;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  h2{font-family:"Frank Ruhl Libre",Georgia,serif;
+     font-size:clamp(1.5rem,4.6vw,2.15rem);font-weight:800;line-height:1.22;letter-spacing:-.015em}
+  /* חותמת מונוגרם קטנה מעל כותרת סקשן. נותנת לדף זהות משלו
+     במקום רצף כותרות מרכזיות זהות. */
+  .stamp{display:block;width:26px;height:26px;margin:0 auto 14px;opacity:.85}
+  .surf-ink .stamp{opacity:1}
+  .lead-p{margin-top:14px;color:var(--ink-soft)}
+  .center{text-align:center}
+
+  /* כיתוב ההפעלה מעל הסרטון. רם, 28:21: "כיתוב קטן למעלה מעל הסרטון,
+     כמו לחץ על הפליי תפעיל את הרמקול. זה משהו שעוזר קצת בצפיות." */
+  .vhint{margin-top:22px;margin-bottom:-6px;font-size:.92rem;color:var(--ink-soft);opacity:.9}
+  .video{margin-top:24px;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* חזית סרטון: תמונה + כפתור נגן. הנגן האמיתי נטען רק בלחיצה
+     (חוסך כ-1MB וכ-2-3 שניות בטעינה הראשונה, בדיוק איפה שהמודעה נוחתת). */
+  .ytf{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:#000;cursor:pointer;display:block}
+  .ytf img{width:100%;height:100%;object-fit:cover;display:block}
+  .ytf span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:68px;height:48px;border-radius:12px;background:rgba(20,17,13,.78);
+    display:flex;align-items:center;justify-content:center;transition:background .18s}
+  .ytf:hover span,.ytf:focus-visible span{background:var(--ember)}
+  .ytf span svg{width:22px;height:22px;fill:#fff;margin-inline-start:3px}
+
+  /* ===== ראיות מוצר על במה כהה =====
+     קודם ארבע תמונות קטנות על אותו נייר קרם כמו כל השאר, כלומר
+     הדבר היחיד בדף שהוא באמת הוכחה נראה כמו עוד פסקה. הבמה הכהה
+     מבודדת אותן, והצל נותן להן גוף. הצילומים אמיתיים ולא מיוצרים. */
+  .portals{display:grid;gap:18px;margin-top:26px}
+  @media(min-width:760px){.portals{grid-template-columns:1fr 1fr;gap:22px}}
+  .portal{
+    display:block;border:1px solid rgba(244,239,230,.14);border-radius:14px;overflow:hidden;
+    background:rgba(244,239,230,.05);text-decoration:none;color:var(--paper);
+    box-shadow:0 26px 50px -26px rgba(0,0,0,.85);
+    transition:transform .18s, box-shadow .18s, border-color .18s;
+  }
+  .portal:hover{transform:translateY(-3px);border-color:rgba(226,87,15,.5);
+    box-shadow:0 32px 60px -26px rgba(0,0,0,.9)}
+  .portal img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+  .portal b{display:block;padding:15px 16px 4px;font-size:1.05rem;font-weight:800}
+  .portal span{display:block;padding:0 16px 16px;font-size:.9rem;color:rgba(244,239,230,.66)}
+  .portal .go{display:inline-flex;align-items:center;gap:6px;margin:0 16px 16px;
+    font-size:.86rem;font-weight:700;color:var(--ember-2)}
+  .portal .go svg{width:13px;height:13px}
+
+  /* ⚠️ פסקאות ארוכות היו ממורכזות, כי כל הסקשן יושב בתוך .center.
+     בעברית זה הורג את הקריאה: לעין אין עוגן קבוע בצד ימין והיא
+     מחפשת מחדש את תחילת כל שורה. הכותרת נשארת במרכז, הגוף חוזר לימין. */
+  .about p{margin-top:15px;color:var(--ink-soft);text-align:right;max-width:56ch;margin-inline:auto}
+  .finale .lead-p{text-align:right;max-width:56ch;margin-inline:auto}
+  /* ציטוט מודגש בתוך הפרוזה. שבע פסקאות באותו גודל ובאותו צבע
+     הן קיר טקסט, ואף אחד לא קורא קיר. */
+  .pull{
+    max-width:56ch;margin:26px auto;padding:18px 20px 18px 18px;
+    border-right:3px solid var(--ember);border-radius:0 12px 12px 0;
+    background:rgba(255,255,255,.55);
+    font-family:"Frank Ruhl Libre",Georgia,serif;font-size:1.18rem;font-weight:700;
+    line-height:1.45;color:var(--ink);text-align:right;
+  }
+  .about img{
+    width:100%;max-width:330px;aspect-ratio:3/4;object-fit:cover;border-radius:14px;
+    margin:0 auto 18px;display:block;
+  }
+
+  /* רם, 19.8: "צבע אחד אחיד" — אין רקע נפרד לסקשן הטופס */
+  form{margin-top:24px}
+  input{
+    width:100%;padding:15px 16px;margin-bottom:11px;font:inherit;font-size:16px;
+    border:1.5px solid var(--rule);border-radius:10px;background:#fff;color:var(--ink);
+  }
+  input:focus,select:focus{outline:none;border-color:var(--ember)}
+  select{width:100%;margin-bottom:10px;padding:15px 16px;border-radius:12px;
+    border:1.5px solid #d9d2c6;background:#fff;font:inherit;font-size:1rem;
+    color:#1c1a17;direction:rtl;appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,#8b8378 50%),
+      linear-gradient(135deg,#8b8378 50%,transparent 50%);
+    background-position:18px 50%,24px 50%;background-size:6px 6px,6px 6px;
+    background-repeat:no-repeat}
+  select:invalid{color:#8b8378}
+  form .btn{margin-top:4px}
+  .err{display:none;margin-top:16px;padding:14px;border-radius:10px;background:#fdecea;color:#a3271a;font-size:.95rem;text-align:center}
+  .err a{color:#a3271a;font-weight:800}
+  /* שגיאת שדה. נפרדת מ-.err כדי שהטופס יישאר גלוי ואפשר יהיה לתקן במקום. */
+  .fielderr{display:none;margin:-6px 0 10px;padding:9px 12px;border-radius:9px;
+    background:#fdecea;color:#a3271a;font-size:.88rem;text-align:right;line-height:1.5}
+  input.bad{border-color:#a3271a!important;box-shadow:0 0 0 2px rgba(163,39,26,.12)}
+
+  footer{padding:20px 0 34px;font-size:.83rem;color:var(--ink-faint);text-align:center;border-top:1px solid var(--rule)}
+
+  /* ===== עדויות. הוחזר 27.08 אחרי שנפל בהחלפת השורש ===== */
+  .tgrid{display:grid;gap:14px;margin-top:22px;text-align:right}
+  @media(min-width:560px){
+    .tgrid{grid-template-columns:1fr 1fr}
+    .tcard:last-child:nth-child(odd){grid-column:1/-1;width:calc(50% - 7px);margin-inline:auto}
+  }
+  @media(min-width:940px){
+    .tgrid{grid-template-columns:repeat(3,1fr);margin-inline:-120px}
+    .tcard:last-child:nth-child(odd){grid-column:auto;width:auto;margin-inline:0}
+  }
+  .tcard{
+    display:flex;flex-direction:column;background:var(--paper-2);
+    border:1px solid var(--rule);border-radius:12px;overflow:hidden;
+  }
+  .tcard blockquote{padding:16px 15px 14px;font-size:.95rem;line-height:1.55}
+  .tcard blockquote em{font-style:normal;font-weight:800;color:var(--ember)}
+  .vwrap{position:relative;aspect-ratio:4/5;background:#000}
+  .vwrap.playing{aspect-ratio:9/16}
+  .vfacade{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:#000;cursor:pointer;display:block}
+  .vfacade img{width:100%;height:100%;object-fit:cover;display:block}
+  .vfacade span{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:60px;height:44px;border-radius:12px;background:rgba(20,17,13,.78);
+    display:flex;align-items:center;justify-content:center;transition:background .18s;
+  }
+  .vfacade:hover span,.vfacade:focus-visible span{background:var(--ember)}
+  .vfacade span svg{width:20px;height:20px;fill:#fff;margin-inline-start:3px}
+  .vwrap video{position:absolute;inset:0;width:100%;height:100%;display:block;background:#000;object-fit:contain}
+  .dur{
+    position:absolute;bottom:8px;inset-inline-start:8px;padding:2px 7px;border-radius:5px;
+    background:rgba(20,17,13,.78);color:#fff;font-size:.75rem;font-weight:700;pointer-events:none;
+  }
+  .ig{padding:12px 14px 14px;border-top:1px solid var(--rule)}
+  .ig-top{display:flex;align-items:center;gap:5px}
+  .ig-handle{font-weight:800;font-size:.9rem;color:var(--ink);text-decoration:none}
+  .ig-handle:hover{color:var(--ember)}
+  .vbadge{width:14px;height:14px;flex-shrink:0}
+  .ig-body{display:flex;align-items:center;gap:11px;margin-top:9px}
+  .ig-av{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0}
+  .ig-bio{font-size:.82rem;color:var(--ink-soft);line-height:1.4}
+  .ig-stats{display:flex;gap:14px;margin-top:5px;font-size:.78rem;color:var(--ink-faint)}
+  .ig-stats b{color:var(--ink)}
+Array.prototype.forEach.call(document.querySelectorAll('.vfacade'), function(btn){
+  btn.addEventListener('click', function(){
+    var wrap = btn.parentNode;
+    var v = document.createElement('video');
+    v.src = btn.getAttribute('data-src');
+    v.controls = true;
+    v.autoplay = true;
+    v.setAttribute('playsinline', '');
+    v.setAttribute('preload', 'auto');
+    var dur = wrap.querySelector('.dur');
+    if (dur) dur.remove();
+    wrap.classList.add('playing');
+    wrap.replaceChild(v, btn);
+    v.play().catch(function(){ v.controls = true; });
+  }, { once:true });
+});
+
+  /* ===== למי זה מתאים — נוסף 14.09.2026 =====
+     המטרה: להעביר את הסינון מהטופס אל הדף. עד היום כל מי שראה את המודעה
+     מילא, ורק אחר כך נפסל — כלומר שילמנו על תנועה שממילא לא קונה, ומטא
+     קיבלה אות על שליש מהשורות בלבד. הסקשן הזה מסנן לפני הטופס.
+     הכתום נשאר לכפתורים בלבד (החלטת הילל 27.08), ולכן ההדגשות כאן בדיו. */
+  /* הסקשן רחב מהעמודה הרגילה (660) כדי ששתי הרשימות ישבו זו לצד זו
+     ויקראו כהשוואה ולא כרשימה אחת ארוכה. הטקסט הקריא חוזר ל-660 בפנים. */
+  .wrap--wide{max-width:900px}
+  .fit-narrow{max-width:640px}
+
+  .fit-lists{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px;align-items:start}
+  .fit-card{border-radius:14px;padding:24px 20px}
+  .fit-card h3{
+    font-size:1.18rem;font-weight:800;margin-bottom:16px;letter-spacing:-.015em;
+    display:flex;align-items:center;gap:9px;
+  }
+  .fit-card h3 .tag{
+    flex-shrink:0;width:26px;height:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .fit-card h3 .tag svg{width:15px;height:15px;stroke-width:3.5}
+  .fit-card ul{list-style:none;display:grid;gap:13px}
+  .fit-card li{display:flex;align-items:flex-start;gap:10px;font-size:.99rem;line-height:1.6;text-align:right}
+  .fit-card li svg{flex-shrink:0;width:18px;height:18px;margin-top:4px}
+  .fit-card li b{font-weight:800;color:var(--ink)}
+
+  /* זה בשבילך — הכרטיס המודגש */
+  .fit-yes{background:#FFFDF8;border:2px solid var(--ink);box-shadow:4px 4px 0 rgba(20,17,13,.09)}
+  .fit-yes h3 .tag{background:#1E7A44;color:#fff}
+  .fit-yes li{color:var(--ink)}
+  .fit-yes li svg{color:#1E7A44}
+
+  /* זה לא בשבילך — שקט בכוונה, כדי שההשוואה תעבוד */
+  .fit-no{background:transparent;border:1px dashed var(--rule)}
+  .fit-no h3{color:var(--ink-faint)}
+  .fit-no h3 .tag{background:transparent;border:1.5px solid var(--ink-faint);color:var(--ink-faint)}
+  .fit-no li{color:var(--ink-faint)}
+  .fit-no li b{color:var(--ink-soft)}
+  .fit-no li svg{color:var(--ink-faint)}
+  .fit-note{margin-top:16px;padding-top:14px;border-top:1px solid var(--rule);font-size:.9rem;color:var(--ink-faint);line-height:1.65}
+
+  @media(max-width:720px){
+    .fit-lists{grid-template-columns:1fr;gap:14px}
+    .fit-yes{box-shadow:none}
+  }
+
+  .btn.fit-narrow{margin-top:30px}
+</style>
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2132323570952002');fbq('track','PageView');
+</script>
+
+<!-- Microsoft Clarity (הקלטות סשן + מפות חום) — מותנה בהסכמת עוגיות -->
+<script>
+(function(){
+  try { if (localStorage.getItem('cookie_consent_v2') === 'essential') return; } catch(e){}
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window,document,"clarity","script","xf3ucswd1s");
+})();
+</script>
+
+<!-- שכבת המדידה: שיוך גרסת קופי + אירועי ביניים (קליק, סרטון, גלילה, תחילת טופס).
+     defer בכוונה, כדי שלא תעכב את הרינדור. הקובץ לעולם לא זורק שגיאה. -->
+<script src="analytics.js" defer></script>
+</head>
+<body>
+
+<!-- HERO + VIDEO (רם, 19.8: הסרטון ישר מתחת לכותרת, בלי כפתור חוצץ) -->
+<section class="hero" id="vsl">
+  <div class="wrap">
+        <!-- 🔴 נכתב מחדש 15.09.2026 לפי הכתבה של רם בפגישת הזום, דקות 25:42-28:21.
+         מקור מלא עם חותמות זמן: לקוחות\בניית פורטלים מקצועים\calls\2026-09-15-ram-fixes.md
+
+         מה נפסל ולמה:
+           · "אלגוריתם מסתורי" — "מרגיש לי פשוט" (26:00). רם העדיף "מערכת לימוד
+             דופמינית", ואמר שזה לא ניסוח אלא הבידול עצמו: "זה ה-B2 שאתה מציע.
+             מה שהופך אותך לשונה ממישהו שיודע קצת קלוד קוד" (27:23).
+           · "קורס/ים דיגיטלים" בקיקר — רם ביקש "מוצרים דיגיטליים", רחב יותר,
+             "כי היום רוב בעלי העסקים שמוכרים מוצר נותנים גם תוכן דיגיטלי,
+             כמעט כולם" (19:51). ה"לפחות" בקו תחתון, לבקשתו המפורשת (27:04).
+           · ההוכחה החברתית ירדה אל מתחת לכותרת: "ואז למטה הייתי עושה
+             כמו שבניתי לעסקים" (26:40).
+
+         ⚠️ על "להתמכר": המילה נפסלה ע"י רם ב-05.08 ("הופך את זה גדול מדי")
+         ונכנסה לרשימה האדומה. בפגישת 15.09 רם עצמו הכתיב אותה שוב ושוב
+         ("להתמכר לתכנים שלך", 26:28 ו-27:51). הפגישה האחרונה גוברת,
+         והמרכאות הוסרו. זה כבר לא ציטוט מרוכך אלא ניסוח מאושר. -->
+    <p class="kicker">יש לך מוצרים דיגיטליים עם כמה עשרות תלמידים <u>לפחות</u><br>ואתה עדיין משתמש במערכת קורסים מיושנת ומשעממת?</p>
+    <!-- ההדגשה יושבת רק על הבידול עצמו. כשעטפתי את כל החצי השני ב-em,
+         ארבע שורות יצאו מודגשות והכותרת נראתה כבדה במסך טלפון. -->
+    <h1>מהפכת הלמידה של 2026: איך באמצעות טכנולוגיה מתקדמת בניתי <em>מערכת לימוד דופמינית</em></h1>
+    <p class="hero-sub">מערכת שגורמת ללקוחות שלך להתמכר לתכנים, לסיים את הקורס, ליישם ולהמליץ עליו הלאה.<br>בדיוק כמו שבניתי לעסקים כמו איתן עזריה, סקייל רווחי והמכללה ל-NLP.</p>
+    <p class="vhint">▶ לחץ על הפליי והפעל את הרמקול</p>
+    <div class="video" id="vwrap">
+      <button class="ytf" id="ytf" type="button" aria-label="נגן את הסרטון">
+        <!-- טמבנייל משלנו, 14.09.2026. קודם ישבה כאן תמונת ברירת המחדל של יוטיוב,
+             שהיא פריים אקראי מהסרטון ולא מבטיחה כלום. 19 מתוך 22 הלידים צפו 0%.
+             המקור לעריכה יושב מחוץ לתיקיית הפריסה, בשורש הפרויקט:
+             לקוחות\בניית פורטלים מקצועים\vsl-thumb-source.html
+             הוא בנוי מנכסים אמיתיים (צילום פורטל חי), לא מהדמיה. -->
+        <img src="assets/vsl-thumb.jpg" alt="הצצה מבפנים למערכת קורסים חיה של לקוח" width="1280" height="720" fetchpriority="high" />
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+      </button>
+    </div>
+    <a href="#contact" class="btn">שיחת אסטרטגיה בלי עלות</a>
+    <p class="btn-note">שיחה קצרה, בלי עלות ובלי התחייבות. חוזר אליך באותו יום.</p>
+  </div>
+</section>
+
+<!-- PROOF STRIP
+     🔴 נכתב מחדש 16.09.2026 בהכתבת הילל. שלוש התועלות הקצרות שישבו כאן
+     ("עדויות שמגיעות מעצמן" / "פחות שאלות חוזרות" / "אתה רואה מי תקוע")
+     היו הבטחת-תוצאה בלי מנגנון. הגרסה הזו נותנת לכל תועלת את הפיצ'ר
+     שמייצר אותה — מורה AI, פופאפ ברגע הסיום, וואטסאפ — כי 90% מהנכנסים
+     לא גללו חצי דף וצריך שהשליש העליון יסביר מה בעצם קונים.
+     המבנה: שורה מודגשת = ההבטחה, שורה רכה = המנגנון. -->
+<section>
+  <div class="wrap mechs">
+
+    <!-- 1 · מורה AI: שאלה ← שליפה מהשיעור ← תשובה -->
+    <div class="mech">
+      <svg class="mech-art" viewBox="0 0 186 104" role="img" aria-label="התלמיד שואל, המערכת שולפת מתוך השיעור שלך, התלמיד מקבל תשובה">
+        <rect class="dg-line dg-fill" x="140" y="26" width="42" height="36" rx="9"/>
+        <path class="dg-line" d="M150 62l-4 9 12-9"/>
+        <path class="dg-em" d="M155.6 39.2a5.4 5.4 0 0 1 9.2 3.5c0 3-3.6 3.4-3.6 6.1"/>
+        <circle class="dg-emf" cx="161.2" cy="53" r="1.8"/>
+        <path class="dg-arrow" d="M138 51H124l6-4m-6 4l6 4"/>
+        <rect class="dg-line" x="84" y="24" width="34" height="46" rx="4"/>
+        <rect class="dg-line dg-fill" x="74" y="32" width="34" height="46" rx="4"/>
+        <line class="dg-line" x1="100" y1="46" x2="82" y2="46"/>
+        <line class="dg-line" x1="100" y1="54" x2="86" y2="54"/>
+        <line class="dg-line" x1="100" y1="62" x2="80" y2="62"/>
+        <path class="dg-emf" d="M114 20l2.3 4.7 4.7 2.3-4.7 2.3-2.3 4.7-2.3-4.7-4.7-2.3 4.7-2.3z"/>
+        <path class="dg-arrow" d="M70 51H56l6-4m-6 4l6 4"/>
+        <rect x="4" y="26" width="46" height="36" rx="9" fill="#C2410C" fill-opacity=".08" stroke="#C2410C" stroke-width="2.2"/>
+        <path d="M40 62l4 9-12-9" fill="none" stroke="#C2410C" stroke-width="2.2"/>
+        <line class="dg-line" x1="44" y1="38" x2="12" y2="38"/>
+        <line class="dg-line" x1="44" y1="46" x2="18" y2="46"/>
+        <line class="dg-line" x1="44" y1="54" x2="24" y2="54"/>
+      </svg>
+      <div>
+        <p class="mech-t">אפס שאלות שחוזרות על עצמן</p>
+        <p class="mech-b">מורה AI מובנה שמכיר כל פסיק בשיעורים שלך עונה לתלמידים מיד, מסכם להם את החומר, ומרכז לך בדוח חודשי בדיוק איפה כולם הסתבכו כדי שתוכל לשפר.</p>
+      </div>
+    </div>
+
+    <!-- 2 · פופאפ ברגע הסיום: שיעור הושלם ← פופאפ ← שלוש תוצאות -->
+    <div class="mech">
+      <svg class="mech-art" viewBox="0 0 186 104" role="img" aria-label="התלמיד מסיים שיעור, נפתח פופאפ, ויוצאים ממנו המלצה שיתוף או טלפון">
+        <circle class="dg-line" cx="158" cy="44" r="17"/>
+        <path d="M158 27a17 17 0 0 1 12 29" fill="none" stroke="#C2410C" stroke-width="2.6" stroke-linecap="round"/>
+        <path class="dg-em" d="M150 44.5l5.5 5.5L167 38"/>
+        <path class="dg-arrow" d="M134 46H120l6-4m-6 4l6 4"/>
+        <rect x="24" y="18" width="84" height="52" rx="11" fill="#FFFFFF" fill-opacity=".72" stroke="#C2410C" stroke-width="2.2"/>
+        <path class="dg-emf" d="M97 26l1.9 3.9 3.9 1.9-3.9 1.9-1.9 3.9-1.9-3.9-3.9-1.9 3.9-1.9z"/>
+        <line class="dg-line" x1="86" y1="42" x2="38" y2="42"/>
+        <line class="dg-line" x1="86" y1="50" x2="54" y2="50"/>
+        <rect class="dg-line dg-fill" x="80" y="56" width="20" height="9" rx="4.5"/>
+        <rect class="dg-line dg-fill" x="54" y="56" width="20" height="9" rx="4.5"/>
+        <rect class="dg-line dg-fill" x="28" y="56" width="20" height="9" rx="4.5"/>
+        <line class="dg-em" x1="46" y1="78" x2="46" y2="86"/>
+        <line class="dg-em" x1="66" y1="78" x2="66" y2="90"/>
+        <line class="dg-em" x1="86" y1="78" x2="86" y2="86"/>
+      </svg>
+      <div>
+        <p class="mech-t">עדויות, שיתופים ולידים בשיא ההתלהבות</p>
+        <p class="mech-b">פופאפ חכם שקופץ לתלמיד בדיוק ברגע שהוא סיים משימה או שיעור, ומוציא ממנו המלצה חמה, שיתוף לחברים או מספר טלפון לאפסל, בלי שתצטרך לרדוף.</p>
+      </div>
+    </div>
+
+    <!-- 3 · וואטסאפ: תלמיד נושר מהמסלול ← הודעה אישית ← חוזר למסלול -->
+    <div class="mech">
+      <svg class="mech-art" viewBox="0 0 186 104" role="img" aria-label="תלמיד שנעלם מהמסלול מקבל הודעת וואטסאפ אישית וחוזר ללמוד">
+        <line class="dg-line" x1="176" y1="30" x2="14" y2="30" stroke-dasharray="4 5"/>
+        <circle class="dg-dot" cx="166" cy="30" r="3.6"/>
+        <circle class="dg-dot" cx="144" cy="30" r="3.6"/>
+        <circle class="dg-dot" cx="122" cy="30" r="3.6"/>
+        <circle class="dg-dot" cx="100" cy="30" r="3.6"/>
+        <path class="dg-line" d="M80 33c0 10-2 16-6 20" stroke-dasharray="3 4"/>
+        <circle cx="72" cy="58" r="4.4" fill="#14110D" fill-opacity=".16"/>
+        <rect x="18" y="62" width="52" height="30" rx="9" fill="#C2410C" fill-opacity=".1" stroke="#C2410C" stroke-width="2.2"/>
+        <path d="M26 92l-3 9 12-9" fill="none" stroke="#C2410C" stroke-width="2.2"/>
+        <line class="dg-line" x1="62" y1="72" x2="28" y2="72"/>
+        <line class="dg-line" x1="62" y1="81" x2="40" y2="81"/>
+        <path class="dg-em" d="M40 62c0-16 8-25 20-28"/>
+        <path class="dg-em" d="M54 32l6 2-2 6"/>
+        <circle class="dg-emf" cx="64" cy="30" r="4.4"/>
+      </svg>
+      <div>
+        <p class="mech-t">שליטה והצלת נוטשים ישירות מהוואטסאפ</p>
+        <p class="mech-b">אתה רואה מי חם ומוכן לקנייה הבאה, ומי התחיל להיעלם מקבל אוטומטית הודעת וואטסאפ אישית שמחזירה אותו ללמוד לפי מה שחשוב לו, בלי שתצטרך להיכנס לממשקים מסובכים.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- PORTALS -->
+<section>
+  <div class="wrap center">
+    <h2>מה אומרים מי שעבדו איתי</h2>
+
+    <div class="tgrid">
+
+      <figure class="tcard">
+        <blockquote>״הילל בנה לי פורטל לבית ספר ל-NLP שיש לי, ואני יכול להגיד לכם שזו <em>הרמה הגבוהה ביותר</em> של פורטל לימודים שאי פעם יצא לי לראות״</blockquote>
+        <div class="vwrap">
+          <button class="vfacade" type="button" data-src="assets/testimonials/ram-alus.mp4" aria-label="נגן את העדות של רם אלוס, שתי דקות וחמש שניות">
+            <img src="assets/testimonials/ram-alus.webp" width="540" height="960" loading="lazy" fetchpriority="low" decoding="async" alt="רם אלוס מספר על הפורטל שנבנה לו" />
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+          <span class="dur">2:05</span>
+        </div>
+        <figcaption class="ig">
+          <div class="ig-top">
+            <a class="ig-handle" href="https://www.instagram.com/ram.alus/" target="_blank" rel="noopener nofollow">ram.alus</a>
+            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
+          </div>
+          <div class="ig-body">
+            <img class="ig-av" src="assets/testimonials/avatar-ram.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של רם אלוס" />
+            <div>
+              <div class="ig-bio">רם אלוס · יועץ לעסקים ובעל בית ספר ל-NLP</div>
+              <div class="ig-stats"><div><b>25.4K</b> עוקבים</div><div><b>340</b> במעקב</div></div>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="tcard">
+        <blockquote>״שתי הנעות לפעולה, הבאנו לשם <em>ארבע מאות אנשים כבר בשבוע הראשון</em>. מתוך האנשים שצפו בפורטל וצרכו אותו נסגרו עסקאות פרימיום״</blockquote>
+        <div class="vwrap">
+          <button class="vfacade" type="button" data-src="assets/testimonials/yuval-palcovich.mp4" aria-label="נגן את העדות של יובל פלקוביץ׳, דקה ארבעים ושתיים">
+            <img src="assets/testimonials/yuval-palcovich.webp" width="540" height="960" loading="lazy" fetchpriority="low" decoding="async" alt="יובל פלקוביץ׳ מספר על הפורטל שנבנה לו" />
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+          <span class="dur">1:42</span>
+        </div>
+        <figcaption class="ig">
+          <div class="ig-top">
+            <a class="ig-handle" href="https://www.instagram.com/yuval_palcovich/" target="_blank" rel="noopener nofollow">yuval_palcovich</a>
+            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
+          </div>
+          <div class="ig-body">
+            <img class="ig-av" src="assets/testimonials/avatar-yuval.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של יובל פלקוביץ׳" />
+            <div>
+              <div class="ig-bio">יובל פלקוביץ׳ · סקייל רווחי, עסק שיוצר חופש</div>
+              <div class="ig-stats"><div><b>10.6K</b> עוקבים</div><div><b>197</b> במעקב</div></div>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <!-- ידידיה אינו לקוח פורטל אלא ייעוץ AI, ולכן הציטוט מדבר על יכולת
+           ולא על מערכת. אין לו סימון מאומת באינסטגרם, ולכן אין כאן וי כחול. -->
+      <figure class="tcard">
+        <blockquote>״הבן אדם הזה פשוט זרק עליי את כל המידע שיש לו, ואני בטוח שזה היה רק קצה המזלג. באמת, <em>דברים מטורפים שלא האמנתי אפילו שקיימים</em>״</blockquote>
+        <div class="vwrap">
+          <button class="vfacade" type="button" data-src="assets/testimonials/yedidya-tawil.mp4" aria-label="נגן את העדות של ידידיה טוויל, חמישים ושלוש שניות">
+            <img src="assets/testimonials/yedidya-tawil.webp" width="540" height="954" loading="lazy" fetchpriority="low" decoding="async" alt="ידידיה טוויל מספר על העבודה עם הילל" />
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+          <span class="dur">0:53</span>
+        </div>
+        <figcaption class="ig">
+          <div class="ig-top">
+            <a class="ig-handle" href="https://www.instagram.com/yedidya.tawil/" target="_blank" rel="noopener nofollow">yedidya.tawil</a>
+          </div>
+          <div class="ig-body">
+            <img class="ig-av" src="assets/testimonials/avatar-yedidya.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של ידידיה טוויל" />
+            <div>
+              <div class="ig-bio">ידידיה טוויל · חטובים לתמיד, ירידה במשקל</div>
+              <div class="ig-stats"><div><b>7,365</b> עוקבים</div><div><b>186</b> במעקב</div></div>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== למי זה מתאים — נוסף 14.09.2026 =====
+     יושב אחרי הסרטון ולפני העדויות, כלומר בנקודה שבה המבקר מחליט
+     אם להמשיך לקרוא. זה המקום שבו הסינון חוסך כסף, ולא בטופס. -->
+<section id="fit" class="surf-2">
+  <div class="wrap wrap--wide">
+    <h2 class="fit-narrow">למי זה מתאים, ולמי לא</h2>
+    <!-- 🔴 הפסקה הפותחת הוסרה לגמרי 15.09.2026, בהחלטת הלל.
+         היסטוריה: רם פסל את הנוסח המקורי ("אני בונה מערכת סביב...") ב-24:26,
+         "לא מובנת בכלל". כתבתי במקומה נוסח תוצאה, והלל החליט להוריד גם אותו.
+         הכותרת "למי זה מתאים, ולמי לא" מובילה ישירות לשתי הרשימות,
+         והן אומרות את זה לבד. -->
+
+    <div class="fit-lists">
+      <div class="fit-card fit-yes">
+        <h3><span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>זה בשבילך אם</h3>
+        <ul>
+          <!-- 🔴 שתי השורות האמצעיות נכתבו מחדש 15.09.2026 לפי רם, 24:39-25:19.
+               על "אתה יודע בדיוק איך הקורס שלך צריך לעבוד" הוא אמר "לא מספיק ברור",
+               ועל "היכולות שעולם ה-AI פתח" אמר "זה מאוד פיצ'רי ולא ראשי".
+               הנוסח שהחליף אותן הוא כמעט מילה במילה מה שהוא הכתיב. -->
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>כבר יש לך <b>מוצר דיגיטלי שאנשים שילמו עליו</b>, עשרות תלמידים ומעלה</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>אתה רוצה ש<b>כל מי שנרשם לקורס שלך יסיים אותו</b>, ולא ייעלם אחרי השיעור הראשון</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>אתה רוצה ש<b>מי שסיים ימליץ עליך לחבר</b>, בצורה פשוטה וקלה</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>אתה רוצה <b>מערכת שנבנתה לתוכן שלך</b>, ולא תבנית שכל אחד מקבל את אותה</span></li>
+        </ul>
+      </div>
+
+      <div class="fit-card fit-no">
+        <h3><span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></span>זה לא בשבילך אם</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><span class="ptxt"><b>עוד לא צילמת את הקורס</b>, ואין לך עדיין לקוחות ששילמו עליו</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><span class="ptxt"><b>אתה מחפש ללמוד לבנות את זה בעצמך</b>, ונהנה מהצד הטכני</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><span class="ptxt"><b>מה שיש לך היום עובד בדיוק כמו שצריך</b>, ואין שום דבר שהיית משנה בו</span></li>
+        </ul>
+        <!-- הערת הסיום ("אם אתה בקבוצה הזאת, זה לגיטימי לגמרי") הוסרה
+             15.09.2026 בהחלטת הלל. הרשימה עצמה כבר אומרת את זה. -->
+      </div>
+    </div>
+
+    <a href="#contact" class="btn fit-narrow" style="display:block;margin-inline:auto">מתאים לי, בוא נדבר</a>
+    <p class="btn-note">שיחה קצרה, בלי עלות ובלי התחייבות. חוזר אליך באותו יום.</p>
+  </div>
+</section>
+
+<section class="surf-ink">
+  <div class="wrap wrap--wide center">
+    <svg class="stamp" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="#F4EFE6" stroke-opacity=".4" stroke-width="2"/><path d="M16 5a11 11 0 0 1 10.1 6.7" fill="none" stroke="#E2570F" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="16" r="2.6" fill="#E2570F"/></svg>
+    <h2>פורטלים חיים שבניתי</h2>
+    <p class="lead-p">מערכות אמיתיות שרצות עכשיו עם תלמידים אמיתיים, לא הדמיות. תיכנס ותסתכל בעצמך.</p>
+    <div class="portals">
+      <a class="portal" href="https://eitan-azaria-portal.vercel.app" target="_blank" rel="noopener">
+        <img src="assets/portals/eitan.jpg" alt="איתן עזריה, הפודקאסט הביולוגיה של הווינרים" loading="lazy" />
+        <b>איתן עזריה</b><span>פורטל הפודקאסט, מאות פרקים עם חבילות לימוד ומאמן אישי בתוך הפורטל</span>
+        <span class="go">כניסה לפורטל החי<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg></span>
+      </a>
+      <a class="portal" href="https://kagan-portal.vercel.app" target="_blank" rel="noopener">
+        <img src="assets/portals/kagan.jpg" alt="ד״ר אריה קגן מרצה מול אולם מלא" loading="lazy" />
+        <b>המכללה ללימודי NLP של אריה קגן</b><span>קורסי NLP ודמיון מודרך, מסלול למידה מלא עם מעקב התקדמות</span>
+        <span class="go">כניסה לפורטל החי<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg></span>
+      </a>
+      <a class="portal" href="https://scale-rovchi-app.vercel.app" target="_blank" rel="noopener">
+        <img src="assets/portals/scale.jpg" alt="ניב ויובל, סקייל רווחי" loading="lazy" />
+        <b>סקייל רווחי</b><span>למעלה ממאה שיעורים, לצד כלים שהתלמידים מפעילים בתוך הפורטל</span>
+        <span class="go">כניסה לפורטל החי<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg></span>
+      </a>
+      <a class="portal" href="https://www.therapist-home.com/" target="_blank" rel="noopener">
+        <img src="assets/portals/therapist.jpg" alt="רם מעביר שיעור בקורס NLP, בית המטפלים" loading="lazy" />
+        <b>בית המטפלים</b><span>פורטל למידה לעשרות מטפלים, הפורטל שממנו הגיעו המספרים בקייס סטאדי</span>
+        <span class="go">כניסה לפורטל החי<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section>
+  <div class="wrap center about">
+    <img src="assets/hillel-family.jpg" alt="הילל אקנין עם המשפחה" loading="lazy" />
+    <h2>מי אני</h2>
+    <p>היי, אני הילל אקנין. נשוי ואבא לשניים.</p>
+    <p>עשור אני בעולם העסקים: מתכשיטי יוקרה, דרך שיווק לעסקים קטנים, ועד הדרכה בבינה מלאכותית. המכנה המשותף לכולם היה תמיד למידה: עשרות קורסים דיגיטליים, פרונטליים וסדנאות. אני חולה למידה, ואני יודע שההתפתחות שלי ומצב העסק שלי תלויים בזה.</p>
+    <p>אבל למדתי בפלטפורמות כמו כולם, וגם כשהתוכן היה מעולה, הייתי נופל. חסרה המשכיות, תחושה שאני בתוך מסגרת ברורה עם התקדמות שיטתית. הסחות דעת, שעמום, וזהו. אז בניתי לעצמי את מה שהיה חסר לי. באחד הקורסים שהייתי שותף בהם שיתפתי את המערכת הזו, ואנשים התחברו אליה בטירוף. שם הבנתי שזה לא רק בשבילי.</p>
+    <p class="pull">מה שמרגיז אותי בקורסים דיגיטליים הוא תוכן בלי פידבק, בלי שתדע אם עשית נכון.</p>
+    <p>גם כאבא זה אותו דבר: בניתי לילדים שלי משחקים שעוזרים להם ללמוד ולהנות מזה.</p>
+    <!-- המשפט הפותח של הפסקה הזו עלה לציטוט המודגש שמעליה,
+         ולכן הוא הוסר כאן כדי שלא ייאמר פעמיים. -->
+    <p>מערכות מיושנות שגורמות להרגיש שרצו את הארנק שלך, ומהרגע ששילמת כבר לא באמת אכפת מהתוצאות שלך.</p>
+    <p>אני מוותר מראש על מי שבונה ומצפה שהלקוח כבר יסתדר לבד. על מי שבונה רק למי שיש לו משמעת עצמית. על "אני את שלי עשיתי", ואז זורק הכל על המשתמש בלי לבנות לו מסלול אמיתי.</p>
+  </div>
+</section>
+
+<!-- FINALE + FORM -->
+<section class="finale" id="contact">
+  <div class="wrap center">
+    <h2>אז מה עושים עכשיו?</h2>
+    <p class="lead-p">אני קובע איתך שיחת אסטרטגיה קצרה, בלי עלות. בשיחה תדע בדיוק איך לשפר את הקורס שלך כך שהוא ייראה שונה מהמתחרים שלך, ויתן ללקוחות שלך ערך איכותי פי עשר, בלי לשנות אפילו מילה אחת בתוכן הקורס עצמו.</p>
+    <form id="f" novalidate>
+      <input id="n" type="text" placeholder="השם שלך" autocomplete="name" required />
+      <input id="p" type="tel" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required
+             aria-describedby="pe" /><!-- ולידציה ישראלית ב-validPhone(). ראה הערה למטה. -->
+      <div class="fielderr" id="pe">מספר הטלפון לא נראה תקין. נייד 05 ואחריו 8 ספרות, או קווי עם קידומת.</div>
+      <!-- 🔴 שאלת הסינון הוסרה 15.09.2026 בהחלטת הלל.
+           הרקע: הדף נמדד ב-465 כניסות מ-07.09 ואפס לידים. 90% נוטשים לפני
+           חצי דף, ומי שכן הגיע לטופס נתקל בשלושה שדות במקום שניים.
+           הסינון עובר לשיחת הטלפון, שממילא התקיימה עם 15 מתוך 22 הלידים.
+
+           מה שהשתנה יחד איתה, ואי אפשר להשאיר אחד בלי השני:
+             · כל הנרשמים מגיעים עכשיו ל-/thank-you.html (היו שלושה עמודי תודה).
+             · אירוע Lead נשלח על כל נרשם. השער הישן ירה רק על שתי אפשרויות
+               מתוך ארבע, וזה מה שהרעיב את מטא מסיגנל.
+             · עמודת students בטבלה תהיה null מכאן והלאה. הפילוח "3 מתוך 22
+               בקהל היעד" לא ימשיך להתעדכן מהטופס.
+
+           ↩️ להיפוך: להחזיר את ה-select הזה, ואת qualified/fireLead/thanksPage
+           בסקריפט למטה. שני מקומות, שניהם מתועדים.
+
+           ⚠️ מה שצפוי להשתנות לרעה: מטא תלמד מכל נרשם, כולל מי שאין לו עדיין
+           תוכן ולקוחות (6 מתוך 22 בתקופה שנמדדה). אם חלק הלידים הלא רלוונטיים
+           יקפוץ, זו הסיבה, וההיפוך למעלה. -->
+      <button type="submit" class="btn">שריין לי שיחת אסטרטגיה</button>
+    </form>
+    <div class="err" id="e">
+      הייתה תקלה בשליחה. <a href="https://wa.me/972549116092" target="_blank" rel="noopener">שלח לי הודעה בוואטסאפ במקום</a>
+    </div>
+  </div>
+</section>
+
+<footer>© <span id="year">2026</span> · הילל אקנין</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* שיוך מקור הליד (utm) — נלכד ברגע הנחיתה ונשמר לכל הסשן.
+   ⚠️ למה זה קיים: עד 08.09.2026 הטופס לא שלח utm כלל, ולכן כל 22 הלידים
+   הראשונים נשמרו במסד עם שדה שיוך ריק. אי אפשר היה לדעת איזו מודעה מביאה
+   קונים ואיזו שורפת תקציב, וזה שיתק כל אופטימיזציה של הקמפיין.
+   הגיבוי היחיד היה document.referrer, ששרד במקרה ולא בתכנון.
+
+   נשמר ב-sessionStorage כי המבקר נוחת עם הפרמטרים בכתובת, ועד שהוא מגיע
+   לטופס location.search כבר יכול להיות ריק. ה-Storage שורד את המעבר.
+   ⚠️ אסור לזרוק שגיאה כאן. הטופס חייב להישלח גם אם ה-Storage חסום
+   (גלישה פרטית, דפדפן פנימי של אינסטגרם), ולכן הכל עטוף ב-try. */
+/* fbc ו-fbp — נוסף 14.09.2026.
+   הרקע: אירוע ה-Lead של הצד-שרת נשלח עם חמישה פרמטרים בלבד (IP, סוכן משתמש,
+   טלפון, שם פרטי, שם משפחה), ואיכות ההתאמה נמדדה במנהל האירועים כ-5.2 מתוך 10.
+   ⚠️ החסר הקריטי הוא fbc, מזהה הקליק. הוא מה שקושר המרה בצד-שרת למודעה
+   הספציפית שהביאה את הקליק. בלעדיו מטא מנחשת ייחוס מ-IP ומשם, וזה בדיוק
+   מה שהפיל את הדיווח: 8 לידים אצל מטא מול 22 שורות במסד.
+   ה-UTM פותר את הייחוס בדוחות שלנו. fbc פותר אותו אצל מטא, ושם מוכרע התקציב.
+
+   fbc נבנה מ-fbclid שבכתובת, בפורמט fb.1.<זמן>.<fbclid>, ו**חובה** לשמור
+   את הזמן שבו הוא נראה לראשונה ולא את זמן השליחה — אחרת חלון הייחוס מתקצר.
+   fbp הוא עוגיית _fbp שהפיקסל עצמו כותב. שניהם נשלחים ללא גיבוב, כך דורשת מטא. */
+var LEAD_FB = (function () {
+  var KEY = 'ec_fbc';
+  function safe(fn, fb) { try { return fn(); } catch (e) { return fb; } }
+
+  var fbclid = safe(function () {
+    return new URLSearchParams(location.search).get('fbclid') || '';
+  }, '');
+
+  var fbc = '';
+  if (fbclid) {
+    fbc = 'fb.1.' + Date.now() + '.' + String(fbclid).slice(0, 400);
+    safe(function () { sessionStorage.setItem(KEY, fbc); });
+  } else {
+    fbc = safe(function () { return sessionStorage.getItem(KEY) || ''; }, '');
+  }
+
+  /* fbp נקרא בזמן השליחה ולא בזמן הטעינה: הפיקסל כותב את העוגייה _fbp
+     אחרי שהוא נטען, ולכן קריאה מוקדמת מדי הייתה מחזירה ריק בשקט. */
+  function fbp() {
+    return safe(function () {
+      var m = document.cookie.match(/(?:^|;\s*)_fbp=([^;]+)/);
+      return m ? decodeURIComponent(m[1]).slice(0, 200) : '';
+    }, '');
+  }
+
+  return { fbc: fbc, fbp: fbp };
+})();
+
+var LEAD_UTM = (function () {
+  var KEY = 'ec_utm';
+  function safe(fn, fallback) { try { return fn(); } catch (e) { return fallback; } }
+
+  var fromUrl = safe(function () {
+    var q = new URLSearchParams(location.search), o = {}, n = 0;
+    q.forEach(function (val, key) {
+      // מגבילים לשדות utm בלבד ולאורך סביר. השדה במסד הוא jsonb שטוח.
+      if (key.indexOf('utm_') === 0 && val && n < 10) { o[key] = String(val).slice(0, 120); n++; }
+    });
+    return o;
+  }, {});
+
+  if (Object.keys(fromUrl).length) {
+    safe(function () { sessionStorage.setItem(KEY, JSON.stringify(fromUrl)); });
+    return fromUrl;
+  }
+
+  // אין פרמטרים בכתובת — מנסים את מה שנשמר קודם בסשן.
+  var saved = safe(function () {
+    var raw = sessionStorage.getItem(KEY);
+    var parsed = raw ? JSON.parse(raw) : null;
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  }, {});
+  if (Object.keys(saved).length) return saved;
+
+  // מוצא אחרון: הכתובת שממנה הגענו. זה מה שהציל את השיוך של 22 הלידים הראשונים.
+  return safe(function () {
+    var ref = document.referrer || '';
+    if (ref.indexOf('utm_') === -1) return {};
+    var qs = ref.slice(ref.indexOf('?') + 1);
+    var q = new URLSearchParams(qs), o = {}, n = 0;
+    q.forEach(function (val, key) {
+      if (key.indexOf('utm_') === 0 && val && n < 10) { o[key] = String(val).slice(0, 120); n++; }
+    });
+    return o;
+  }, {});
+})();
+
+/* מעקב צפייה בסרטון — נטען אחרי הדף, לא חוסם רינדור.
+   נשלח יחד עם הליד כדי לדעת אם הוא באמת ראה לפני שהשאיר פרטים. */
+var vp = { pct:0, seconds:0, completed:false };
+
+/* לחיצה על החזית = מחליפים לנגן אמיתי עם autoplay ורק אז מושכים את ה-API.
+   לפני הלחיצה הדף לא נוגע ביוטיוב בכלל. */
+document.getElementById('ytf').addEventListener('click', function(){
+  var w = document.getElementById('vwrap');
+  w.innerHTML = '<iframe id="yt" src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1&autoplay=1" ' +
+    'title="הדגמה חיה · 8:40" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+  var t = document.createElement('script');
+  t.src = 'https://www.youtube.com/iframe_api';
+  document.body.appendChild(t);
+}, { once:true });
+window.onYouTubeIframeAPIReady = function(){
+  var pl = new YT.Player('yt', { events: {
+    onStateChange: function(e){
+      if (e.data === YT.PlayerState.ENDED) vp.completed = true;
+      if (e.data === YT.PlayerState.PLAYING) {
+        if (window.__t) return;
+        window.__t = setInterval(function(){
+          if (!pl.getDuration) return;
+          var d = pl.getDuration(); if (!d) return;
+          var c = pl.getCurrentTime();
+          if (c/d > vp.pct) vp.pct = c/d;
+          vp.seconds = c;
+        }, 1000);
+      }
+    }
+  }});
+};
+
+// ── ולידציית טלפון ישראלי ─────────────────────────────────────────────
+// למה זה קיים: הבדיקה הקודמת הייתה "לפחות 9 ספרות" בלי גבול עליון ובלי
+// צורה. ב-05.09 נכנס ליד עם 13 ספרות (9725333720009), הוא עלה כסף מלא
+// ולא היה ניתן ליצירת קשר. ספרה עודפת אחת = ליד שרוף.
+// מנרמלים קודם, ורק אז בודקים, כדי ש-+972 ורווחים ומקפים לא ייפסלו.
+function normalizePhone(raw) {
+  var d = String(raw || '').replace(/\D/g, '');
+  if (d.indexOf('00972') === 0) d = d.slice(5);
+  else if (d.indexOf('972') === 0) d = d.slice(3);
+  else if (d.charAt(0) === '0') d = d.slice(1);
+  return '0' + d;
+}
+function validPhone(raw) {
+  var d = normalizePhone(raw);
+  return /^05\d{8}$/.test(d)            // נייד, 10 ספרות
+      || /^07\d{8}$/.test(d)            // נייד וירטואלי, 10 ספרות
+      || /^0(2|3|4|8|9)\d{7}$/.test(d); // קווי, 9 ספרות
+}
+
+// השגיאה נעלמת ברגע שהוא מתקן, ולא נשארת אדומה מולו בזמן ההקלדה.
+document.getElementById('p').addEventListener('input', function(){
+  if (this.classList.contains('bad') && validPhone(this.value)) {
+    this.classList.remove('bad');
+    document.getElementById('pe').style.display = 'none';
+  }
+});
+
+document.getElementById('f').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var n = document.getElementById('n'), p = document.getElementById('p');
+  var pe = document.getElementById('pe');
+  var name = (n.value||'').trim(), phone = (p.value||'').trim();
+  if (!name) { n.focus(); return; }
+  if (!validPhone(phone)) {
+    pe.style.display = 'block';
+    p.classList.add('bad');
+    p.focus();
+    return;
+  }
+  pe.style.display = 'none';
+  p.classList.remove('bad');
+  phone = normalizePhone(phone);
+  // 🔴 עודכן 15.09.2026 יחד עם הסרת שאלת הסינון מהטופס (ראה ההערה ליד הטופס).
+  //   היו כאן שני דגלים ושלושה עמודי תודה, וכולם נגזרו מהתשובה לשאלה שכבר לא
+  //   נשאלת. בלי מקור, גזירה כזו הופכת לניחוש, ולכן היא הוסרה ולא הושארה
+  //   על ברירת מחדל שקטה.
+  //
+  //   ההיסטוריה שהובילה לכאן, כי היא עדיין הנימוק: השער המקורי ירה Lead רק
+  //   על 'hundreds'/'tens'. מתוך 13 לידים מאז 27.08 שניים בלבד ענו כך. מ-01.09
+  //   נכנסו 8 לידים ואפס כשירים, כלומר מטא לא קיבלה אות אחד במשך שישה ימים,
+  //   ה-CPM טיפס ל-₪194 וההגשה קרסה ל-16% מהתקציב. עכשיו כל נרשם הוא אות.
+  //
+  //   ↩️ להיפוך: להחזיר את ה-select בטופס ואת qualified/fireLead/thanksPage כאן.
+  //   עמודי thank-you-content.html ו-thank-you-early.html נשארו על הדיסק ולא נמחקו.
+  var fireLead   = true;
+  var thanksPage = '/thank-you.html';
+  var btn = this.querySelector('button');
+  btn.disabled = true; btn.textContent = 'שולח…';
+  // One id shared by the server event and the browser event, so Meta counts ONE Lead, not two.
+  // Passed on to the thank-you page in the URL because that is where the pixel actually fires.
+  var eventId = 'lead-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+  fetch('/api/lead', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      // students לא נשלח יותר. השרת שומר null, וזה עדיף על מחרוזת ריקה
+      // שנראית בטבלה כמו תשובה שניתנה.
+      name:name, phone:phone, source:'landing-simple', page:'simple',
+      eventId: fireLead ? eventId : '',
+      // גרסת הקופי שהמבקר ראה. זה מה שמחבר בין הליד לבין המשפך ב-page_events.
+      variant: (window.EC_VARIANT || ''),
+      // מאיזו מודעה הליד הגיע. השרת כבר יודע לקלוט את זה (sanitizeUtm),
+      // רק הדף לא טרח לשלוח עד 08.09.2026.
+      utm: LEAD_UTM,
+      // מזהה הקליק ומזהה הדפדפן, לאירוע Lead של הצד-שרת. ראה ההערה ב-LEAD_FB.
+      fbc: LEAD_FB.fbc,
+      fbp: LEAD_FB.fbp(),
+      referrer: (document.referrer || ''),
+      videoWatchedPct: Math.round(vp.pct*100), videoSeconds: vp.seconds, videoCompleted: vp.completed
+    })
+  }).then(function(r){
+    if (!r.ok) throw new Error('not_delivered');
+    // eid — אותו מזהה שהשרת שולח ל-Conversions API, כדי שמטא לא תספור פעמיים.
+    // lid — מזהה השורה, כדי שעמוד התודה יוכל לצרף אליה את תשובות השאלון
+    //       שרם ביקש להזיז לשם (24:01). נוסף 15.09.2026.
+    // הקריאה ל-json נכשלת בשקט בכוונה: אם הגוף לא נקרא, הליד כבר נשמר
+    // ואין שום סיבה להעניש את המבקר במסך שגיאה. הוא פשוט לא יראה שאלון.
+    return r.json().catch(function(){ return {}; }).then(function(j){
+      var qs = '?eid=' + encodeURIComponent(eventId);
+      if (j && j.leadId) qs += '&lid=' + encodeURIComponent(j.leadId);
+      location.href = thanksPage + qs;
+    });
+  }).catch(function(){
+    document.getElementById('f').style.display = 'none';
+    document.getElementById('e').style.display = 'block';
+  });
+});
+
+Array.prototype.forEach.call(document.querySelectorAll('.vfacade'), function(btn){
+  btn.addEventListener('click', function(){
+    var wrap = btn.parentNode;
+    var v = document.createElement('video');
+    v.src = btn.getAttribute('data-src');
+    v.controls = true;
+    v.autoplay = true;
+    v.setAttribute('playsinline', '');
+    v.setAttribute('preload', 'auto');
+    var dur = wrap.querySelector('.dur');
+    if (dur) dur.remove();
+    wrap.classList.add('playing');
+    wrap.replaceChild(v, btn);
+    v.play().catch(function(){ v.controls = true; });
+  }, { once:true });
+});
+</script>
+</body>
+</html>
