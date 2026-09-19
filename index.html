@@ -147,33 +147,32 @@
      כל מספר כאן נמדד חי מול Supabase של בית המטפלים ב-12.07.2026
      ומתועד ב-`קייס-סטאדי-לום-בית-המטפלים.md` יחד עם גודל המדגם.
      ⛔ המכפיל של המורה AI לא מופיע כאן בכוונה — הוא בנוי על 7 לומדים. */
-  /* רצועת המחקר — ההקשר של התעשייה, לפני המספרים שלי */
-  .research{display:grid;gap:10px;align-items:center;margin-top:22px;max-width:60ch;margin-inline:auto}
-  @media(min-width:640px){.research{grid-template-columns:1fr auto 1fr;gap:16px}}
-  .rs{background:rgba(255,255,255,.5);border:1px solid var(--rule);border-radius:14px;padding:18px 16px}
-  .rs-hi{border-color:rgba(194,65,12,.45);background:rgba(194,65,12,.06)}
-  .rs b{display:block;font-family:"Frank Ruhl Libre",Georgia,serif;font-size:2.8rem;
-    font-weight:900;line-height:1;color:var(--ink-faint);letter-spacing:-.02em}
-  .rs-hi b{color:var(--ember)}
-  .rs span{display:block;margin-top:8px;font-weight:700;font-size:.98rem;line-height:1.45}
-  .rs i{display:block;margin-top:7px;font-style:normal;font-size:.78rem;color:var(--ink-faint);line-height:1.45}
-  .rs-vs{font-weight:800;color:var(--ink-faint);font-size:.9rem}
-  .research-note{margin-top:16px;font-size:1.02rem;color:var(--ink-soft);max-width:56ch;margin-inline:auto}
-  .research-note b{color:var(--ink)}
-
-  .stats{display:grid;gap:14px;margin-top:24px}
-  @media(min-width:680px){.stats{grid-template-columns:repeat(3,1fr)}}
-  .stat{
-    background:rgba(255,255,255,.55);border:1px solid var(--rule);border-radius:14px;
-    padding:20px 18px;text-align:center;
-    box-shadow:0 1px 0 rgba(255,255,255,.7) inset, 0 10px 24px -20px rgba(20,17,13,.5);
-  }
-  .stat b{display:block;font-family:"Frank Ruhl Libre",Georgia,serif;
-    font-size:2.5rem;font-weight:900;line-height:1;color:var(--ember);letter-spacing:-.02em}
-  .stat .st{display:block;margin-top:9px;font-weight:700;font-size:1rem}
-  .stat .sd{display:block;margin-top:5px;font-size:.86rem;color:var(--ink-soft);line-height:1.5}
-  .stat .sn{display:block;margin-top:8px;font-size:.76rem;color:var(--ink-faint)}
-  .caveat{margin-top:20px;padding:15px 17px;border-radius:12px;background:var(--paper-2);
+  /* ===== השוואות, נכתבו מחדש 19.09.2026 =====
+     ⚠️ הגרסה הקודמת ערבבה אחוזים, מספרים עשרוניים וגדלי מדגם באותו
+     כרטיס ("×4 · 18.8 מול 4.7 · 49 מול 235"). היא הייתה מדויקת ולא
+     מובנת. הערת הלל: הפער חייב להיות ברור לילד בן עשר.
+     לכן: רכיב אחד חוזר, שני מספרים שלמים בלבד, ועמודה שמראה את הפער
+     בעין לפני שקוראים ספרה. הדיוק המלא יורד לשורת המקור הקטנה. */
+  .cmpblock{max-width:58ch;margin:22px auto 0;text-align:right}
+  .cmpblock + .cmpblock{margin-top:26px}
+  .cmp-q{font-weight:800;font-size:1.04rem;line-height:1.45;margin-bottom:12px}
+  .cmp{display:grid;gap:9px}
+  .cmp-row{display:grid;grid-template-columns:1fr;gap:5px}
+  .cmp-lab{font-size:.92rem;color:var(--ink-soft)}
+  .cmp-bar{display:flex;align-items:center;gap:10px}
+  .cmp-track{flex:1;height:26px;border-radius:7px;background:rgba(20,17,13,.07);overflow:hidden}
+  /* ⚠️ display:block חובה. זה span, וב-inline הדפדפן מתעלם מ-height
+     ומ-width לגמרי, אז העמודה נראתה ריקה והפער לא נראה בעין. */
+  .cmp-fill{display:block;height:100%;border-radius:7px;background:rgba(20,17,13,.28)}
+  .cmp-row.hi .cmp-fill{background:var(--ember)}
+  .cmp-num{flex-shrink:0;min-width:5.2em;font-family:"Frank Ruhl Libre",Georgia,serif;
+    font-weight:900;font-size:1.32rem;line-height:1;color:var(--ink-faint);letter-spacing:-.01em}
+  .cmp-row.hi .cmp-num{color:var(--ember)}
+  .cmp-gap{margin-top:12px;font-family:"Frank Ruhl Libre",Georgia,serif;font-weight:800;
+    font-size:1.16rem;line-height:1.4;color:var(--ink)}
+  .cmp-gap em{font-style:normal;color:var(--ember)}
+  .cmp-src{margin-top:7px;font-size:.78rem;color:var(--ink-faint);line-height:1.5}
+  .caveat{margin-top:26px;padding:15px 17px;border-radius:12px;background:var(--paper-2);
     border-right:3px solid var(--rule);font-size:.9rem;color:var(--ink-soft);
     text-align:right;max-width:58ch;margin-inline:auto;line-height:1.6}
   .caveat b{color:var(--ink)}
@@ -588,45 +587,76 @@ fbq('init','2132323570952002');fbq('track','PageView');
          · HBS Online CORe — 85%, מודל מחזורי. מסוקר גם ב-EdSurge תחת הכותרת
            "Moving From 5% to 85% Completion Rates for Online Courses".
          ⛔ מה שלא נכנס: "87% לא מסיימים". מסתובב בבלוגים, אין לו מקור אקדמי. -->
-    <div class="research">
-      <div class="rs">
-        <b>5%</b>
-        <span>מסיימים קורס דיגיטלי שלומדים בו לבד</span>
-        <i>מחקר MIT והרווארד על 17 קורסי edX</i>
+    <div class="cmpblock">
+      <p class="cmp-q">קח מאה אנשים שקנו קורס דיגיטלי. כמה מהם מסיימים אותו?</p>
+      <div class="cmp">
+        <div class="cmp-row">
+          <span class="cmp-lab">כשהם לומדים לבד</span>
+          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:6%"></span></span><span class="cmp-num">5 מתוך 100</span></span>
+        </div>
+        <div class="cmp-row hi">
+          <span class="cmp-lab">כשיש מסלול וליווי סביב אותו תוכן בדיוק</span>
+          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:85%"></span></span><span class="cmp-num">85 מתוך 100</span></span>
+        </div>
       </div>
-      <div class="rs-vs">מול</div>
-      <div class="rs rs-hi">
-        <b>85%</b>
-        <span>מסיימים כשיש מבנה וליווי סביב אותו תוכן</span>
-        <i>התוכנית המקוונת של בית הספר למנהל עסקים בהרווארד</i>
-      </div>
-    </div>
-    <p class="research-note">אותו תוכן. הפרש של פי שבעה עשר בתוצאה. <b>זו מעולם לא הייתה בעיה של תוכן.</b></p>
-
-    <p class="lead-p" style="margin-top:26px">ואת זה מדדתי על פורטל אמיתי שבניתי, בית המטפלים, מול מסד הנתונים עצמו.</p>
-
-    <div class="stats">
-      <div class="stat">
-        <b>44%+</b>
-        <span class="st">יותר אנשים בכלל מתחילים</span>
-        <span class="sd">אחוז מי שפתח את השיעור הראשון עלה מ-32% ל-46% אחרי שהפורטל נבנה מחדש.</span>
-        <span class="sn">נמדד על 754 נרשמים</span>
-      </div>
-      <div class="stat">
-        <b>×4</b>
-        <span class="st">שיעורים למי שהתרגל</span>
-        <span class="sd">מי שהשתמש במשחק התרגול סיים 18.8 שיעורים בממוצע. מי שלא, 4.7.</span>
-        <span class="sn">49 מול 235 לומדים</span>
-      </div>
-      <div class="stat">
-        <b>×3.3</b>
-        <span class="st">ומספיק מגע אחד</span>
-        <span class="sd">מי שנגע ולו פעם אחת בשכבת הליווי סיים 16.4 שיעורים. מי שלא נגע בה, 4.9.</span>
-        <span class="sn">57 מול 229 לומדים</span>
-      </div>
+      <p class="cmp-gap">אותו תוכן. <em>פי שבעה עשר יותר אנשים מסיימים.</em></p>
+      <p class="cmp-src">מחקר MIT והרווארד על שבעה עשר קורסי edX · התוכנית המקוונת של בית הספר למנהל עסקים בהרווארד</p>
     </div>
 
-    <p class="caveat"><b>ואני לא אטען שזה ניסוי מבוקר.</b> יכול להיות שלומדים מחויבים יותר הם גם אלה שפותחים את הפיצ'רים. אבל כשככל שמשתמשים יותר גם לומדים יותר, וכשהפער הוא פי שלושה ומעלה, זה כבר לא רעש.</p>
+    <p class="lead-p" style="margin-top:30px">ואת זה מדדתי בעצמי, על פורטל אמיתי שבניתי לבית המטפלים.</p>
+
+    <div class="cmpblock">
+      <p class="cmp-q">מתוך מאה שנרשמו, כמה בכלל פתחו את השיעור הראשון?</p>
+      <div class="cmp">
+        <div class="cmp-row">
+          <span class="cmp-lab">במערכת הישנה</span>
+          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:32%"></span></span><span class="cmp-num">32 מתוך 100</span></span>
+        </div>
+        <div class="cmp-row hi">
+          <span class="cmp-lab">אחרי שבניתי אותה מחדש</span>
+          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:46%"></span></span><span class="cmp-num">46 מתוך 100</span></span>
+        </div>
+      </div>
+      <p class="cmp-gap">אותו קורס, <em>ארבעה עשר אנשים נוספים מכל מאה התחילו ללמוד.</em></p>
+      <p class="cmp-src">נמדד על 754 נרשמים. זה המספר הנקי ביותר שיש לי, כי הוא כולל את כולם ולא רק את מי שבחר להשתמש במשהו.</p>
+    </div>
+
+    <div class="cmpblock">
+      <p class="cmp-q">וכמה שיעורים הם סיימו בפועל?</p>
+      <div class="cmp">
+        <div class="cmp-row">
+          <span class="cmp-lab">מי שלא נגע במשחק התרגול</span>
+          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:25%"></span></span><span class="cmp-num">5 שיעורים</span></span>
+        </div>
+        <div class="cmp-row hi">
+          <span class="cmp-lab">מי שכן התרגל</span>
+          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:95%"></span></span><span class="cmp-num">19 שיעורים</span></span>
+        </div>
+      </div>
+      <p class="cmp-gap"><em>כמעט פי ארבעה.</em></p>
+      <p class="cmp-src">ממוצע מדויק 4.7 מול 18.8 שיעורים, על 235 מול 49 לומדים.</p>
+    </div>
+
+    <div class="cmpblock">
+      <p class="cmp-q">ומה קרה למי שנגע במערכת אפילו פעם אחת?</p>
+      <div class="cmp">
+        <div class="cmp-row">
+          <span class="cmp-lab">מי שלא נגע בכלל</span>
+          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:26%"></span></span><span class="cmp-num">5 שיעורים</span></span>
+        </div>
+        <div class="cmp-row hi">
+          <span class="cmp-lab">מי שנגע פעם אחת</span>
+          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:84%"></span></span><span class="cmp-num">16 שיעורים</span></span>
+        </div>
+      </div>
+      <p class="cmp-gap">מגע אחד. <em>יותר מפי שלושה.</em></p>
+      <p class="cmp-src">ממוצע מדויק 4.91 מול 16.4 שיעורים, על 229 מול 57 לומדים.</p>
+    </div>
+
+    <!-- 🔴 משפט הסייג ("לא אטען שזה ניסוי מבוקר") הוסר 19.09.2026
+         בהחלטת הלל. הוא הוצג לו עם הנימוק והוא בחר להוריד אותו.
+         ↩️ להחזרה: פסקה עם class="caveat", הנוסח שמור בקומיט 0782234
+         וגם ב-`קייס-סטאדי-לום-בית-המטפלים.md`, ביט 5. -->
   </div>
 </section>
 
