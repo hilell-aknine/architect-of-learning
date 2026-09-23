@@ -94,6 +94,46 @@
   .hero-sub{margin-top:18px;font-size:1.06rem;color:var(--ink-soft)}
   .hero{text-align:center;padding-top:clamp(34px,6vw,56px)}
 
+  /* ===== שלוש השלילות, נוספו 23.09.2026 =====
+     רם, 28:38: "בלי להוסיף כסף על שיווק, בלי מכירות... או שהוא יצלם עוד
+     תוכן. אז כאילו זה בלי, בלי, בלי." שלוש הדרכים היקרות שבעל עסק מכיר,
+     וכולן נשללות בשורה אחת מתחת להבטחה.
+     ⚠️ flex-wrap ולא grid: ברוחב טלפון הן נערמות אחת מתחת לשנייה, ובמסך
+     רחב הן יושבות בשורה אחת עם נקודה מפרידה. נקודת ההפרדה היא ::before
+     על אח, ולכן היא נעלמת לבד כשהפריט נופל לשורה חדשה — אין נקודה יתומה. */
+  .nolist{
+    list-style:none;display:flex;flex-wrap:wrap;justify-content:center;
+    gap:6px 14px;margin-top:16px;
+    font-size:.99rem;font-weight:700;color:var(--ink-soft);
+  }
+  .nolist li{display:inline-flex;align-items:center;gap:14px}
+  .nolist li + li::before{content:"·";color:var(--ink-faint);opacity:.6;font-weight:400}
+  @media(max-width:460px){
+    .nolist{flex-direction:column;align-items:center;gap:5px}
+    .nolist li + li::before{content:none}
+  }
+
+  /* ===== רמז ההנעה מתחת לסרטון, נוסף 23.09.2026 =====
+     רם, 35:47: "לחץ על Play. ואז איזה חץ למטה כזה אייקון חץ למטה."
+     החץ מצביע אל הכפתור שמתחתיו, ולכן הוא חייב לשבת בין השניים.
+     האנימציה כבויה תחת prefers-reduced-motion. */
+  .vcue{
+    margin-top:16px;display:flex;flex-direction:column;align-items:center;gap:6px;
+    font-size:.95rem;font-weight:700;color:var(--ink-soft);
+  }
+  .vcue svg{width:22px;height:22px;color:var(--ember);animation:vcue-bob 1.8s ease-in-out infinite}
+  @keyframes vcue-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+  @media (prefers-reduced-motion:reduce){.vcue svg{animation:none}}
+
+  /* ===== הפסקה המדברת, נוספה 23.09.2026 =====
+     רם, 36:32, מילה במילה: "מה היה קורה אם כל לקוח שלך היה מביא עוד לקוח?"
+     יושבת בין הסרטון לכפתור, כי זו השאלה שאמורה להניע את הלחיצה. */
+  .hero-ask{
+    margin-top:26px;font-family:"Frank Ruhl Libre",Georgia,serif;
+    font-size:clamp(1.24rem,3.9vw,1.6rem);font-weight:800;line-height:1.35;
+    letter-spacing:-.015em;color:var(--ink);max-width:22ch;margin-inline:auto;
+  }
+
   /* הכפתור עבר משחור לענבר. שחור מלא נקרא כשורת טקסט כבדה ולא
      כדבר שלוחצים עליו, במיוחד על נייר קרם. הענבר הוא הצבע היחיד
      בדף שאינו דיו, ולכן הוא מסמן לבד "כאן לוחצים". */
@@ -339,22 +379,11 @@
   .ig-bio{font-size:.82rem;color:var(--ink-soft);line-height:1.4}
   .ig-stats{display:flex;gap:14px;margin-top:5px;font-size:.78rem;color:var(--ink-faint)}
   .ig-stats b{color:var(--ink)}
-Array.prototype.forEach.call(document.querySelectorAll('.vfacade'), function(btn){
-  btn.addEventListener('click', function(){
-    var wrap = btn.parentNode;
-    var v = document.createElement('video');
-    v.src = btn.getAttribute('data-src');
-    v.controls = true;
-    v.autoplay = true;
-    v.setAttribute('playsinline', '');
-    v.setAttribute('preload', 'auto');
-    var dur = wrap.querySelector('.dur');
-    if (dur) dur.remove();
-    wrap.classList.add('playing');
-    wrap.replaceChild(v, btn);
-    v.play().catch(function(){ v.controls = true; });
-  }, { once:true });
-});
+
+  /* 🧹 23.09.2026 — כאן ישב, בתוך תגית ה-style, עותק שלם של המאזין
+     ל-.vfacade בג'אווהסקריפט. הדבקה מוטעית. הדפדפן ניסה לקרוא אותו
+     כ-CSS, בלע חלק ממנו כבלוק הצהרות לא חוקי, והמאזין האמיתי ממילא
+     יושב בסקריפט בתחתית הקובץ. הוסר. אין שינוי התנהגות. */
 
   /* ===== למי זה מתאים — נוסף 14.09.2026 =====
      המטרה: להעביר את הסינון מהטופס אל הדף. עד היום כל מי שראה את המודעה
@@ -436,66 +465,246 @@ fbq('init','2132323570952002');fbq('track','PageView');
 <!-- HERO + VIDEO (רם, 19.8: הסרטון ישר מתחת לכותרת, בלי כפתור חוצץ) -->
 <section class="hero" id="vsl">
   <div class="wrap">
-        <!-- 🔴 נכתב מחדש 15.09.2026 לפי הכתבה של רם בפגישת הזום, דקות 25:42-28:21.
-         מקור מלא עם חותמות זמן: לקוחות\בניית פורטלים מקצועים\calls\2026-09-15-ram-fixes.md
+        <!-- 🔴 הקיפול הראשון נכתב מחדש 23.09.2026 לפי הכתבת רם בפגישת הזום.
+         מקור מלא עם חותמות זמן:
+         C:\AtomicBusiness\ram-playlist\2026-09-23\transcript.txt (23:06-32:38)
 
-         מה נפסל ולמה:
-           · "אלגוריתם מסתורי" — "מרגיש לי פשוט" (26:00). רם העדיף "מערכת לימוד
-             דופמינית", ואמר שזה לא ניסוח אלא הבידול עצמו: "זה ה-B2 שאתה מציע.
-             מה שהופך אותך לשונה ממישהו שיודע קצת קלוד קוד" (27:23).
-           · "קורס/ים דיגיטלים" בקיקר — רם ביקש "מוצרים דיגיטליים", רחב יותר,
-             "כי היום רוב בעלי העסקים שמוכרים מוצר נותנים גם תוכן דיגיטלי,
-             כמעט כולם" (19:51). ה"לפחות" בקו תחתון, לבקשתו המפורשת (27:04).
-           · ההוכחה החברתית ירדה אל מתחת לכותרת: "ואז למטה הייתי עושה
-             כמו שבניתי לעסקים" (26:40).
+         רם פיצח את הכותרת מול המסך בזמן אמת, ולכן הנוסח כאן הוא שלו ולא שלנו.
+         שלושת המרכיבים, מילה במילה ממנו:
+           · הסינון (27:52): "יש לך מוצרים דיגיטליים עם כמה עשרות לקוחות
+             לפחות. זה נראה לי התחלה טובה."
+           · ההבטחה (31:52, הניסוח שאליו הוא התכנס אחרי ארבעה סבבים):
+             "קח תשע שיטות פשוטות ומוכחות שיהפכו כל לקוח שלך למרוצה,
+             ממליץ וכזה שרוצה לקנות עוד מוצרים."
+           · שלוש השלילות (28:38): "בלי להוסיף כסף על שיווק, בלי מכירות...
+             או שהוא יצלם עוד תוכן. אז כאילו זה בלי, בלי, בלי."
+             אלה שלוש הדרכים היקרות שבעל עסק כבר מכיר, וכולן נשללות בשורה אחת.
+         וההכרעה שלו על המבנה (13:44): "הייתי עושה דף מאוד קצר."
 
-         ⚠️ על "להתמכר": המילה נפסלה ע"י רם ב-05.08 ("הופך את זה גדול מדי")
-         ונכנסה לרשימה האדומה. בפגישת 15.09 רם עצמו הכתיב אותה שוב ושוב
-         ("להתמכר לתכנים שלך", 26:28 ו-27:51). הפגישה האחרונה גוברת,
-         והמרכאות הוסרו. זה כבר לא ציטוט מרוכך אלא ניסוח מאושר. -->
-    <p class="kicker">יש לך מוצרים דיגיטליים עם כמה עשרות תלמידים <u>לפחות</u><br>ואתה עדיין משתמש במערכת קורסים מיושנת ומשעממת?</p>
-    <!-- ההדגשה יושבת רק על הבידול עצמו. כשעטפתי את כל החצי השני ב-em,
-         ארבע שורות יצאו מודגשות והכותרת נראתה כבדה במסך טלפון. -->
-    <h1>מהפכת הלמידה של 2026: איך באמצעות טכנולוגיה מתקדמת בניתי <em>מערכת לימוד דופמינית</em></h1>
+         ⛔ מה שירד מכאן, ואין להחזיר בלי החלטה חדשה:
+           · "מהפכת הלמידה של 2026: איך באמצעות טכנולוגיה מתקדמת בניתי
+             מערכת לימוד דופמינית" — הכותרת מ-15.09. רם, 03:03: "עדיין לא
+             פיצחנו את הקיפול הראשון... מסר פשוט וברור שגורם ללקוח להבין
+             מה אתה עושה." המילה "דופמינית" עצמה לא נפסלה (37:22: "אני עוד
+             מתלבט על המילה דופמינית, אבל בוא נזרום עם זה"), רק הכותרת
+             שנבנתה סביבה. הנוסח המלא שמור בקומיט של 19.09.
+           · שורת ההוכחה "בדיוק כמו שבניתי לעסקים כמו איתן עזריה, סקייל
+             רווחי והמכללה ל-NLP" — ירדה יחד עם הכותרת. העדויות עצמן עלו
+             במקומה למעלה, לפי רם ב-38:09. -->
+    <!-- ⚠️ על "להתמכר": המילה נפסלה ע"י רם ב-05.08, והוא עצמו הכתיב אותה
+         שוב ב-15.09. היא אינה מופיעה בכותרת הנוכחית, אבל היא **מותרת** —
+         הפגישה האחרונה גוברת. אין להחזיר אותה לרשימה האדומה. -->
+    <p class="kicker">יש לך מוצר דיגיטלי עם כמה עשרות לקוחות <u>לפחות</u>?</p>
+    <!-- ההדגשה יושבת על ההצעה עצמה, "תשע שיטות פשוטות ומוכחות", כי זה
+         הדבר הקונקרטי שהוא מקבל. כשעטפתי גם את חצי ההבטחה ב-em, ארבע
+         שורות יצאו מודגשות והכותרת נראתה כבדה במסך טלפון. -->
+    <h1>קח <em>תשע שיטות פשוטות ומוכחות</em> שיהפכו כל לקוח שלך למרוצה, ממליץ וכזה שרוצה לקנות עוד מוצרים</h1>
+    <ul class="nolist">
+      <li>בלי להוסיף כסף על שיווק</li>
+      <li>בלי מכירות</li>
+      <li>בלי לצלם עוד תוכן</li>
+    </ul>
     <!-- 🔴 סיומת המשפט הוחלפה 16.09.2026 בהכתבת הלל.
          היה: "ולהמליץ עליו הלאה" — הבטחה כללית שאפשר לומר על כל מוצר.
          עכשיו: תמונה קונקרטית של מה שקורה בפועל, שיחה עם חברים ומשפחה.
          הלל הכתיב "ולגרום להם לא להפסיק לדבר עליו". ה"ולגרום להם" ירד
          כי המשפט כבר פותח ב"מערכת שגורמת ללקוחות שלך", והכפילות שברה
          את התחביר. המילים שלו נשמרו כלשונן. -->
-    <p class="hero-sub">מערכת שגורמת ללקוחות שלך להתמכר לתכנים, לסיים את הקורס, ליישם, ולא להפסיק לדבר עליו עם חברים ומשפחה.<br>בדיוק כמו שבניתי לעסקים כמו איתן עזריה, סקייל רווחי והמכללה ל-NLP.</p>
-    <!-- ⏸️ הסרטון הוסר מהדף 16.09.2026 בהוראת הלל. **זמני — יוחזר בהמשך.**
-         שום דבר לא נמחק: הבלוק כולו שמור כאן כהערה, הטמבנייל נשאר
-         ב-assets/vsl-thumb.jpg, והסרטון עצמו חי ביוטיוב (bF0atlGw0T4).
+    <!-- ═══════════════════════════════════════════════════════════════
+         🎬 משבצת הסרטון — במרכז ההירו, ישר מתחת לכותרת, מעל הקיפול.
+         ═══════════════════════════════════════════════════════════════
+         ההכרעה של רם, 23.09.2026. היא סוגרת את ההתנגשות שישבה פתוחה
+         מ-16.09: קודקס המליץ להזיז את הסרטון אל מתחת להוכחת המוצר,
+         ורם הכתיב שהוא יושב ישר מתחת לכותרת. **רם גובר.**
+         רם, 34:11: "ואז בגדול יהיה כאן איזשהו סרטון."
+         רם, 56:36: "דף פשוט. סרטון. הנעה לפעולה. לדעתי הסרטון אמור לעשות
+         את תהליך החימום המאוד מאוד משמעותי."
 
-         🔧 להחזרה — שני שינויים, ושניהם חייבים לקרות יחד:
-           1. להסיר את סימני ההערה מהבלוק שלמטה.
-           2. בסקריפט בתחתית הקובץ, להחזיר את המאזין של #ytf
-              (מסומן שם באותו תאריך). הוא עטוף כרגע ב-if שמונע קריסה.
+         ⚠️ הסרטון החדש טרם צולם (מצלמים 24.09). המשבצת מוכנה וריקה.
+         ⛔ **אין להחזיר את `bF0atlGw0T4`.** רם פסל אותו במפורש בפגישה
+            הזו (55:51: "הסרטון נגיד האחרון שהיה בדף נחיתה... יש המון
+            דברים שדווקא הם צריכים את הפן האנושי"). הוא גם נמדד: מתוך
+            16 לידים 14 השאירו פרטים אחרי אפס אחוז צפייה.
 
-         ⚠️ למה ה-if שם: `getElementById('ytf')` על אלמנט חסר זורק שגיאה
-         שמפילה את *כל* בלוק הסקריפט, כולל שולח הטופס. כלומר הסרה נאיבית
-         של ה-HTML לבדה הייתה הורגת את קליטת הלידים בשקט.
+         🔧 **להחלפת הסרטון יש בדיוק מקום אחד בקובץ:** הקבוע `VSL_YT_ID`
+            בראש הסקריפט שבתחתית העמוד. ממלאים שם מזהה יוטיוב והמשבצת
+            נפתחת לבד, כולל הכיתוב וחץ ההנעה. ריק = הכל מוסתר, ואפילו
+            הטמבנייל לא נטען (ה-src מוזרק ב-JS ולא יושב ב-HTML).
+            אין צורך לגעת ב-HTML הזה בכלל.
 
-    <p class="vhint">▶ לחץ על הפליי והפעל את הרמקול</p>
-    <div class="video" id="vwrap">
-      <button class="ytf" id="ytf" type="button" aria-label="נגן את הסרטון">
-        טמבנייל משלנו, 14.09.2026. קודם ישבה כאן תמונת ברירת המחדל של יוטיוב,
-        שהיא פריים אקראי מהסרטון ולא מבטיחה כלום. 19 מתוך 22 הלידים צפו 0%.
-        המקור לעריכה יושב מחוץ לתיקיית הפריסה, בשורש הפרויקט:
-        לקוחות\בניית פורטלים מקצועים\vsl-thumb-source.html
-        הוא בנוי מנכסים אמיתיים (צילום פורטל חי), לא מהדמיה.
-        <img src="assets/vsl-thumb.jpg" alt="הצצה מבפנים למערכת קורסים חיה של לקוח" width="1280" height="720" fetchpriority="high" />
-        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-      </button>
+         ⚠️ מלכודת ידועה שנסגרה כאן אחת ולתמיד: בגרסאות קודמות ה-HTML של
+         הסרטון נמחק אבל המאזין של #ytf נשאר, ואז `getElementById('ytf')`
+         החזיר null, זרק TypeError, והפיל את **כל** בלוק הסקריפט —
+         כולל שולח הטופס. כלומר קליטת הלידים מתה בשקט. עכשיו האלמנטים
+         תמיד קיימים ב-DOM ורק מוסתרים, ולכן המאזין תמיד מוצא אותם
+         והתרחיש הזה אינו אפשרי יותר. -->
+    <div id="vsec" hidden>
+      <!-- רם, 28:21: "כיתוב קטן למעלה מעל הסרטון, כמו לחץ על הפליי
+           תפעיל את הרמקול. זה משהו שעוזר קצת בצפיות." -->
+      <p class="vhint">▶ לחץ על הפליי והפעל את הרמקול</p>
+      <div class="video" id="vwrap">
+        <button class="ytf" id="ytf" type="button" aria-label="נגן את הסרטון">
+          <!-- ה-src מוזרק מ-VSL_THUMB בסקריפט. בלי סרטון אין src, ולכן
+               אפס בייטים נטענים כשהמשבצת מוסתרת. המקור לעריכת הטמבנייל
+               יושב מחוץ לתיקיית הפריסה, בשורש הפרויקט:
+               לקוחות\בניית פורטלים מקצועים\vsl-thumb-source.html -->
+          <img id="vthumb" alt="הצצה מבפנים למערכת קורסים חיה" width="1280" height="720" fetchpriority="high" />
+          <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+        </button>
+      </div>
+      <!-- רם, 35:47: "לחץ על Play. ואז איזה חץ למטה כזה אייקון חץ למטה."
+           החץ מצביע אל הכפתור שמתחתיו. -->
+      <p class="vcue">אחרי שצפית, הכפתור כאן למטה
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+      </p>
     </div>
-    -->
-    <!-- רווח נושם במקום הסרטון, כדי שהכותרת לא תידבק לכפתור. -->
-    <div style="height:14px"></div>
+    <!-- הפסקה המדברת. רם, 36:32, מילה במילה: "מה היה קורה אם כל לקוח
+         שלך היה מביא עוד לקוח?" ומיד אחריה: "כאן אמור להיות כפתור." -->
+    <p class="hero-ask">מה היה קורה אם כל לקוח שלך היה מביא עוד לקוח?</p>
+    <!-- 🟡 נוסח הכפתור **לא שונה** בכוונה. רם, 03:49: "שיחת אסטרטגיה ללא
+         עלות. הייתי משנה גם את מה שכתוב בכפתור" — אבל הוא מעולם לא נקב
+         בנוסח חלופי, לא כאן ולא ב-37:22. אין להמציא לו ניסוח.
+         שלוש הצעות חלופיות הוגשו להלל להכרעה. עד שהוא בוחר, זה הנוסח. -->
     <a href="#contact" class="btn">שיחת אסטרטגיה ללא עלות</a>
     <!-- 🔴 "חוזר אליך באותו יום" הוסר מכאן 17.09.2026 בהוראת הלל.
          זו הייתה הבטחת זמן תגובה, והיא נשארת רק בכפתור השני בדף. -->
     <p class="btn-note">שיחה קצרה, ללא עלות ובלי התחייבות.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     עדויות. הועלו למעלה 23.09.2026, לפי רם: "אם אתה רוצה אפילו לפני,
+     הייתי גם עושה כאן עדויות. אפילו כזה נתחיל עם זה. פשוט לשנות
+     אותם קצת" (38:09). הן יושבות עכשיו מיד אחרי ההירו.
+
+     🔴 מה שרם ביקש לשנות, 38:58: "אני מאוד הייתי מצפה לראות עדות
+     שרושמת מה קרה ללקוחות שעבדו איתי." וב-07:39 הוא הסביר מה פוסל:
+     "זה עדויות של כאילו הוא אלוף, הוא תותח. זה לא עדות כמו שבן אדם
+     בא ואומר לי תקשיב, הוא בנה לי פורטל לימודים שעזר לי ככה וככה
+     וגרם לתלמידים ככה וככה."
+     לכן הכותרת והכיתובים מכוונים לתוצאה, והציטוט של רם אלוס הוחלף
+     מהמשפט על **הרמה** למשפט על **מה שקרה לתלמידים שלו**.
+
+     🔒 גבול שאסור לחצות, ונשמר כאן במלואו: בפגישה רם נתן דוגמאות
+     לניסוח עדות ("מאז שהלל הטמיע לי את המערכת אחד מכל שתי לקוחות
+     מביא חבר" · "פי שתיים יותר אנשים מסיימים"). **אלה דוגמאות
+     לסגנון שהוא המציא בעל פה, לא ציטוטים של אף אחד, ואסור בשום
+     אופן שיופיעו בדף כאילו לקוח אמר אותן.** כל מילה בסקשן הזה היא
+     verbatim מהסרטונים, ונקודות החיתוך מתועדות ב-
+     `ad-creatives\build_testimonial_ads.py`.
+     מה שכן צריך לקרות: לבקש מלקוחות קיימים עדות-תוצאה אמיתית.
+     רשימת הבקשה המדויקת: `docs\בקשת-עדויות-תוצאה-2026-09-23.md`.
+
+     ⛔ ידידיה טוויל הוסר מהסקשן הזה 23.09.2026. הנימוק המלא והבלוק
+     המקורי במלואו נמצאים בהערה שבסוף הגריד, אחרי הכרטיס של יובל. -->
+<section>
+  <div class="wrap center">
+    <h2>מה קרה אצל מי שעבדו איתי</h2>
+    <p class="lead-p">שני בעלי עסקים מדברים על מה שקרה במערכת הקורסים שבניתי להם, במילים שלהם, מול מצלמה.</p>
+
+    <div class="tgrid">
+
+      <figure class="tcard">
+        <!-- 🔴 הציטוט הוחלף 23.09.2026, לפי רם 38:58.
+             מה שהיה כאן, והוא עדיין נאמר בסרטון (שנייה 7.28 עד 18.12):
+             ״הילל בנה לי פורטל לבית ספר ל-NLP שיש לי, ואני יכול להגיד
+             לכם שזו הרמה הגבוהה ביותר של פורטל לימודים שאי פעם יצא לי
+             לראות״ — זו שבח על **הרמה**, בדיוק הסוג שרם פסל.
+             מה שנמצא כאן עכשיו הוא קטע אחר מאותו סרטון, שניה 65.56 עד
+             75.10, שבו רם אלוס מתאר **מה קרה לתלמידים שלו**. שתי נקודות
+             החיתוך מתועדות ב-`ad-creatives\build_testimonial_ads.py`
+             כ-C_RAM_LEVEL ו-C_RAM_RESULT, עם התמלול המוגה.
+             ⚠️ אין לאחות בין שני הקטעים לציטוט אחד. הם לא רצופים. -->
+        <blockquote>״קהילה בתוך הפורטל, דברים שגרמו לחבר'ה שלי הרבה יותר להיכנס, הרבה יותר ללמוד, <em>הרבה יותר להיות מרוצים, הרבה יותר להמליץ</em>״</blockquote>
+        <div class="vwrap">
+          <button class="vfacade" type="button" data-src="assets/testimonials/ram-alus.mp4" aria-label="נגן את העדות של רם אלוס, שתי דקות וחמש שניות">
+            <img src="assets/testimonials/ram-alus.webp" width="540" height="960" loading="lazy" fetchpriority="low" decoding="async" alt="רם אלוס מספר על הפורטל שנבנה לו" />
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+          <span class="dur">2:05</span>
+        </div>
+        <figcaption class="ig">
+          <div class="ig-top">
+            <a class="ig-handle" href="https://www.instagram.com/ram.alus/" target="_blank" rel="noopener nofollow">ram.alus</a>
+            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
+          </div>
+          <div class="ig-body">
+            <img class="ig-av" src="assets/testimonials/avatar-ram.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של רם אלוס" />
+            <div>
+              <div class="ig-bio">רם אלוס · יועץ לעסקים ובעל בית ספר ל-NLP</div>
+              <div class="ig-stats"><div><b>25.4K</b> עוקבים</div><div><b>340</b> במעקב</div></div>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="tcard">
+        <blockquote>״שתי הנעות לפעולה, הבאנו לשם <em>ארבע מאות אנשים כבר בשבוע הראשון</em>. מתוך האנשים שצפו בפורטל וצרכו אותו נסגרו עסקאות פרימיום״</blockquote>
+        <div class="vwrap">
+          <button class="vfacade" type="button" data-src="assets/testimonials/yuval-palcovich.mp4" aria-label="נגן את העדות של יובל פלקוביץ׳, דקה ארבעים ושתיים">
+            <img src="assets/testimonials/yuval-palcovich.webp" width="540" height="960" loading="lazy" fetchpriority="low" decoding="async" alt="יובל פלקוביץ׳ מספר על הפורטל שנבנה לו" />
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+          <span class="dur">1:42</span>
+        </div>
+        <figcaption class="ig">
+          <div class="ig-top">
+            <a class="ig-handle" href="https://www.instagram.com/yuval_palcovich/" target="_blank" rel="noopener nofollow">yuval_palcovich</a>
+            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
+          </div>
+          <div class="ig-body">
+            <img class="ig-av" src="assets/testimonials/avatar-yuval.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של יובל פלקוביץ׳" />
+            <div>
+              <div class="ig-bio">יובל פלקוביץ׳ · סקייל רווחי, עסק שיוצר חופש</div>
+              <div class="ig-stats"><div><b>10.6K</b> עוקבים</div><div><b>197</b> במעקב</div></div>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <!-- ⛔ ═══ ידידיה טוויל · הוסר מהסקשן 23.09.2026 ═══
+           שלוש סיבות שנפגשות, ולא אחת:
+             1. **הוא לקוח ייעוץ ולא לקוח מערכת קורסים.** זה היה ידוע
+                ומתועד כאן מ-23.08, ובגלל זה הכותרת הישנה נאלצה להיות
+                "מה אומרים מי שעבדו איתי" ולא "שבניתי להם". הכותרת
+                החדשה של רם היא "מה קרה אצל מי שעבדו איתי" — ולידידיה
+                אין תוצאה כזו, כי לא נבנתה לו מערכת.
+             2. **הציטוט שלו הוא בדיוק מה שרם פסל.** רם, 06:54, ציטט
+                אותו מילה במילה מהמסך: "הבן אדם הזה פשוט זרק עליי את כל
+                המידע שיש לו... מאוד אמורפי אחי. זה מאוד אמורפי", ואז
+                ב-07:39: "זה עדויות של כאילו הוא אלוף, הוא תותח."
+             3. חשבון האינסטגרם שלו אינו מאומת, ולכן הכרטיס שלו ממילא
+                נראה חלש יותר משני האחרים באותה שורה.
+           **זו לא פסילה של ידידיה ולא של העדות שלו.** היא אמיתית והוא
+           לקוח אמיתי. היא פשוט לא עונה על השאלה שהסקשן הזה שואל.
+           ↩️ להחזרה: להסיר את סימני ההערה מהבלוק שלמטה. הקבצים כולם
+           נשארו על הדיסק ב-`site\assets\testimonials\`, לא נמחק דבר.
+
+      <figure class="tcard">
+        <blockquote>״הבן אדם הזה פשוט זרק עליי את כל המידע שיש לו, ואני בטוח שזה היה רק קצה המזלג. באמת, <em>דברים מטורפים שלא האמנתי אפילו שקיימים</em>״</blockquote>
+        <div class="vwrap">
+          <button class="vfacade" type="button" data-src="assets/testimonials/yedidya-tawil.mp4" aria-label="נגן את העדות של ידידיה טוויל, חמישים ושלוש שניות">
+            <img src="assets/testimonials/yedidya-tawil.webp" width="540" height="954" loading="lazy" fetchpriority="low" decoding="async" alt="ידידיה טוויל מספר על העבודה עם הילל" />
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+          <span class="dur">0:53</span>
+        </div>
+        <figcaption class="ig">
+          <div class="ig-top">
+            <a class="ig-handle" href="https://www.instagram.com/yedidya.tawil/" target="_blank" rel="noopener nofollow">yedidya.tawil</a>
+          </div>
+          <div class="ig-body">
+            <img class="ig-av" src="assets/testimonials/avatar-yedidya.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של ידידיה טוויל" />
+            <div>
+              <div class="ig-bio">ידידיה טוויל · חטובים לתמיד, ירידה במשקל</div>
+              <div class="ig-stats"><div><b>7,365</b> עוקבים</div><div><b>186</b> במעקב</div></div>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+      ═══ סוף הבלוק המוסר ═══ -->
+
+    </div>
   </div>
 </section>
 
@@ -654,90 +863,6 @@ fbq('init','2132323570952002');fbq('track','PageView');
   </div>
 </section>
 
-<!-- PORTALS -->
-<section>
-  <div class="wrap center">
-    <h2>מה אומרים מי שעבדו איתי</h2>
-
-    <div class="tgrid">
-
-      <figure class="tcard">
-        <blockquote>״הילל בנה לי פורטל לבית ספר ל-NLP שיש לי, ואני יכול להגיד לכם שזו <em>הרמה הגבוהה ביותר</em> של פורטל לימודים שאי פעם יצא לי לראות״</blockquote>
-        <div class="vwrap">
-          <button class="vfacade" type="button" data-src="assets/testimonials/ram-alus.mp4" aria-label="נגן את העדות של רם אלוס, שתי דקות וחמש שניות">
-            <img src="assets/testimonials/ram-alus.webp" width="540" height="960" loading="lazy" fetchpriority="low" decoding="async" alt="רם אלוס מספר על הפורטל שנבנה לו" />
-            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-          </button>
-          <span class="dur">2:05</span>
-        </div>
-        <figcaption class="ig">
-          <div class="ig-top">
-            <a class="ig-handle" href="https://www.instagram.com/ram.alus/" target="_blank" rel="noopener nofollow">ram.alus</a>
-            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
-          </div>
-          <div class="ig-body">
-            <img class="ig-av" src="assets/testimonials/avatar-ram.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של רם אלוס" />
-            <div>
-              <div class="ig-bio">רם אלוס · יועץ לעסקים ובעל בית ספר ל-NLP</div>
-              <div class="ig-stats"><div><b>25.4K</b> עוקבים</div><div><b>340</b> במעקב</div></div>
-            </div>
-          </div>
-        </figcaption>
-      </figure>
-
-      <figure class="tcard">
-        <blockquote>״שתי הנעות לפעולה, הבאנו לשם <em>ארבע מאות אנשים כבר בשבוע הראשון</em>. מתוך האנשים שצפו בפורטל וצרכו אותו נסגרו עסקאות פרימיום״</blockquote>
-        <div class="vwrap">
-          <button class="vfacade" type="button" data-src="assets/testimonials/yuval-palcovich.mp4" aria-label="נגן את העדות של יובל פלקוביץ׳, דקה ארבעים ושתיים">
-            <img src="assets/testimonials/yuval-palcovich.webp" width="540" height="960" loading="lazy" fetchpriority="low" decoding="async" alt="יובל פלקוביץ׳ מספר על הפורטל שנבנה לו" />
-            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-          </button>
-          <span class="dur">1:42</span>
-        </div>
-        <figcaption class="ig">
-          <div class="ig-top">
-            <a class="ig-handle" href="https://www.instagram.com/yuval_palcovich/" target="_blank" rel="noopener nofollow">yuval_palcovich</a>
-            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
-          </div>
-          <div class="ig-body">
-            <img class="ig-av" src="assets/testimonials/avatar-yuval.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של יובל פלקוביץ׳" />
-            <div>
-              <div class="ig-bio">יובל פלקוביץ׳ · סקייל רווחי, עסק שיוצר חופש</div>
-              <div class="ig-stats"><div><b>10.6K</b> עוקבים</div><div><b>197</b> במעקב</div></div>
-            </div>
-          </div>
-        </figcaption>
-      </figure>
-
-      <!-- ידידיה אינו לקוח פורטל אלא ייעוץ AI, ולכן הציטוט מדבר על יכולת
-           ולא על מערכת. אין לו סימון מאומת באינסטגרם, ולכן אין כאן וי כחול. -->
-      <figure class="tcard">
-        <blockquote>״הבן אדם הזה פשוט זרק עליי את כל המידע שיש לו, ואני בטוח שזה היה רק קצה המזלג. באמת, <em>דברים מטורפים שלא האמנתי אפילו שקיימים</em>״</blockquote>
-        <div class="vwrap">
-          <button class="vfacade" type="button" data-src="assets/testimonials/yedidya-tawil.mp4" aria-label="נגן את העדות של ידידיה טוויל, חמישים ושלוש שניות">
-            <img src="assets/testimonials/yedidya-tawil.webp" width="540" height="954" loading="lazy" fetchpriority="low" decoding="async" alt="ידידיה טוויל מספר על העבודה עם הילל" />
-            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-          </button>
-          <span class="dur">0:53</span>
-        </div>
-        <figcaption class="ig">
-          <div class="ig-top">
-            <a class="ig-handle" href="https://www.instagram.com/yedidya.tawil/" target="_blank" rel="noopener nofollow">yedidya.tawil</a>
-          </div>
-          <div class="ig-body">
-            <img class="ig-av" src="assets/testimonials/avatar-yedidya.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של ידידיה טוויל" />
-            <div>
-              <div class="ig-bio">ידידיה טוויל · חטובים לתמיד, ירידה במשקל</div>
-              <div class="ig-stats"><div><b>7,365</b> עוקבים</div><div><b>186</b> במעקב</div></div>
-            </div>
-          </div>
-        </figcaption>
-      </figure>
-
-    </div>
-  </div>
-</section>
-
 <!-- ===== למי זה מתאים — נוסף 14.09.2026 =====
      יושב אחרי הסרטון ולפני העדויות, כלומר בנקודה שבה המבקר מחליט
      אם להמשיך לקרוא. זה המקום שבו הסינון חוסך כסף, ולא בטופס. -->
@@ -802,6 +927,26 @@ fbq('init','2132323570952002');fbq('track','PageView');
   </div>
 </section>
 
+<!-- ⛔ ═══════════════════════════════════════════════════════════════════
+     סקשן "פורטלים חיים שבניתי" — הוסר מהדף 23.09.2026 בהוראת רם.
+     ═══════════════════════════════════════════════════════════════════
+     🗄️ **הדאטה נשמרה במלואה**, לפי בקשתו המפורשת (13:44: "את הדאטה
+     הזאת תשמור"), בשני מקומות: כאן כהערה מלאה, ובנוסף כמסמך קריא ב-
+     `לקוחות\בניית פורטלים מקצועים\docs\סקשן-פורטלים-חיים-הוסר-2026-09-23.md`
+     שגם מחזיק את הנימוק המלא, את הציטוטים ואת סדר הכרטיסים המומלץ
+     אם הסקשן יחזור. שום קובץ לא נמחק, הצילומים ב-`assets/portals/`.
+
+     למה ירד, בקצרה: רם נכנס לפורטלים של איתן ושל קגן בזמן אמת ואמר
+     שהם לא מייצרים וואו לבעל עסק שנכנס מבחוץ (08:24, 10:41), ושארבעה
+     קישורים יוצאים באמצע הדף הם עומס קוגניטיבי שמוציא מבקר חם מהדף
+     אל מסך הרשמה (12:13). במקומם הפורטלים מוצגים בתוך הסרטון,
+     בצילומי מסך, שם שולטים בזווית ואף אחד לא עוזב.
+
+     ⚠️ עם ההסרה, `assets/v2/ink-stage.webp` כבר לא נטען בשום מקום בדף.
+     הקובץ נשאר על הדיסק ואינו נמחק.
+
+     ↩️ להחזרה: להסיר את סימני ההערה מהבלוק שלמטה. הוא שלם ותקין.
+
 <section class="surf-ink">
   <div class="wrap wrap--wide center">
     <svg class="stamp" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="#F4EFE6" stroke-opacity=".4" stroke-width="2"/><path d="M16 5a11 11 0 0 1 10.1 6.7" fill="none" stroke="#E2570F" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="16" r="2.6" fill="#E2570F"/></svg>
@@ -832,7 +977,10 @@ fbq('init','2132323570952002');fbq('track','PageView');
   </div>
 </section>
 
-<!-- ABOUT -->
+     ═══ סוף סקשן הפורטלים המוסר ═══ -->
+
+<!-- ABOUT · רם, 12:59: "לגבי מי אתה, אני חושב שזה סקשן טוב. לא הייתי
+     משנה כאן יותר מדי." 🔒 לא נגעתי בו. -->
 <section>
   <div class="wrap center about">
     <img src="assets/hillel-family.jpg" alt="הילל אקנין עם המשפחה" loading="lazy" />
@@ -992,11 +1140,9 @@ var vp = { pct:0, seconds:0, completed:false };
 /* לחיצה על החזית = מחליפים לנגן אמיתי עם autoplay ורק אז מושכים את ה-API.
    לפני הלחיצה הדף לא נוגע ביוטיוב בכלל.
 
-   ⏸️ 16.09.2026 — הסרטון הוסר מה-HTML זמנית (ראה ההערה בסקשן ההירו).
-   ה-if נוסף כי `getElementById('ytf')` על אלמנט חסר זורק TypeError,
-   וזה מפיל את כל בלוק הסקריפט כולל שולח הטופס. כלומר בלי השורה הזו
-   הסרת הסרטון הייתה הורגת את קליטת הלידים בלי שאף אחד ישים לב.
-   כשהסרטון חוזר — ה-if יכול להישאר, הוא לא מזיק. */
+   ✅ 23.09.2026 — המבנה שונה כך שהמלכודת הישנה לא יכולה לחזור: האלמנטים
+   תמיד קיימים ב-DOM ורק מוסתרים, וההפעלה נשלטת מקבוע יחיד (VSL_YT_ID).
+   ה-if על _ytf נשאר כחגורת ביטחון שנייה. */
 /* כפתור צף — נוסף 19.09.2026.
    מופיע רק אחרי שעוברים את סקשן ההירו, ונעלם כשסקשן הטופס נכנס
    לשדה הראייה, כדי שלא יסתיר את השדות עצמם במסך טלפון.
@@ -1018,11 +1164,41 @@ var vp = { pct:0, seconds:0, completed:false };
     { threshold: 0.12 }).observe(form);
 })();
 
+/* ══════════════════════════════════════════════════════════════════════
+   🎬 נקודת ההחלפה היחידה של הסרטון בדף. אין שנייה.
+   ══════════════════════════════════════════════════════════════════════
+   ממלאים כאן את מזהה היוטיוב של הסרטון החדש — וזהו. המשבצת בהירו
+   נפתחת לבד, כולל הכיתוב שמעליה וחץ ההנעה שמתחתיה.
+   ריק = המשבצת מוסתרת, אפס בייטים נטענים, **והדף תקין ומלא בלעדיה.**
+
+   ⛔ אין להחזיר לכאן את 'bF0atlGw0T4'. רם פסל אותו בפגישת 23.09.2026,
+      והוא גם נמדד: 14 מתוך 16 לידים השאירו פרטים אחרי אפס אחוז צפייה.
+   ⚠️ מזהה יוטיוב בלבד, לא כתובת מלאה. מתוך
+      https://www.youtube.com/watch?v=ABC123 המזהה הוא ABC123 בלבד. */
+var VSL_YT_ID = '';                       /* ← הסרטון החדש נכנס כאן */
+var VSL_THUMB = 'assets/vsl-thumb.jpg';   /* תמונת החזית לפני הלחיצה */
+
+/* חשיפת המשבצת. רצה פעם אחת, ורק אם יש מזהה.
+   ⚠️ ה-DOM תמיד מכיל את #ytf ואת #vwrap — הם מוסתרים, לא מוסרים.
+   זו בדיוק המלכודת שהפילה את הדף בעבר: מחיקת ה-HTML בלי המאזין
+   גרמה ל-getElementById להחזיר null, וה-TypeError הפיל את כל בלוק
+   הסקריפט הזה, כולל שולח הטופס שלמטה. לידים אבדו בשקט. */
+(function(){
+  if (!VSL_YT_ID) return;
+  var sec = document.getElementById('vsec');
+  var th  = document.getElementById('vthumb');
+  if (!sec) return;
+  if (th && VSL_THUMB) th.src = VSL_THUMB;
+  sec.hidden = false;
+})();
+
 var _ytf = document.getElementById('ytf');
 if (_ytf) _ytf.addEventListener('click', function(){
+  if (!VSL_YT_ID) return;
   var w = document.getElementById('vwrap');
-  w.innerHTML = '<iframe id="yt" src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1&autoplay=1" ' +
-    'title="הדגמה חיה · 8:40" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+  w.innerHTML = '<iframe id="yt" src="https://www.youtube.com/embed/' + encodeURIComponent(VSL_YT_ID) +
+    '?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1&autoplay=1" ' +
+    'title="הדגמה" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
   var t = document.createElement('script');
   t.src = 'https://www.youtube.com/iframe_api';
   document.body.appendChild(t);
