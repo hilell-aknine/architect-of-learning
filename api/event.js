@@ -17,12 +17,36 @@
 const TABLE = 'page_events';
 
 // רשימה סגורה. אירוע שלא כאן נזרק בשקט, כדי שאף אחד לא יוכל להזריק זבל לטבלה.
+//
+// wa_click נוסף 9.9.2026: הכפתור "לתאם את שיחת האבחון" בדף האבחון היה עד היום
+// האירוע היחיד שבאמת אומר "אני רוצה לדבר", והוא לא נמדד בשום מקום. לכן אחרי
+// שליד נחת במסד לא הייתה שום דרך לדעת אם הוא ביקש שיחה או רק רצה לראות תוצאה.
 const ALLOWED = new Set([
   'view', 'cta_click', 'video_play', 'scroll_50', 'scroll_90',
-  'form_start', 'form_submit'
+  'form_start', 'form_submit', 'wa_click'
 ]);
 
 const ALLOWED_VARIANTS = new Set(['A', 'B']);
+
+// דף האבחון יושב על מארח אחר (GitHub Pages), ולכן בלי CORS הדפדפן חוסם את
+// הבקשה ממנו עוד לפני שהיא יוצאת. רשימה סגורה בכוונה: כל מארח אחר לא יקבל
+// כותרת CORS, וכך הטבלה לא נפתחת לכתיבה מאתרים זרים.
+const ALLOWED_ORIGINS = new Set([
+  'https://hilell-aknine.github.io',
+  'https://expert-clone-diagnostic.vercel.app',
+  'https://architect-of-learning.vercel.app'
+]);
+
+function applyCors(req, res) {
+  const origin = req.headers?.origin;
+  if (origin && ALLOWED_ORIGINS.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Max-Age', '86400');
+  }
+}
 
 function cleanEnv(v) {
   return typeof v === 'string' ? v.trim().replace(/^["']|["']$/g, '') : '';
@@ -68,9 +92,14 @@ async function fetchWithTimeout(url, options, ms) {
 }
 
 export default async function handler(req, res) {
+  applyCors(req, res);
+
+  // בקשת ההקדמה של הדפדפן לפני POST חוצה-מארח.
+  if (req.method === 'OPTIONS') return res.status(204).end();
+
   // sendBeacon שולח POST בלבד. כל דבר אחר לא מעניין אותנו.
   if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
+    res.setHeader('Allow', 'POST, OPTIONS');
     return res.status(405).end();
   }
 
