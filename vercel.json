@@ -10,5 +10,17 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/diagnostic",
+      "destination": "https://expert-clone-diagnostic.vercel.app/",
+      "permanent": false
+    },
+    {
+      "source": "/diagnostic/:path*",
+      "destination": "https://expert-clone-diagnostic.vercel.app/",
+      "permanent": false
+    }
   ]
 }
