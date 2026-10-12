@@ -21,10 +21,51 @@ const TABLE = 'page_events';
 // wa_click נוסף 9.9.2026: הכפתור "לתאם את שיחת האבחון" בדף האבחון היה עד היום
 // האירוע היחיד שבאמת אומר "אני רוצה לדבר", והוא לא נמדד בשום מקום. לכן אחרי
 // שליד נחת במסד לא הייתה שום דרך לדעת אם הוא ביקש שיחה או רק רצה לראות תוצאה.
+//
+// אירועי הסרטון נוספו 12.10.2026 עם הטמעת ה-VSL (y1z1dZ30mV0), כדי לראות
+// כמה ראו את הנגן, כמה לחצו, ואיפה בדיוק נושרים. הפירוט ב-extra:
+//   vid = מזהה יוטיוב · vl = תווית גרסת הסרטון · pos = המיקום הכי רחוק שהגיע אליו (שניות)
+//   w = שניות צפייה בפועל בטעינת הדף הזו · pct = אחוז · dur = אורך · dev = m/t/d · pl = מזהה טעינת דף
+//   video_ready    הנגן הוצג בדף (המכנה של "כמה ראו את הסרטון")
+//   video_start    הסרטון באמת התחיל להתנגן (לא רק לחיצה על החזית)
+//   video_hb       פעימה כל 10 שניות צפייה, נושאת את pos ו-w המעודכנים
+//   video_progress אבן דרך: pct = 10/25/50/75/90/100
+//   video_pause / video_end
+// הדוח שקורא אותם: api/video-report.js.
 const ALLOWED = new Set([
   'view', 'cta_click', 'video_play', 'scroll_50', 'scroll_90',
-  'form_start', 'form_submit', 'wa_click'
+  'form_start', 'form_submit', 'wa_click',
+  'video_ready', 'video_start', 'video_hb', 'video_progress', 'video_pause', 'video_end'
 ]);
+
+// ---------- הגבלת קצב ----------
+// הנקודה הזו פתוחה לכל העולם (sendBeacon בלי סוד), ולכן בלי תקרה מישהו
+// יכול להציף את הטבלה. התקרה היא לכל IP, בחלון של דקה, בזיכרון של המופע.
+// זו הגנה סבירה ולא הרמטית: מופע חדש של הפונקציה מתחיל ממונה ריק.
+// 90 בדקה = פי 15 ממה שצופה אמיתי מייצר (פעימה כל 10 שניות + אירועי דף).
+const RL_WINDOW_MS = 60 * 1000;
+const RL_MAX = 90;
+const rlHits = new Map();
+
+function clientIp(req) {
+  const xf = req.headers?.['x-forwarded-for'];
+  if (typeof xf === 'string' && xf) return xf.split(',')[0].trim();
+  return req.headers?.['x-real-ip'] || req.socket?.remoteAddress || 'unknown';
+}
+
+function rateLimited(ip) {
+  const now = Date.now();
+  if (rlHits.size > 5000) {
+    for (const [k, v] of rlHits) if (now - v.start > RL_WINDOW_MS) rlHits.delete(k);
+  }
+  const cur = rlHits.get(ip);
+  if (!cur || now - cur.start > RL_WINDOW_MS) {
+    rlHits.set(ip, { start: now, n: 1 });
+    return false;
+  }
+  cur.n += 1;
+  return cur.n > RL_MAX;
+}
 
 const ALLOWED_VARIANTS = new Set(['A', 'B']);
 
@@ -75,7 +116,10 @@ function sanitizeExtra(raw) {
   for (const [k, v] of Object.entries(raw)) {
     if (n++ >= 10) break;
     if (!/^[a-z0-9_]{1,30}$/i.test(k)) continue;
-    if (typeof v === 'number' || typeof v === 'boolean') out[k] = v;
+    if (typeof v === 'number') {
+      // מספר לא סופי או מופרך נזרק, כדי שזבל לא יעוות את עקומת הצפייה.
+      if (Number.isFinite(v) && Math.abs(v) <= 1e6) out[k] = Math.round(v * 10) / 10;
+    } else if (typeof v === 'boolean') out[k] = v;
     else if (typeof v === 'string') out[k] = v.slice(0, 120);
   }
   return Object.keys(out).length ? out : null;
@@ -113,6 +157,11 @@ export default async function handler(req, res) {
 
     const event = str(body.event, 40);
     if (!ALLOWED.has(event)) return res.status(204).end();
+
+    if (rateLimited(clientIp(req))) {
+      console.warn('[event] rate limited', { event });
+      return res.status(204).end();
+    }
 
     const variantRaw = str(body.variant, 4).toUpperCase();
     const variant = ALLOWED_VARIANTS.has(variantRaw) ? variantRaw : null;

@@ -78,26 +78,25 @@
   }
 
   /* ---------- שליחה ---------- */
-  var sent = {};
+  // שלושה יעדים. pixel=false משאיר את האירוע במסד בלבד (למשל פעימות הסרטון,
+  // שאין סיבה להציף בהן את מטא ואת Clarity).
+  function dispatch(name, extra, pixel) {
+    if (pixel !== false) {
+      // 1. Meta Pixel
+      safe(function () {
+        if (typeof window.fbq === 'function') {
+          window.fbq('trackCustom', 'EC_' + name, { variant: VARIANT });
+        }
+      });
 
-  function send(name, extra) {
-    if (sent[name]) return;          // כל אירוע נורה פעם אחת לביקור
-    sent[name] = true;
-
-    // 1. Meta Pixel
-    safe(function () {
-      if (typeof window.fbq === 'function') {
-        window.fbq('trackCustom', 'EC_' + name, { variant: VARIANT });
-      }
-    });
-
-    // 2. Clarity: תגית כדי לסנן הקלטות לפי גרסה, ואירוע כדי לראות משפך
-    safe(function () {
-      if (typeof window.clarity === 'function') {
-        window.clarity('set', 'ec_variant', VARIANT);
-        window.clarity('event', 'ec_' + name);
-      }
-    });
+      // 2. Clarity: תגית כדי לסנן הקלטות לפי גרסה, ואירוע כדי לראות משפך
+      safe(function () {
+        if (typeof window.clarity === 'function') {
+          window.clarity('set', 'ec_variant', VARIANT);
+          window.clarity('event', 'ec_' + name);
+        }
+      });
+    }
 
     // 3. המסד שלנו. זה המקור היחיד שנותן מכנה אמיתי לכל גרסה,
     //    כי מטא סופרת רק מה שהיא רואה ואין לנו דרך להצליב אותה.
@@ -122,6 +121,46 @@
       }
     });
   }
+
+  var sent = {};
+
+  function send(name, extra) {
+    if (sent[name]) return;          // כל אירוע נורה פעם אחת לביקור
+    sent[name] = true;
+    dispatch(name, extra, true);
+  }
+
+  /* ---------- אירועי הסרטון (12.10.2026) ----------
+     בלי מנגנון "פעם אחת לביקור", כי פעימה ואבני דרך חוזרות בכוונה.
+     שם האירוע במסד הוא שם כללי (video_progress) והפירוט ב-extra.pct,
+     אבל למטא ול-Clarity נשלח שם מפורש (video_progress_25), כי שם אין extra
+     שאפשר לסנן לפיו בנוחות.
+     הסקריפט בדף רץ לפני הקובץ הזה (defer), ולכן הוא דוחף לתור __ecq
+     ואנחנו מרוקנים אותו כאן. */
+  function videoEvent(name, extra, pixelName) {
+    safe(function () {
+      dispatch(name, extra, false);
+      if (pixelName) {
+        safe(function () {
+          if (typeof window.fbq === 'function') {
+            window.fbq('trackCustom', 'EC_' + pixelName, { variant: VARIANT });
+          }
+        });
+        safe(function () {
+          if (typeof window.clarity === 'function') {
+            window.clarity('set', 'ec_variant', VARIANT);
+            window.clarity('event', 'ec_' + pixelName);
+          }
+        });
+      }
+    });
+  }
+  window.ecVideoEvent = videoEvent;
+  safe(function () {
+    var q = window.__ecq || [];
+    window.__ecq = { push: function (a) { videoEvent(a[0], a[1], a[2]); } };
+    for (var i = 0; i < q.length; i++) videoEvent(q[i][0], q[i][1], q[i][2]);
+  });
 
   window.ecTrack = send;
 

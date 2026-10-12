@@ -187,36 +187,6 @@
      כל מספר כאן נמדד חי מול Supabase של בית המטפלים ב-12.07.2026
      ומתועד ב-`קייס-סטאדי-לום-בית-המטפלים.md` יחד עם גודל המדגם.
      ⛔ המכפיל של המורה AI לא מופיע כאן בכוונה — הוא בנוי על 7 לומדים. */
-  /* ===== השוואות, נכתבו מחדש 19.09.2026 =====
-     ⚠️ הגרסה הקודמת ערבבה אחוזים, מספרים עשרוניים וגדלי מדגם באותו
-     כרטיס ("×4 · 18.8 מול 4.7 · 49 מול 235"). היא הייתה מדויקת ולא
-     מובנת. הערת הלל: הפער חייב להיות ברור לילד בן עשר.
-     לכן: רכיב אחד חוזר, שני מספרים שלמים בלבד, ועמודה שמראה את הפער
-     בעין לפני שקוראים ספרה. הדיוק המלא יורד לשורת המקור הקטנה. */
-  .cmpblock{max-width:58ch;margin:22px auto 0;text-align:right}
-  .cmpblock + .cmpblock{margin-top:26px}
-  .cmp-q{font-weight:800;font-size:1.04rem;line-height:1.45;margin-bottom:12px}
-  .cmp{display:grid;gap:9px}
-  .cmp-row{display:grid;grid-template-columns:1fr;gap:5px}
-  .cmp-lab{font-size:.92rem;color:var(--ink-soft)}
-  .cmp-bar{display:flex;align-items:center;gap:10px}
-  .cmp-track{flex:1;height:26px;border-radius:7px;background:rgba(20,17,13,.07);overflow:hidden}
-  /* ⚠️ display:block חובה. זה span, וב-inline הדפדפן מתעלם מ-height
-     ומ-width לגמרי, אז העמודה נראתה ריקה והפער לא נראה בעין. */
-  .cmp-fill{display:block;height:100%;border-radius:7px;background:rgba(20,17,13,.28)}
-  .cmp-row.hi .cmp-fill{background:var(--ember)}
-  .cmp-num{flex-shrink:0;min-width:5.2em;font-family:"Frank Ruhl Libre",Georgia,serif;
-    font-weight:900;font-size:1.32rem;line-height:1;color:var(--ink-faint);letter-spacing:-.01em}
-  .cmp-row.hi .cmp-num{color:var(--ember)}
-  .cmp-gap{margin-top:12px;font-family:"Frank Ruhl Libre",Georgia,serif;font-weight:800;
-    font-size:1.16rem;line-height:1.4;color:var(--ink)}
-  .cmp-gap em{font-style:normal;color:var(--ember)}
-  .cmp-src{margin-top:7px;font-size:.78rem;color:var(--ink-faint);line-height:1.5}
-  .caveat{margin-top:26px;padding:15px 17px;border-radius:12px;background:var(--paper-2);
-    border-right:3px solid var(--rule);font-size:.9rem;color:var(--ink-soft);
-    text-align:right;max-width:58ch;margin-inline:auto;line-height:1.6}
-  .caveat b{color:var(--ink)}
-
   /* ===== "מה שכבר ניסית", נוסף 19.09.2026 ===== */
   .tried{max-width:58ch;margin:22px auto 0;display:grid;gap:11px}
   .tried li{display:flex;align-items:flex-start;gap:11px;list-style:none;
@@ -520,7 +490,8 @@ fbq('init','2132323570952002');fbq('track','PageView');
          רם, 56:36: "דף פשוט. סרטון. הנעה לפעולה. לדעתי הסרטון אמור לעשות
          את תהליך החימום המאוד מאוד משמעותי."
 
-         ⚠️ הסרטון החדש טרם צולם (מצלמים 24.09). המשבצת מוכנה וריקה.
+         ✅ 12.10.2026: הוטמע VSL v3 (יוטיוב לא רשום y1z1dZ30mV0, 18:12),
+            עם מדידת צפייה מלאה. ראו את הבלוק "נגן + מדידת צפייה" בסקריפט.
          ⛔ **אין להחזיר את `bF0atlGw0T4`.** רם פסל אותו במפורש בפגישה
             הזו (55:51: "הסרטון נגיד האחרון שהיה בדף נחיתה... יש המון
             דברים שדווקא הם צריכים את הפן האנושי"). הוא גם נמדד: מתוך
@@ -775,97 +746,10 @@ fbq('init','2132323570952002');fbq('track','PageView');
   </div>
 </section>
 
-<!-- ===== המספרים, נוסף 19.09.2026 =====
-     🔴 חוק ברזל לסקשן הזה: כל מספר כאן נמדד חי מול Supabase של בית
-     המטפלים ב-12.07.2026, והוא מתועד עם גודל המדגם שלו בקובץ
-     `קייס-סטאדי-לום-בית-המטפלים.md` בשורש הפרויקט.
-     אין כאן מספר אחד שלא נמדד. אם מוסיפים מספר, הוא נכנס לקובץ קודם.
-
-     ⛔ מה שנשאר בחוץ בכוונה, ואסור להחזיר:
-       · המכפיל של המורה AI (×4.1) — בנוי על 7 לומדים בלבד.
-       · "87% לא מסיימים" — מסתובב בבלוגים, אין לו מקור אקדמי.
-       · אחוז הנשירה של בית המטפלים עצמו — גורם ללקוח להיראות רע.
-       · כל נתון הכנסות.
-     ⚠️ ומשפט הסייג למטה לא יורד. הוא מה שהופך את המספרים לאמינים
-     במקום למכירתיים, וזו בדיוק ההערה של רם על "לא לטעון סיבתיות". -->
-<section class="surf-2 ruled">
-  <div class="wrap center">
-    <svg class="stamp" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="#14110D" stroke-opacity=".3" stroke-width="2"/><path d="M16 5a11 11 0 0 1 10.1 6.7" fill="none" stroke="#C2410C" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="16" r="2.6" fill="#C2410C"/></svg>
-    <h2>וזה מה שזה עשה למספרים</h2>
-
-    <!-- 🔬 רצועת המחקר. אומתה חי 19.09.2026 בשתי חיפושים נפרדים:
-         · MIT/Harvard על 17 קורסי edX — כ-5% מסיימים. Jordan 2015 וקולומביה 2018
-           מוסיפים טווח כללי של עד 15%.
-         · HBS Online CORe — 85%, מודל מחזורי. מסוקר גם ב-EdSurge תחת הכותרת
-           "Moving From 5% to 85% Completion Rates for Online Courses".
-         ⛔ מה שלא נכנס: "87% לא מסיימים". מסתובב בבלוגים, אין לו מקור אקדמי. -->
-    <div class="cmpblock">
-      <p class="cmp-q">קח מאה אנשים שקנו קורס דיגיטלי. כמה מהם מסיימים אותו?</p>
-      <div class="cmp">
-        <div class="cmp-row">
-          <span class="cmp-lab">כשהם לומדים לבד</span>
-          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:6%"></span></span><span class="cmp-num">5 מתוך 100</span></span>
-        </div>
-        <div class="cmp-row hi">
-          <span class="cmp-lab">כשיש מסלול וליווי סביב אותו תוכן בדיוק</span>
-          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:85%"></span></span><span class="cmp-num">85 מתוך 100</span></span>
-        </div>
-      </div>
-      <p class="cmp-gap">אותו תוכן. <em>פי שבעה עשר יותר אנשים מסיימים.</em></p>
-      <p class="cmp-src">מחקר MIT והרווארד על שבעה עשר קורסי edX · התוכנית המקוונת של בית הספר למנהל עסקים בהרווארד</p>
-    </div>
-
-    <!-- 🔴 נוסח 19.09.2026 בהכתבת הלל. קודם היה "ואת זה מדדתי בעצמי,
-         על פורטל אמיתי שבניתי לבית המטפלים". שם הלקוח ירד בכוונה.
-         ה"אני" נשאר מודגש, זו הנקודה של המשפט. -->
-    <p class="lead-p" style="margin-top:30px">ואלה התוצאות של מערכת שאני בניתי לקורס דיגיטלי.</p>
-
-    <div class="cmpblock">
-      <p class="cmp-q">מתוך מאה שנרשמו, כמה בכלל פתחו את השיעור הראשון?</p>
-      <div class="cmp">
-        <div class="cmp-row">
-          <span class="cmp-lab">במערכת הישנה</span>
-          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:32%"></span></span><span class="cmp-num">32 מתוך 100</span></span>
-        </div>
-        <div class="cmp-row hi">
-          <span class="cmp-lab">אחרי שבניתי אותה מחדש</span>
-          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:46%"></span></span><span class="cmp-num">46 מתוך 100</span></span>
-        </div>
-      </div>
-      <p class="cmp-gap">אותו קורס, <em>ארבעה עשר אנשים נוספים מכל מאה התחילו ללמוד.</em></p>
-      <!-- 🔴 שורת המקור ("נמדד על 754 נרשמים...") הוסרה 19.09.2026
-           בהחלטת הלל. הנתון עצמו נשאר, רק ההסבר עליו ירד.
-           הגודל המלא שמור ב-`קייס-סטאדי-לום-בית-המטפלים.md`. -->
-    </div>
-
-    <div class="cmpblock">
-      <p class="cmp-q">וכמה שיעורים הם סיימו בפועל?</p>
-      <div class="cmp">
-        <div class="cmp-row">
-          <span class="cmp-lab">מי שלא השתמש בפיצ'ר התרגול שהוספתי</span>
-          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:25%"></span></span><span class="cmp-num">5 שיעורים</span></span>
-        </div>
-        <div class="cmp-row hi">
-          <span class="cmp-lab">מי שכן השתמש בו</span>
-          <span class="cmp-bar"><span class="cmp-track"><span class="cmp-fill" style="width:95%"></span></span><span class="cmp-num">19 שיעורים</span></span>
-        </div>
-      </div>
-      <p class="cmp-gap"><em>כמעט פי ארבעה.</em></p>
-      <p class="cmp-src">ממוצע מדויק 4.7 מול 18.8 שיעורים, על 235 מול 49 לומדים.</p>
-    </div>
-
-    <!-- 🔴 השוואת "מגע אחד בשכבת הליווי" (5 מול 16 שיעורים, ×3.3,
-         על 229 מול 57 לומדים) הוסרה 19.09.2026 בהחלטת הלל.
-         הנתון עצמו תקף ומתועד ב-`קייס-סטאדי-לום-בית-המטפלים.md`,
-         והמבנה להחזרה זהה לשאר בלוקי .cmpblock. גרסה מלאה: קומיט 162beb4. -->
-
-    <!-- 🔴 משפט הסייג ("לא אטען שזה ניסוי מבוקר") הוסר 19.09.2026
-         בהחלטת הלל. הוא הוצג לו עם הנימוק והוא בחר להוריד אותו.
-         ↩️ להחזרה: פסקה עם class="caveat", הנוסח שמור בקומיט 0782234
-         וגם ב-`קייס-סטאדי-לום-בית-המטפלים.md`, ביט 5. -->
-  </div>
-</section>
-
+<!-- 🔴 סקשן המספרים ("וזה מה שזה עשה למספרים": 5 מול 85 מתוך 100,
+     32 מול 46, 5 מול 19 שיעורים) הוסר 12.10.2026 בבקשת הלל.
+     הנוסח המלא והמקורות שמורים בקומיט 56bc66e ובקובץ
+     `קייס-סטאדי-לום-בית-המטפלים.md`. -->
 <!-- ===== למי זה מתאים — נוסף 14.09.2026 =====
      יושב אחרי הסרטון ולפני העדויות, כלומר בנקודה שבה המבקר מחליט
      אם להמשיך לקרוא. זה המקום שבו הסינון חוסך כסף, ולא בטופס. -->
@@ -1179,7 +1063,11 @@ var vp = { pct:0, seconds:0, completed:false };
       והוא גם נמדד: 14 מתוך 16 לידים השאירו פרטים אחרי אפס אחוז צפייה.
    ⚠️ מזהה יוטיוב בלבד, לא כתובת מלאה. מתוך
       https://www.youtube.com/watch?v=ABC123 המזהה הוא ABC123 בלבד. */
-var VSL_YT_ID = '';                       /* ← הסרטון החדש נכנס כאן */
+var VSL_YT_ID = 'y1z1dZ30mV0';            /* ← VSL v3, לא רשום ביוטיוב, 18:12. הוטמע 12.10.2026 */
+/* תווית גרסת הסרטון. נשמרת בכל אירוע צפייה (extra.vl), כדי שאפשר יהיה
+   להשוות בין גרסאות לאורך זמן גם אם מחליפים סרטון באותו מזהה.
+   כשמחליפים סרטון או עריכה, משנים גם את התווית. */
+var VSL_LABEL = 'v3-2026-10-12';
 var VSL_THUMB = 'assets/vsl-thumb.jpg';   /* תמונת החזית לפני הלחיצה */
 
 /* חשיפת המשבצת. רצה פעם אחת, ורק אם יש מזהה.
@@ -1196,33 +1084,137 @@ var VSL_THUMB = 'assets/vsl-thumb.jpg';   /* תמונת החזית לפני הל
   sec.hidden = false;
 })();
 
+/* ══════════════════════════════════════════════════════════════════════
+   🎬 נגן + מדידת צפייה (12.10.2026)
+   ══════════════════════════════════════════════════════════════════════
+   החזית (תמונה + כפתור) נשארת, כדי שהדף לא יטען את יוטיוב לפני שמישהו
+   מבקש. בלחיצה טוענים את IFrame Player API ובונים נגן אמיתי, ורק דרכו
+   אפשר לדעת מה באמת קרה בסרטון.
+
+   מה נמדד, וכל אירוע הולך גם למסד (page_events דרך api/event):
+     video_ready     הנגן הוצג בדף. המכנה של "כמה ראו את הסרטון".
+     video_play      לחיצה על החזית (קיים מ-06.09, נורה מ-analytics.js).
+     video_start     הסרטון באמת התחיל לרוץ. פער בין play ל-start = נגן
+                     שנתקע או מובייל שדרש לחיצה שנייה.
+     video_hb        פעימה כל 10 שניות צפייה: המיקום הכי רחוק + שניות בפועל.
+     video_progress  אבני דרך 10/25/50/75/90/100 אחוז.
+     video_pause / video_end
+   למטא ול-Clarity נשלחים רק start, אבני הדרך ו-end (בשמות מפורשים),
+   ובכפוף לאותה הסכמת עוגיות שכבר קיימת.
+
+   הדוח: leads-dashboard.html, פאנל "צפייה בסרטון" (api/video-report.js).
+   ⚠️ אין כאן שום נעילה של הטופס לפי אחוז צפייה. לא הייתה, ולא נוספה. */
+function ecv(name, extra, pixelName) {
+  try {
+    if (window.ecVideoEvent) window.ecVideoEvent(name, extra, pixelName);
+    else (window.__ecq = window.__ecq || []).push([name, extra, pixelName]);
+  } catch (e) {}
+}
+var VT = {
+  pl: Math.random().toString(36).slice(2, 10),          // מזהה טעינת דף
+  dev: (function(){ var w = window.innerWidth || 1024;
+                    return w < 768 ? 'm' : (w < 1100 ? 't' : 'd'); })(),
+  started: false, maxPos: 0, watched: 0, dur: 0, lastCur: null,
+  lastHbW: 0, hbDirty: false, pauses: 0, ms: {}, timer: null, ended: false
+};
+function vtExtra(more) {
+  var o = { vid: VSL_YT_ID, vl: VSL_LABEL, dev: VT.dev, pl: VT.pl,
+            pos: Math.floor(VT.maxPos), w: Math.floor(VT.watched),
+            dur: Math.round(VT.dur || 0),
+            pct: VT.dur ? Math.min(100, Math.floor(VT.maxPos / VT.dur * 100)) : 0 };
+  if (more) for (var k in more) o[k] = more[k];
+  return o;
+}
+function vtHeartbeat() {
+  if (!VT.started || !VT.hbDirty) return;
+  VT.hbDirty = false;
+  VT.lastHbW = VT.watched;
+  ecv('video_hb', vtExtra());
+}
+function vtMilestones() {
+  if (!VT.dur) return;
+  var p = VT.maxPos / VT.dur * 100;
+  [10, 25, 50, 75, 90].forEach(function (m) {
+    if (p >= m && !VT.ms[m]) { VT.ms[m] = 1; ecv('video_progress', vtExtra({ pct: m }), 'video_progress_' + m); }
+  });
+}
+if (VSL_YT_ID) ecv('video_ready', { vid: VSL_YT_ID, vl: VSL_LABEL, dev: VT.dev, pl: VT.pl });
+
+/* הפעימה האחרונה לפני שהמבקר עוזב, כדי שהנקודה שבה הוא נשר לא תאבד. */
+document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState === 'hidden') vtHeartbeat();
+});
+window.addEventListener('pagehide', vtHeartbeat);
+
 var _ytf = document.getElementById('ytf');
 if (_ytf) _ytf.addEventListener('click', function(){
   if (!VSL_YT_ID) return;
   var w = document.getElementById('vwrap');
-  w.innerHTML = '<iframe id="yt" src="https://www.youtube.com/embed/' + encodeURIComponent(VSL_YT_ID) +
-    '?rel=0&modestbranding=1&playsinline=1&hl=he&enablejsapi=1&autoplay=1" ' +
-    'title="הדגמה" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+  w.innerHTML = '<div id="yt"></div>';
   var t = document.createElement('script');
   t.src = 'https://www.youtube.com/iframe_api';
   document.body.appendChild(t);
 }, { once:true });
+
 window.onYouTubeIframeAPIReady = function(){
-  var pl = new YT.Player('yt', { events: {
-    onStateChange: function(e){
-      if (e.data === YT.PlayerState.ENDED) vp.completed = true;
-      if (e.data === YT.PlayerState.PLAYING) {
-        if (window.__t) return;
-        window.__t = setInterval(function(){
-          if (!pl.getDuration) return;
-          var d = pl.getDuration(); if (!d) return;
-          var c = pl.getCurrentTime();
-          if (c/d > vp.pct) vp.pct = c/d;
-          vp.seconds = c;
-        }, 1000);
+  var pl = new YT.Player('yt', {
+    videoId: VSL_YT_ID,
+    width: '100%', height: '100%',
+    playerVars: { rel: 0, modestbranding: 1, playsinline: 1, hl: 'he',
+                  autoplay: 1, origin: location.origin },
+    events: {
+      onReady: function (e) {
+        try { var f = e.target.getIframe(); f.title = 'הסרטון: איך זה עובד'; } catch (x) {}
+        try { e.target.playVideo(); } catch (x) {}
+      },
+      onStateChange: function (e) {
+        var S = YT.PlayerState;
+        try { if (!VT.dur) VT.dur = pl.getDuration() || 0; } catch (x) {}
+        if (e.data === S.PLAYING) {
+          if (!VT.started) {
+            VT.started = true;
+            ecv('video_start', vtExtra(), 'video_start');
+          }
+          VT.lastCur = null;
+          if (!VT.timer) VT.timer = setInterval(function () {
+            try {
+              if (pl.getPlayerState() !== S.PLAYING) return;
+              if (!VT.dur) VT.dur = pl.getDuration() || 0;
+              var c = pl.getCurrentTime() || 0;
+              /* צפייה בפועל: רק התקדמות רציפה נספרת. קפיצה קדימה (גרירה)
+                 מזיזה את המיקום, אבל לא נספרת כזמן צפייה. */
+              if (VT.lastCur !== null) {
+                var d = c - VT.lastCur;
+                if (d > 0 && d < 3) VT.watched += d;
+              }
+              VT.lastCur = c;
+              if (c > VT.maxPos) VT.maxPos = c;
+              VT.hbDirty = true;
+              if (VT.dur) {
+                var pr = VT.maxPos / VT.dur;
+                if (pr > vp.pct) vp.pct = pr;
+              }
+              vp.seconds = c;
+              vtMilestones();
+              if (VT.watched - VT.lastHbW >= 10) vtHeartbeat();
+            } catch (x) {}
+          }, 1000);
+        } else if (e.data === S.PAUSED) {
+          VT.lastCur = null;
+          if (VT.pauses < 20) { VT.pauses++; ecv('video_pause', vtExtra({ n: VT.pauses })); }
+          vtHeartbeat();
+        } else if (e.data === S.ENDED) {
+          VT.lastCur = null;
+          vp.completed = true;
+          if (VT.dur) VT.maxPos = VT.dur;
+          vtMilestones();
+          if (!VT.ms[100]) { VT.ms[100] = 1; ecv('video_progress', vtExtra({ pct: 100 }), 'video_progress_100'); }
+          VT.hbDirty = true; vtHeartbeat();
+          if (!VT.ended) { VT.ended = true; ecv('video_end', vtExtra(), 'video_end'); }
+        }
       }
     }
-  }});
+  });
 };
 
 // ── ולידציית טלפון ישראלי ─────────────────────────────────────────────
