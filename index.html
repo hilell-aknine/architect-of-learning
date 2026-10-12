@@ -19,7 +19,12 @@
        · להוריד את מעטפת האינסטגרם מהעדויות. -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700;800;900&family=Heebo:wght@400;500;700;800&display=swap" />
+<!-- ⚡ 12.10.2026: הפונטים נטענים בלי לחסום את הציור הראשון.
+     קודם זה היה stylesheet רגיל, ו-Lighthouse מדד אותו כחוסם רינדור (~1 שנ' במובייל).
+     עכשיו preload שהופך ל-stylesheet ברגע שהגיע; עד אז הטקסט מוצג בפונט המערכת.
+     הוסרו משקלים שלא בשימוש בדף: Frank 900 ו-Heebo 500. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700;800&family=Heebo:wght@400;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700;800&family=Heebo:wght@400;700;800&display=swap" /></noscript>
 <!-- מונוגרם. עיגול דיו עם קשת ענבר שלא נסגרת — לולאת הלמידה.
      SVG ולא תמונה מיוצרת, כי לוגו מיוצר מתפרק בגודל פאביקון. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314110D'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23F4EFE6' stroke-width='2.2' stroke-opacity='.45'/%3E%3Cpath d='M16 7a9 9 0 0 1 8.3 5.5' fill='none' stroke='%23E2570F' stroke-width='2.8' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%23E2570F'/%3E%3C/svg%3E" />
@@ -404,26 +409,37 @@
   .btn.fit-narrow{margin-top:30px}
 </style>
 
-<!-- Meta Pixel -->
+<!-- Meta Pixel + Microsoft Clarity — טעינה דחויה (12.10.2026)
+     ⚡ למה: נמדד ב-Lighthouse מובייל על הדף החי: fbevents.js + הקונפיג של הפיקסל
+     + clarity.js תפסו יחד כ-6.5 שניות של חסימת התהליך הראשי (מתוך ~10), עוד
+     לפני שהמבקר ראה את הסרטון. זה מה שהוריד את ציון המהירות ל-28-38.
+     מה השתנה: ה-stub של fbq ושל clarity נוצרים מיד, כך שכל קריאה (PageView,
+     EC_view, אירועי הסרטון) נכנסת לתור ולא הולכת לאיבוד. רק הסקריפטים הכבדים
+     עצמם נטענים במגע הראשון של המבקר (גלילה / נגיעה / מקש) או 2.5 שניות אחרי
+     שהדף סיים להיטען, המוקדם מביניהם. כשהם נטענים הם מרוקנים את התור ויורים הכל.
+     המחיר: מבקר שעוזב תוך פחות מ-~3 שניות בלי לגעת במסך לא ייספר כ-PageView.
+     ↩️ להיפוך: להחזיר את שני הסניפטים הסטנדרטיים (ראה commit 65c83ba).
+     🔴 עמוד התודה לא נגע: שם הפיקסל נטען מיד, כי שם יורה ה-Lead. -->
 <script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+!function(f){if(f.fbq)return;var n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-document,'script','https://connect.facebook.net/en_US/fbevents.js');
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}(window);
 fbq('init','2132323570952002');fbq('track','PageView');
-</script>
-
-<!-- Microsoft Clarity (הקלטות סשן + מפות חום) — מותנה בהסכמת עוגיות -->
-<script>
-(function(){
-  try { if (localStorage.getItem('cookie_consent_v2') === 'essential') return; } catch(e){}
-  (function(c,l,a,r,i,t,y){
-    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-  })(window,document,"clarity","script","xf3ucswd1s");
-})();
+(function(w,d){
+  var clarityOn = true;
+  try { if (localStorage.getItem('cookie_consent_v2') === 'essential') clarityOn = false; } catch(e){}
+  if (clarityOn) w.clarity = w.clarity || function(){(w.clarity.q=w.clarity.q||[]).push(arguments)};
+  var done = false, EV = ['pointerdown','touchstart','keydown','scroll'];
+  function add(src){ var t=d.createElement('script'); t.async=true; t.src=src; d.head.appendChild(t); }
+  function go(){
+    if (done) return; done = true;
+    EV.forEach(function(e){ w.removeEventListener(e, go, {passive:true}); });
+    add('https://connect.facebook.net/en_US/fbevents.js');
+    if (clarityOn) add('https://www.clarity.ms/tag/xf3ucswd1s');
+  }
+  EV.forEach(function(e){ w.addEventListener(e, go, {passive:true}); });
+  w.addEventListener('load', function(){ setTimeout(go, 2500); });
+})(window, document);
 </script>
 
 <!-- שכבת המדידה: שיוך גרסת קופי + אירועי ביניים (קליק, סרטון, גלילה, תחילת טופס).
@@ -499,9 +515,9 @@ fbq('init','2132323570952002');fbq('track','PageView');
 
          🔧 **להחלפת הסרטון יש בדיוק מקום אחד בקובץ:** הקבוע `VSL_YT_ID`
             בראש הסקריפט שבתחתית העמוד. ממלאים שם מזהה יוטיוב והמשבצת
-            נפתחת לבד, כולל הכיתוב וחץ ההנעה. ריק = הכל מוסתר, ואפילו
-            הטמבנייל לא נטען (ה-src מוזרק ב-JS ולא יושב ב-HTML).
-            אין צורך לגעת ב-HTML הזה בכלל.
+            נפתחת לבד, כולל הכיתוב וחץ ההנעה. ריק = הסקריפט מסתיר את המשבצת.
+            (מ-12.10.2026 הטמבנייל יושב ב-HTML כדי שייטען מיד, ולכן אם
+            מרוקנים את המזהה הוא עדיין יורד פעם אחת. מחיר זניח מול LCP מהיר.)
 
          ⚠️ מלכודת ידועה שנסגרה כאן אחת ולתמיד: בגרסאות קודמות ה-HTML של
          הסרטון נמחק אבל המאזין של #ytf נשאר, ואז `getElementById('ytf')`
@@ -509,17 +525,23 @@ fbq('init','2132323570952002');fbq('track','PageView');
          כולל שולח הטופס. כלומר קליטת הלידים מתה בשקט. עכשיו האלמנטים
          תמיד קיימים ב-DOM ורק מוסתרים, ולכן המאזין תמיד מוצא אותם
          והתרחיש הזה אינו אפשרי יותר. -->
-    <div id="vsec" hidden>
+    <!-- ⚡ 12.10.2026: המשבצת גלויה כבר ב-HTML והתמונה נטענת ישר ממנו.
+         קודם היא הייתה hidden וה-src הוזרק מסקריפט בסוף הדף, ולכן הדפדפן גילה את
+         התמונה הכי גדולה במסך (ה-LCP) רק אחרי שכל הדף פוענח, והחשיפה הזיזה את
+         הכפתור למטה (CLS). אם מרוקנים את VSL_YT_ID, הסקריפט מסתיר את המשבצת. -->
+    <div id="vsec">
       <!-- רם, 28:21: "כיתוב קטן למעלה מעל הסרטון, כמו לחץ על הפליי
            תפעיל את הרמקול. זה משהו שעוזר קצת בצפיות." -->
       <p class="vhint">▶ לחץ על הפליי והפעל את הרמקול</p>
       <div class="video" id="vwrap">
         <button class="ytf" id="ytf" type="button" aria-label="נגן את הסרטון">
-          <!-- ה-src מוזרק מ-VSL_THUMB בסקריפט. בלי סרטון אין src, ולכן
-               אפס בייטים נטענים כשהמשבצת מוסתרת. המקור לעריכת הטמבנייל
+          <!-- ה-src יושב כאן ב-HTML מ-12.10.2026 (קודם הוזרק מסקריפט). המקור לעריכת הטמבנייל
                יושב מחוץ לתיקיית הפריסה, בשורש הפרויקט:
                לקוחות\בניית פורטלים מקצועים\vsl-thumb-source.html -->
-          <img id="vthumb" alt="הצצה מבפנים למערכת קורסים חיה" width="1280" height="720" fetchpriority="high" />
+          <img id="vthumb" src="assets/vsl-thumb-960.webp"
+               srcset="assets/vsl-thumb-640.webp 640w, assets/vsl-thumb-960.webp 960w, assets/vsl-thumb-1280.webp 1280w"
+               sizes="(max-width:660px) calc(100vw - 40px), 620px"
+               alt="הצצה מבפנים למערכת קורסים חיה" width="1280" height="720" fetchpriority="high" decoding="async" />
           <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
         </button>
       </div>
@@ -870,7 +892,7 @@ fbq('init','2132323570952002');fbq('track','PageView');
      משנה כאן יותר מדי." 🔒 לא נגעתי בו. -->
 <section>
   <div class="wrap center about">
-    <img src="assets/hillel-family.jpg" alt="הילל אקנין עם המשפחה" loading="lazy" />
+    <img src="assets/hillel-family.webp" width="660" height="880" alt="הילל אקנין עם המשפחה" loading="lazy" decoding="async" />
     <h2>מי אני</h2>
     <p>היי, אני הילל אקנין. נשוי ואבא לשניים.</p>
     <p>עשור אני בעולם העסקים: מתכשיטי יוקרה, דרך שיווק לעסקים קטנים, ועד הדרכה בבינה מלאכותית. המכנה המשותף לכולם היה תמיד למידה: עשרות קורסים דיגיטליים, פרונטליים וסדנאות. אני חולה למידה, ואני יודע שההתפתחות שלי ומצב העסק שלי תלויים בזה.</p>
@@ -1068,7 +1090,9 @@ var VSL_YT_ID = 'NTg-3B6fshU';            /* ← VSL v4, לא רשום ביוט�
    להשוות בין גרסאות לאורך זמן גם אם מחליפים סרטון באותו מזהה.
    כשמחליפים סרטון או עריכה, משנים גם את התווית. */
 var VSL_LABEL = 'v4-2026-10-12';
-var VSL_THUMB = 'assets/vsl-thumb.jpg';   /* תמונת החזית לפני הלחיצה */
+/* תמונת החזית לפני הלחיצה יושבת ב-HTML עצמו (#vthumb, srcset של webp), לא כאן.
+   הוזזה לשם ב-12.10.2026 כדי שהדפדפן יגלה אותה מיד. החלפת טמבנייל = להחליף את
+   קבצי assets/vsl-thumb-{640,960,1280}.webp (המקור: assets/vsl-thumb.jpg). */
 
 /* חשיפת המשבצת. רצה פעם אחת, ורק אם יש מזהה.
    ⚠️ ה-DOM תמיד מכיל את #ytf ואת #vwrap — הם מוסתרים, לא מוסרים.
@@ -1076,12 +1100,8 @@ var VSL_THUMB = 'assets/vsl-thumb.jpg';   /* תמונת החזית לפני הל
    גרמה ל-getElementById להחזיר null, וה-TypeError הפיל את כל בלוק
    הסקריפט הזה, כולל שולח הטופס שלמטה. לידים אבדו בשקט. */
 (function(){
-  if (!VSL_YT_ID) return;
   var sec = document.getElementById('vsec');
-  var th  = document.getElementById('vthumb');
-  if (!sec) return;
-  if (th && VSL_THUMB) th.src = VSL_THUMB;
-  sec.hidden = false;
+  if (sec && !VSL_YT_ID) sec.hidden = true;
 })();
 
 /* ══════════════════════════════════════════════════════════════════════
