@@ -192,16 +192,6 @@
      כל מספר כאן נמדד חי מול Supabase של בית המטפלים ב-12.07.2026
      ומתועד ב-`קייס-סטאדי-לום-בית-המטפלים.md` יחד עם גודל המדגם.
      ⛔ המכפיל של המורה AI לא מופיע כאן בכוונה — הוא בנוי על 7 לומדים. */
-  /* ===== "מה שכבר ניסית", נוסף 19.09.2026 ===== */
-  .tried{max-width:58ch;margin:22px auto 0;display:grid;gap:11px}
-  .tried li{display:flex;align-items:flex-start;gap:11px;list-style:none;
-    font-size:1rem;line-height:1.6;text-align:right;color:var(--ink-soft)}
-  .tried li svg{flex-shrink:0;width:17px;height:17px;margin-top:5px;color:var(--ink-faint)}
-  .turn{max-width:58ch;margin:24px auto 0;text-align:right;
-    font-family:"Frank Ruhl Libre",Georgia,serif;font-size:1.22rem;font-weight:800;
-    line-height:1.45;color:var(--ink)}
-  .turn em{font-style:normal;color:var(--ember)}
-
   .mechs{display:grid;gap:16px;margin-top:8px}
   .mech{
     display:grid;gap:14px;padding:20px 18px 18px;
@@ -273,19 +263,15 @@
      מחפשת מחדש את תחילת כל שורה. הכותרת נשארת במרכז, הגוף חוזר לימין. */
   .about p{margin-top:15px;color:var(--ink-soft);text-align:right;max-width:56ch;margin-inline:auto}
   .finale .lead-p{text-align:right;max-width:56ch;margin-inline:auto}
-  /* ציטוט מודגש בתוך הפרוזה. שבע פסקאות באותו גודל ובאותו צבע
-     הן קיר טקסט, ואף אחד לא קורא קיר. */
-  .pull{
-    max-width:56ch;margin:26px auto;padding:18px 20px 18px 18px;
-    border-right:3px solid var(--ember);border-radius:0 12px 12px 0;
-    background:rgba(255,255,255,.55);
-    font-family:"Frank Ruhl Libre",Georgia,serif;font-size:1.18rem;font-weight:700;
-    line-height:1.45;color:var(--ink);text-align:right;
-  }
+  /* 🔴 12.10.2026: הילל לא נראה בתמונה. הסיבה: width/height שנוספו ל-img
+     (2b98e53) קיבעו גובה של 880px, aspect-ratio לא חל, ו-cover חתך את
+     הצדדים. height:auto מחזיר את היחס 3:4 של הקובץ, בלי חיתוך. */
   .about img{
-    width:100%;max-width:330px;aspect-ratio:3/4;object-fit:cover;border-radius:14px;
+    width:100%;max-width:330px;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:14px;
     margin:0 auto 18px;display:block;
   }
+  .about p{line-height:1.75}
+  .about p + p{margin-top:13px}
 
   /* רם, 19.8: "צבע אחד אחיד" — אין רקע נפרד לסקשן הטופס */
   form{margin-top:24px}
@@ -313,21 +299,31 @@
   footer{padding:20px 0 34px;font-size:.83rem;color:var(--ink-faint);text-align:center;border-top:1px solid var(--rule)}
 
   /* ===== עדויות. הוחזר 27.08 אחרי שנפל בהחלפת השורש ===== */
-  .tgrid{display:grid;gap:14px;margin-top:22px;text-align:right}
-  @media(min-width:560px){
-    .tgrid{grid-template-columns:1fr 1fr}
-    .tcard:last-child:nth-child(odd){grid-column:1/-1;width:calc(50% - 7px);margin-inline:auto}
-  }
-  @media(min-width:940px){
-    .tgrid{grid-template-columns:repeat(3,1fr);margin-inline:-120px}
-    .tcard:last-child:nth-child(odd){grid-column:auto;width:auto;margin-inline:0}
+  /* 12.10.2026: זוג מאוזן. עד היום הגריד היה 3 עמודות בדסקטופ גם אחרי
+     שידידיה ירד, ולכן שני הכרטיסים נדחקו לימין ועמודה שלישית נשארה ריקה.
+     עכשיו: עמודה אחת במובייל, שתיים ממורכזות מ-600px, ובכל כרטיס אותו
+     סדר: וידאו, שם, תפקיד ועסק, ציטוט. הציטוט מותח את הכרטיס לגובה שווה.
+     ↩️ אם ידידיה חוזר, צריך להחזיר כאן גריד של 3. */
+  .tgrid{display:grid;gap:16px;margin:26px auto 0;text-align:right;max-width:420px}
+  @media(min-width:600px){
+    .tgrid{grid-template-columns:1fr 1fr;max-width:760px;gap:20px}
   }
   .tcard{
     display:flex;flex-direction:column;background:var(--paper-2);
-    border:1px solid var(--rule);border-radius:12px;overflow:hidden;
+    border:1px solid var(--rule);border-radius:14px;overflow:hidden;
   }
-  .tcard blockquote{padding:16px 15px 14px;font-size:.95rem;line-height:1.55}
-  .tcard blockquote em{font-style:normal;font-weight:800;color:var(--ember)}
+  .tid{display:flex;align-items:center;gap:12px;padding:14px 16px 0}
+  .tname{display:flex;align-items:center;gap:5px;font-weight:800;font-size:1.02rem;color:var(--ink);line-height:1.3}
+  .trole{font-size:.85rem;color:var(--ink-soft);line-height:1.4;margin-top:2px}
+  .tmeta{font-size:.78rem;color:var(--ink-faint);margin-top:3px}
+  .tmeta a{color:inherit;text-decoration:none;unicode-bidi:isolate}
+  .tmeta a:hover{color:var(--ember)}
+  .tmeta b{color:var(--ink-soft)}
+  .tcard blockquote{
+    flex:1;margin:14px 16px 18px;padding:2px 14px 2px 0;border-right:3px solid var(--ember);
+    font-family:"Frank Ruhl Libre",Georgia,serif;font-size:1.08rem;font-weight:700;line-height:1.55;color:var(--ink);
+  }
+  .tcard blockquote em{font-style:normal;color:var(--ember)}
   .vwrap{position:relative;aspect-ratio:4/5;background:#000}
   .vwrap.playing{aspect-ratio:9/16}
   .vfacade{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:#000;cursor:pointer;display:block}
@@ -344,16 +340,8 @@
     position:absolute;bottom:8px;inset-inline-start:8px;padding:2px 7px;border-radius:5px;
     background:rgba(20,17,13,.78);color:#fff;font-size:.75rem;font-weight:700;pointer-events:none;
   }
-  .ig{padding:12px 14px 14px;border-top:1px solid var(--rule)}
-  .ig-top{display:flex;align-items:center;gap:5px}
-  .ig-handle{font-weight:800;font-size:.9rem;color:var(--ink);text-decoration:none}
-  .ig-handle:hover{color:var(--ember)}
   .vbadge{width:14px;height:14px;flex-shrink:0}
-  .ig-body{display:flex;align-items:center;gap:11px;margin-top:9px}
-  .ig-av{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0}
-  .ig-bio{font-size:.82rem;color:var(--ink-soft);line-height:1.4}
-  .ig-stats{display:flex;gap:14px;margin-top:5px;font-size:.78rem;color:var(--ink-faint)}
-  .ig-stats b{color:var(--ink)}
+  .ig-av{width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0}
 
   /* 🧹 23.09.2026 — כאן ישב, בתוך תגית ה-style, עותק שלם של המאזין
      ל-.vfacade בג'אווהסקריפט. הדבקה מוטעית. הדפדפן ניסה לקרוא אותו
@@ -596,7 +584,7 @@ fbq('init','2132323570952002');fbq('track','PageView');
 <section>
   <div class="wrap center">
     <h2>מה קרה אצל מי שעבדו איתי</h2>
-    <p class="lead-p">שני בעלי עסקים מדברים על מה שקרה במערכת הקורסים שבניתי להם, במילים שלהם, מול מצלמה.</p>
+    <!-- שורת הפתיחה ("שני בעלי עסקים מדברים...") הוסרה 12.10.2026 בבקשת הלל. -->
 
     <div class="tgrid">
 
@@ -611,7 +599,6 @@ fbq('init','2132323570952002');fbq('track','PageView');
              החיתוך מתועדות ב-`ad-creatives\build_testimonial_ads.py`
              כ-C_RAM_LEVEL ו-C_RAM_RESULT, עם התמלול המוגה.
              ⚠️ אין לאחות בין שני הקטעים לציטוט אחד. הם לא רצופים. -->
-        <blockquote>״קהילה בתוך הפורטל, דברים שגרמו לחבר'ה שלי הרבה יותר להיכנס, הרבה יותר ללמוד, <em>הרבה יותר להיות מרוצים, הרבה יותר להמליץ</em>״</blockquote>
         <div class="vwrap">
           <button class="vfacade" type="button" data-src="assets/testimonials/ram-alus.mp4" aria-label="נגן את העדות של רם אלוס, שתי דקות וחמש שניות">
             <img src="assets/testimonials/ram-alus.webp" width="540" height="960" loading="lazy" fetchpriority="low" decoding="async" alt="רם אלוס מספר על הפורטל שנבנה לו" />
@@ -619,23 +606,28 @@ fbq('init','2132323570952002');fbq('track','PageView');
           </button>
           <span class="dur">2:05</span>
         </div>
-        <figcaption class="ig">
-          <div class="ig-top">
-            <a class="ig-handle" href="https://www.instagram.com/ram.alus/" target="_blank" rel="noopener nofollow">ram.alus</a>
-            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
+        <div class="tid">
+          <img class="ig-av" src="assets/testimonials/avatar-ram.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="" />
+          <div>
+            <div class="tname">רם אלוס <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg></div>
+            <div class="trole">יועץ לעסקים ובעל בית ספר ל-NLP</div>
+            <div class="tmeta"><a href="https://www.instagram.com/ram.alus/" target="_blank" dir="ltr" rel="noopener nofollow">@ram.alus</a> · <b>25.4K</b> עוקבים</div>
           </div>
-          <div class="ig-body">
-            <img class="ig-av" src="assets/testimonials/avatar-ram.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של רם אלוס" />
-            <div>
-              <div class="ig-bio">רם אלוס · יועץ לעסקים ובעל בית ספר ל-NLP</div>
-              <div class="ig-stats"><div><b>25.4K</b> עוקבים</div><div><b>340</b> במעקב</div></div>
-            </div>
-          </div>
-        </figcaption>
+        </div>
+        <!-- verbatim, ram-alus.mp4 65.6-75.2 (אומת שוב ב-Scribe 12.10.2026). -->
+        <blockquote>״קהילה בתוך הפורטל, דברים שגרמו לחבר'ה שלי הרבה יותר להיכנס, הרבה יותר ללמוד, <em>הרבה יותר להיות מרוצים, הרבה יותר להמליץ</em>״</blockquote>
       </figure>
 
       <figure class="tcard">
-        <blockquote>״שתי הנעות לפעולה, הבאנו לשם <em>ארבע מאות אנשים כבר בשבוע הראשון</em>. מתוך האנשים שצפו בפורטל וצרכו אותו נסגרו עסקאות פרימיום״</blockquote>
+        <!-- 🔁 הציטוט הוחלף 12.10.2026 בבקשת הלל: חוויית משתמש ופלטפורמה.
+             verbatim מ-yuval-palcovich.mp4, 31.4-41.7 (Groq + Scribe, תואמים).
+             המילים המלאות: "פתאום הוא הביא לי דברים שאפילו לא חשבתי עליהם שהם
+             אפשריים, כמו למשל זה שהדברים יכולים להיות בצורת משחק כדי לעודד אנשים
+             לצרוך יותר את התוכן. זה שהדברים נראים טוב". שלוש הנקודות מחליפות רק
+             את "כדי לעודד אנשים לצרוך יותר את התוכן".
+             הציטוט הקודם (50.9-67.7, "שתי הנעות לפעולה... 400 אנשים... עסקאות
+             פרימיום") עדיין בסרטון, ומתועד כ-C_YUVAL_NUMBERS
+             ב-`ad-creatives\build_testimonial_ads.py`. -->
         <div class="vwrap">
           <button class="vfacade" type="button" data-src="assets/testimonials/yuval-palcovich.mp4" aria-label="נגן את העדות של יובל פלקוביץ׳, דקה ארבעים ושתיים">
             <img src="assets/testimonials/yuval-palcovich.webp" width="540" height="960" loading="lazy" fetchpriority="low" decoding="async" alt="יובל פלקוביץ׳ מספר על הפורטל שנבנה לו" />
@@ -643,19 +635,15 @@ fbq('init','2132323570952002');fbq('track','PageView');
           </button>
           <span class="dur">1:42</span>
         </div>
-        <figcaption class="ig">
-          <div class="ig-top">
-            <a class="ig-handle" href="https://www.instagram.com/yuval_palcovich/" target="_blank" rel="noopener nofollow">yuval_palcovich</a>
-            <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg>
+        <div class="tid">
+          <img class="ig-av" src="assets/testimonials/avatar-yuval.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="" />
+          <div>
+            <div class="tname">יובל פלקוביץ׳ <svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="חשבון מאומת"><path fill="#3897F0" d="M12 1l2.6 2.1 3.3-.3.9 3.2 2.8 1.8-1.3 3.1 1.3 3.1-2.8 1.8-.9 3.2-3.3-.3L12 23l-2.6-2.1-3.3.3-.9-3.2-2.8-1.8L3.7 13 2.4 9.9l2.8-1.8.9-3.2 3.3.3z"/><path fill="#fff" d="M10.6 15.6l-3-3 1.3-1.3 1.7 1.7 4.2-4.2 1.3 1.3z"/></svg></div>
+            <div class="trole">הבעלים של סקייל רווחי</div>
+            <div class="tmeta"><a href="https://www.instagram.com/yuval_palcovich/" target="_blank" dir="ltr" rel="noopener nofollow">@yuval_palcovich</a> · <b>10.6K</b> עוקבים</div>
           </div>
-          <div class="ig-body">
-            <img class="ig-av" src="assets/testimonials/avatar-yuval.webp" width="44" height="44" loading="lazy" fetchpriority="low" decoding="async" alt="תמונת הפרופיל של יובל פלקוביץ׳" />
-            <div>
-              <div class="ig-bio">יובל פלקוביץ׳ · סקייל רווחי, עסק שיוצר חופש</div>
-              <div class="ig-stats"><div><b>10.6K</b> עוקבים</div><div><b>197</b> במעקב</div></div>
-            </div>
-          </div>
-        </figcaption>
+        </div>
+        <blockquote>״פתאום הוא הביא לי דברים שאפילו לא חשבתי עליהם שהם אפשריים, כמו למשל <em>זה שהדברים יכולים להיות בצורת משחק</em>... זה שהדברים נראים טוב״</blockquote>
       </figure>
 
       <!-- ⛔ ═══ ידידיה טוויל · הוסר מהסקשן 23.09.2026 ═══
@@ -775,26 +763,8 @@ fbq('init','2132323570952002');fbq('track','PageView');
 <!-- ===== למי זה מתאים — נוסף 14.09.2026 =====
      יושב אחרי הסרטון ולפני העדויות, כלומר בנקודה שבה המבקר מחליט
      אם להמשיך לקרוא. זה המקום שבו הסינון חוסך כסף, ולא בטופס. -->
-<!-- ===== "מה שכבר ניסית", נוסף 19.09.2026 =====
-     מודל מדף של ניב בלי: מונים את הפתרונות שהוא כבר הכיר, מאשרים
-     שהם לגיטימיים, ורק אז מסבירים למה הם לא נגעו בסיבה.
-     המהלך הזה מנטרל התנגדות לפני שהיא נאמרת, ויושב בכוונה ממש לפני
-     סקשן ההתאמה, כלומר ברגע שבו הוא מחליט אם הוא בפנים. -->
-<section>
-  <div class="wrap center">
-    <h2>מה שכבר ניסית, ולמה זה לא הספיק</h2>
-    <ul class="tried">
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg><span>צילמת עוד מודול, כי אולי חסר תוכן</span></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg><span>שלחת מיילי תזכורת למי שלא נכנס</span></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg><span>פתחת קבוצת וואטסאפ שתחזיק אותם ביחד</span></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg><span>עברת לפלטפורמת קורסים אחרת, שנראתה מסודרת יותר</span></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg><span>הוספת מפגשי זום, כדי שיהיה להם למי להתחייב</span></li>
-    </ul>
-
-    <p class="turn">וכל אחד מהם יכול לעבוד. הם פשוט כולם עושים את אותו דבר, <em>מוסיפים עוד משהו מבחוץ</em> במקום לשנות את מה שקורה לתלמיד בפנים, ברגע שהוא נכנס ולא יודע איפה הוא עצר.</p>
-  </div>
-</section>
-
+<!-- 🔴 סקשן "מה שכבר ניסית, ולמה זה לא הספיק" (5 הפתרונות + פסקת "וכל אחד
+     מהם יכול לעבוד") הוסר 12.10.2026 בבקשת הלל. הנוסח המלא שמור בקומיט 2b98e53. -->
 <section id="fit" class="surf-2 ruled">
   <div class="wrap wrap--wide">
     <h2 class="fit-narrow">למי זה מתאים, ולמי לא</h2>
@@ -894,15 +864,14 @@ fbq('init','2132323570952002');fbq('track','PageView');
   <div class="wrap center about">
     <img src="assets/hillel-family.webp" width="660" height="880" alt="הילל אקנין עם המשפחה" loading="lazy" decoding="async" />
     <h2>מי אני</h2>
+    <!-- הטקסט תומצת 12.10.2026, נוסח של הלל מילה במילה. הגרסה הקודמת בקומיט 2b98e53. -->
     <p>היי, אני הילל אקנין. נשוי ואבא לשניים.</p>
-    <p>עשור אני בעולם העסקים: מתכשיטי יוקרה, דרך שיווק לעסקים קטנים, ועד הדרכה בבינה מלאכותית. המכנה המשותף לכולם היה תמיד למידה: עשרות קורסים דיגיטליים, פרונטליים וסדנאות. אני חולה למידה, ואני יודע שההתפתחות שלי ומצב העסק שלי תלויים בזה.</p>
-    <p>אבל למדתי בפלטפורמות כמו כולם, וגם כשהתוכן היה מעולה, הייתי נופל. חסרה המשכיות, תחושה שאני בתוך מסגרת ברורה עם התקדמות שיטתית. הסחות דעת, שעמום, וזהו. אז בניתי לעצמי את מה שהיה חסר לי. באחד הקורסים שהייתי שותף בהם שיתפתי את המערכת הזו, ואנשים התחברו אליה בטירוף. שם הבנתי שזה לא רק בשבילי.</p>
-    <p class="pull">מה שמרגיז אותי בקורסים דיגיטליים הוא תוכן בלי פידבק, בלי שתדע אם עשית נכון.</p>
-    <p>גם כאבא זה אותו דבר: בניתי לילדים שלי משחקים שעוזרים להם ללמוד ולהנות מזה.</p>
-    <!-- המשפט הפותח של הפסקה הזו עלה לציטוט המודגש שמעליה,
-         ולכן הוא הוסר כאן כדי שלא ייאמר פעמיים. -->
-    <p>מערכות מיושנות שגורמות להרגיש שרצו את הארנק שלך, ומהרגע ששילמת כבר לא באמת אכפת מהתוצאות שלך.</p>
-    <p>אני מוותר מראש על מי שבונה ומצפה שהלקוח כבר יסתדר לבד. על מי שבונה רק למי שיש לו משמעת עצמית. על "אני את שלי עשיתי", ואז זורק הכל על המשתמש בלי לבנות לו מסלול אמיתי.</p>
+    <p>אני חולה למידה. עשיתי עשרות קורסים דיגיטליים, וגם כשהתוכן היה מעולה נפלתי באמצע.</p>
+    <p>לא בגלל התוכן.</p>
+    <p>בגלל שלא הייתה מסגרת, לא הרגשתי התקדמות ואף אחד לא אמר לי אם אני עושה נכון.</p>
+    <p>אז בניתי לעצמי את מה שהיה חסר.</p>
+    <p>כששיתפתי את זה בקורס שהייתי שותף בו, אנשים התחברו בטירוף. שם הבנתי שזה לא רק בשבילי.</p>
+    <p>היום אני בונה מערכות קורסים שלא משאירות את הלקוח לבד אחרי שהוא שילם.</p>
   </div>
 </section>
 
