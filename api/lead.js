@@ -260,7 +260,10 @@ export default async function handler(req, res) {
       business: business || null,
       students: students || null,
       ad_source: adSource,
-      utm,
+      // נוסף 13.10.2026: מזהה הקליק של מטא נשמר עם הליד. ליד ראשון בקמפיין vsl-v4
+      // שויך אצל מטא כ"צפייה" ולא כ"קליק", למרות שה-UTM מוכיח קליק, ולא היה איך
+      // לבדוק אם fbc בכלל הגיע. meta_fbc ריק = הקליק לא זוהה בדפדפן.
+      utm: { ...utm, meta_fbc: fbc ? fbc.slice(0, 200) : '', meta_fbp: fbp ? 'yes' : 'no' },
       variant,
       video_watched_pct: videoWatchedPct,
       video_seconds: videoSeconds,
