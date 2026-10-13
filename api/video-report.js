@@ -22,8 +22,39 @@ const LEAD_FN = 'https://vrqtelhjuydocxcletel.supabase.co/functions/v1/lead';
 // anon ציבורי מעצם הגדרתו (יושב כבר בקוד של leads-dashboard.html). שער ה-JWT של
 // Supabase דורש אותו לפני שהבקשה בכלל מגיעה לפונקציה.
 const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZycXRlbGhqdXlkb2N4Y2xldGVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTgxNDcsImV4cCI6MjEwMjA5NDE0N30.nj9TRQeDVoTgEmjqe6NR3UjW8FvDQmwVwTWg-Bb9SRA';
-const VIDEO_EVENTS = ['video_ready', 'video_play', 'video_start', 'video_hb',
+const VIDEO_EVENTS = ['video_ready', 'video_play', 'video_click', 'video_start', 'video_hb',
   'video_progress', 'video_pause', 'video_end'];
+
+// 🔴 סינון בדיקות הקישור של מטא (13.10.2026).
+// כשנוצרת או משתנה מודעה, מטא שולחת לקישור שלה צרור של כניסות בתוך שניות:
+// UA של אינסטגרם/כרום, referrer של m.facebook.com, ו-form_start בלי שום אינטראקציה.
+// ב-13.10 07:50 UTC נכנסו כך 24 "סשנים" בדקה אחת, ניפחו את המבקרים והורידו את אחוז ההפעלה.
+// הכלל: 5 view או יותר מאותה מודעה (utm_content) בתוך 90 שניות = בורסט, וכל הסשנים בו מסוננים.
+// בנוסף: UA שמצהיר על עצמו כזחלן של מטא. אותו כלל בדיוק רץ ב-ad-creatives/daily_ad_report.py.
+const BURST_MIN = 5;
+const BURST_WINDOW_MS = 90 * 1000;
+const CRAWLER_UA = /meta-externalads|facebookexternalhit|facebookcatalog/i;
+function metaCheckSids(rows) {
+  const out = new Set();
+  const byAd = new Map();
+  for (const e of rows) {
+    if (e.event !== 'view' || !e.sid) continue;
+    if (CRAWLER_UA.test(e.user_agent || '')) { out.add(e.sid); continue; }
+    const ad = (e.utm && e.utm.utm_content) || '';
+    if (!ad) continue;
+    if (!byAd.has(ad)) byAd.set(ad, []);
+    byAd.get(ad).push({ t: Date.parse(e.created_at), sid: e.sid });
+  }
+  for (const list of byAd.values()) {
+    list.sort((a, b) => a.t - b.t);
+    let j = 0;
+    for (let i = 0; i < list.length; i++) {
+      while (list[i].t - list[j].t > BURST_WINDOW_MS) j++;
+      if (i - j + 1 >= BURST_MIN) for (let k = j; k <= i; k++) out.add(list[k].sid);
+    }
+  }
+  return out;
+}
 
 function cleanEnv(v) {
   return typeof v === 'string' ? v.trim().replace(/^["']|["']$/g, '') : '';
@@ -73,7 +104,7 @@ async function readEvents(base, key, sinceIso) {
   const events = ['view', ...VIDEO_EVENTS].join(',');
   const pageSize = 1000;
   for (let from = 0; from < 200000; from += pageSize) {
-    const url = `${base}/rest/v1/page_events?select=event,variant,sid,extra,created_at` +
+    const url = `${base}/rest/v1/page_events?select=event,variant,sid,extra,created_at,utm,user_agent` +
       `&page=eq.index&event=in.(${events})&created_at=gte.${encodeURIComponent(sinceIso)}` +
       `&order=id.asc`;
     const r = await fetchWithTimeout(url, {
@@ -104,7 +135,7 @@ function summarize(rows, vid) {
   for (const e of rows) {
     const x = e.extra || {};
     if (e.event === 'view') { if (e.sid) visitors.add(e.sid); continue; }
-    if (e.event === 'video_play') { if (e.sid) clickSids.add(e.sid); continue; }
+    if (e.event === 'video_play' || e.event === 'video_click') { if (e.sid) clickSids.add(e.sid); continue; }
     if (x.vid !== vid || !e.sid) continue;
     if (num(x.dur) > dur) dur = num(x.dur);
     if (e.event === 'video_ready') readySids.add(e.sid);
@@ -189,7 +220,9 @@ export default async function handler(req, res) {
   const since = new Date(Date.now() - days * 86400000).toISOString();
 
   try {
-    const rows = await readEvents(base, key, since);
+    const raw = await readEvents(base, key, since);
+    const botSids = metaCheckSids(raw);
+    const rows = raw.filter(e => !botSids.has(e.sid));
 
     // אילו סרטונים נצפו בחלון, וממתי כל אחד הוצג לראשונה.
     const vids = new Map();
@@ -207,7 +240,7 @@ export default async function handler(req, res) {
 
     const vid = typeof q.vid === 'string' && vids.has(q.vid) ? q.vid : (vidList[0] && vidList[0].vid);
     if (!vid) {
-      return res.status(200).json({ ok: true, days, vids: [], vid: null, groups: {} });
+      return res.status(200).json({ ok: true, days, vids: [], vid: null, groups: {}, filteredMetaChecks: botSids.size });
     }
 
     // המבקרים נספרים רק מהרגע שהסרטון הזה עלה לדף, אחרת אחוז ההפעלה
@@ -218,7 +251,7 @@ export default async function handler(req, res) {
     const groups = { all: summarize(scoped, vid) };
     for (const v of ['A', 'B']) groups[v] = summarize(scoped.filter(e => e.variant === v), vid);
 
-    return res.status(200).json({ ok: true, days, since, vid, liveSince: first, vids: vidList, groups });
+    return res.status(200).json({ ok: true, days, since, vid, liveSince: first, vids: vidList, groups, filteredMetaChecks: botSids.size });
   } catch (e) {
     console.error('[video-report]', e && e.message);
     return res.status(500).json({ error: 'read_failed', detail: String(e && e.message).slice(0, 200) });

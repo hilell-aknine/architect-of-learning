@@ -33,7 +33,7 @@ const TABLE = 'page_events';
 //   video_pause / video_end
 // הדוח שקורא אותם: api/video-report.js.
 const ALLOWED = new Set([
-  'view', 'cta_click', 'video_play', 'scroll_50', 'scroll_90',
+  'view', 'cta_click', 'video_play', 'video_click', 'scroll_50', 'scroll_90',
   'form_start', 'form_submit', 'wa_click',
   'video_ready', 'video_start', 'video_hb', 'video_progress', 'video_pause', 'video_end'
 ]);
