@@ -1136,17 +1136,54 @@ document.addEventListener('visibilitychange', function () {
 });
 window.addEventListener('pagehide', vtHeartbeat);
 
+/* 13.10.2026 — הנגן מתחמם מראש. קודם כל ה-API של יוטיוב נמשך רק אחרי הלחיצה,
+   ואז הנגן נבנה, ורק אז playVideo(). בטלפון (ובמיוחד בדפדפן של אינסטגרם) זה
+   לקח כמה שניות, וה-play האוטומטי בסוף השרשרת נחסם כי כבר לא היה "בתוך" הלחיצה.
+   19 כניסות ממודעות ביום הראשון, 0 התחלות צפייה, ולא נמדדה בכלל לחיצה על החזית.
+   עכשיו: כשהסרטון מתקרב למסך, פותחים חיבור ליוטיוב ומושכים את ה-API (בלי לבנות
+   נגן, כדי לא לפגוע בטעינת הדף). בלחיצה בונים את הנגן מיד, בתוך הלחיצה עצמה,
+   ומודדים video_click. */
 var _ytf = document.getElementById('ytf');
-if (_ytf) _ytf.addEventListener('click', function(){
-  if (!VSL_YT_ID) return;
-  var w = document.getElementById('vwrap');
-  w.innerHTML = '<div id="yt"></div>';
+var YTW = { api: false, ready: false, want: false };
+function ytWarm() {
+  if (YTW.api || !VSL_YT_ID) return;
+  YTW.api = true;
+  ['https://www.youtube.com', 'https://i.ytimg.com', 'https://www.google.com'].forEach(function (h) {
+    var l = document.createElement('link'); l.rel = 'preconnect'; l.href = h; l.crossOrigin = '';
+    document.head.appendChild(l);
+  });
   var t = document.createElement('script');
   t.src = 'https://www.youtube.com/iframe_api';
   document.body.appendChild(t);
-}, { once:true });
+}
+if (_ytf && VSL_YT_ID) {
+  if ('IntersectionObserver' in window) {
+    var _yio = new IntersectionObserver(function (en) {
+      if (en.some(function (x) { return x.isIntersecting; })) { ytWarm(); _yio.disconnect(); }
+    }, { rootMargin: '600px 0px' });
+    _yio.observe(_ytf);
+  }
+  ['pointerdown', 'touchstart', 'mouseover', 'focus'].forEach(function (ev) {
+    _ytf.addEventListener(ev, ytWarm, { once: true, passive: true });
+  });
+  _ytf.addEventListener('click', function () {
+    ecv('video_click', vtExtra({ warm: YTW.ready ? 1 : 0 }));
+    var w = document.getElementById('vwrap');
+    w.innerHTML = '<div id="yt"></div>';
+    YTW.want = true;
+    ytWarm();
+    if (YTW.ready) ytBuild();
+  }, { once: true });
+}
 
-window.onYouTubeIframeAPIReady = function(){
+window.onYouTubeIframeAPIReady = function () {
+  YTW.ready = true;
+  if (YTW.want) ytBuild();
+};
+
+function ytBuild() {
+  if (YTW.built) return;
+  YTW.built = true;
   var pl = new YT.Player('yt', {
     videoId: VSL_YT_ID,
     width: '100%', height: '100%',
