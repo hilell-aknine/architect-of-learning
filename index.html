@@ -412,7 +412,12 @@
 !function(f){if(f.fbq)return;var n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}(window);
-fbq('init','2132323570952002');fbq('track','PageView');
+fbq('init','2132323570952002');
+/* מזהה משותף ל-PageView של הדפדפן ושל השרת (14.10.2026). הפיקסל נטען בעיכוב,
+   ולכן מבקר שלא נגע במסך לא נספר אצל מטא. api/event.js שולח את אותו PageView
+   מהשרת עם אותו מזהה, ומטא מאחדת את השניים לאחד. */
+window.EC_PV_ID='pv-'+Date.now()+'-'+Math.random().toString(36).slice(2,10);
+fbq('track','PageView',{},{eventID:window.EC_PV_ID});
 (function(w,d){
   var clarityOn = true;
   try { if (localStorage.getItem('cookie_consent_v2') === 'essential') clarityOn = false; } catch(e){}

@@ -109,7 +109,12 @@
         page: 'index',
         utm: utm(),
         referrer: document.referrer ? String(document.referrer).slice(0, 300) : '',
-        extra: extra || null
+        extra: extra || null,
+        // רק בכניסה: חומר ל-PageView בצד-שרת (api/event.js), כדי שמטא תראה
+        // גם מבקר שעזב לפני שהפיקסל הדחוי נטען. נוסף 14.10.2026.
+        pv_id: name === 'view' ? (window.EC_PV_ID || '') : undefined,
+        fbc: name === 'view' ? safe(function () { return window.LEAD_FB.fbc; }) || '' : undefined,
+        fbp: name === 'view' ? safe(function () { return window.LEAD_FB.fbp(); }) || '' : undefined
       });
       if (navigator.sendBeacon) {
         navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'application/json' }));

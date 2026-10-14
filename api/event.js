@@ -125,6 +125,58 @@ function sanitizeExtra(raw) {
   return Object.keys(out).length ? out : null;
 }
 
+// ---------- PageView בצד-שרת (14.10.2026) ----------
+// למה: הפיקסל בדף נטען בעיכוב (מגע ראשון או 2.5 שנ'), כדי שהדף יהיה מהיר.
+// המחיר נמדד: מטא ספרה 19 טעינות דף מול 35 מבקרים שהגיעו מהמודעות אצלנו.
+// לכן ה-view שלנו נשלח גם למטא, עם אותו event_id כמו ה-PageView של הדפדפן,
+// ומטא מאחדת את שניהם לאירוע אחד. אותו מנגנון כמו Lead ב-api/lead.js.
+// אין כאן שום מידע אישי: רק IP, דפדפן, ומזהי מטא עצמה (fbc/fbp) ללא גיבוב.
+// זחלנים של מטא (בדיקת הקישור של המודעה) לא נשלחים, כדי לא לזהם את האות.
+const BOT_UA = /meta-externalads|facebookexternalhit|facebot|bot|crawler|spider|headless/i;
+
+async function sendCapiPageView(req, body) {
+  const pixelId = cleanEnv(process.env.META_PIXEL_ID);
+  const capiToken = cleanEnv(process.env.META_CAPI_TOKEN);
+  const eventId = str(body.pv_id, 64);
+  if (!pixelId || !capiToken || !/^pv-\d+-[a-z0-9]+$/.test(eventId)) return;
+
+  const userAgent = str(req.headers?.['user-agent'] || '', 500);
+  if (!userAgent || BOT_UA.test(userAgent)) return;
+
+  const fbcRaw = str(body.fbc, 500);
+  const fbpRaw = str(body.fbp, 200);
+  const userData = {
+    client_user_agent: userAgent,
+    client_ip_address: clientIp(req) !== 'unknown' ? clientIp(req) : undefined
+  };
+  if (/^fb\.\d+\.\d+\..+/.test(fbcRaw)) userData.fbc = fbcRaw;
+  if (/^fb\.\d+\.\d+\.\d+$/.test(fbpRaw)) userData.fbp = fbpRaw;
+
+  const payload = {
+    data: [{
+      event_name: 'PageView',
+      event_time: Math.floor(Date.now() / 1000),
+      event_id: eventId,
+      action_source: 'website',
+      event_source_url: str(req.headers?.referer || '', 500) || undefined,
+      user_data: userData
+    }]
+  };
+  const testCode = cleanEnv(process.env.META_TEST_EVENT_CODE);
+  if (testCode) payload.test_event_code = testCode;
+
+  try {
+    const r = await fetchWithTimeout(
+      `https://graph.facebook.com/v21.0/${encodeURIComponent(pixelId)}/events?access_token=${encodeURIComponent(capiToken)}`,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) },
+      4000
+    );
+    if (!r.ok) console.error('[event] CAPI PageView rejected', r.status, await r.text().catch(() => ''));
+  } catch (e) {
+    console.error('[event] CAPI PageView failed', e && e.message);
+  }
+}
+
 async function fetchWithTimeout(url, options, ms) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), ms);
@@ -184,6 +236,9 @@ export default async function handler(req, res) {
       extra: sanitizeExtra(body.extra)
     };
 
+    // במקביל לכתיבה למסד, כדי לא להאריך את הבקשה. נכשל בשקט כמו כל השאר.
+    const capi = event === 'view' ? sendCapiPageView(req, body) : null;
+
     const r = await fetchWithTimeout(
       `${supabaseUrl}/rest/v1/${TABLE}`,
       {
@@ -203,6 +258,7 @@ export default async function handler(req, res) {
       const detail = await r.text().catch(() => '');
       console.error('[event] insert failed', r.status, detail, { event, variant });
     }
+    if (capi) await capi;
   } catch (e) {
     // בכוונה בולעים. אירוע מדידה לא מפיל בקשה של מבקר.
     console.error('[event] error', e && e.message);
