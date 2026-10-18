@@ -887,7 +887,9 @@ fbq('track','PageView',{},{eventID:window.EC_PV_ID});
     <h2>אז מה עושים עכשיו?</h2>
     <p class="lead-p">אני קובע איתך שיחת אסטרטגיה קצרה, ללא עלות. בשיחה תדע בדיוק איך לשפר את הקורס שלך כך שהוא ייראה שונה מהמתחרים שלך, ויתן ללקוחות שלך ערך איכותי פי עשר, בלי לשנות אפילו מילה אחת בתוכן הקורס עצמו.</p>
     <form id="f" novalidate>
-      <input id="n" type="text" placeholder="השם שלך" autocomplete="name" required />
+      <input id="n" type="text" placeholder="השם שלך" autocomplete="name" required aria-describedby="ne" />
+      <!-- 18.10.2026: שם ריק עצר את השליחה בשקט (רק פוקוס, בלי הסבר). עכשיו יש הודעה. -->
+      <div class="fielderr" id="ne">רק תכתוב איך לפנות אליך, ואני חוזר אליך.</div>
       <input id="p" type="tel" placeholder="טלפון לחזרה" autocomplete="tel" inputmode="tel" required
              aria-describedby="pe" /><!-- ולידציה ישראלית ב-validPhone(). ראה הערה למטה. -->
       <div class="fielderr" id="pe">מספר הטלפון לא נראה תקין. נייד 05 ואחריו 8 ספרות, או קווי עם קידומת.</div>
@@ -1269,6 +1271,12 @@ function validPhone(raw) {
 }
 
 // השגיאה נעלמת ברגע שהוא מתקן, ולא נשארת אדומה מולו בזמן ההקלדה.
+document.getElementById('n').addEventListener('input', function(){
+  if (this.classList.contains('bad') && this.value.trim()) {
+    this.classList.remove('bad');
+    document.getElementById('ne').style.display = 'none';
+  }
+});
 document.getElementById('p').addEventListener('input', function(){
   if (this.classList.contains('bad') && validPhone(this.value)) {
     this.classList.remove('bad');
@@ -1281,8 +1289,19 @@ document.getElementById('f').addEventListener('submit', function(ev){
   var n = document.getElementById('n'), p = document.getElementById('p');
   var pe = document.getElementById('pe');
   var name = (n.value||'').trim(), phone = (p.value||'').trim();
-  if (!name) { n.focus(); return; }
+  var ne = document.getElementById('ne');
+  var f = this;
+  f.setAttribute('data-valid', '0');
+  // form_invalid: איפה בדיוק השליחה נעצרת. נמדד דרך analytics.js (18.10.2026).
+  function inval(r){ try { if (window.ecFormTrack) window.ecFormTrack('form_invalid', { r: r }); } catch(e){} }
+  if (!name) {
+    ne.style.display = 'block'; n.classList.add('bad'); n.focus();
+    inval('name_empty');
+    return;
+  }
+  ne.style.display = 'none'; n.classList.remove('bad');
   if (!validPhone(phone)) {
+    inval('phone_bad');
     pe.style.display = 'block';
     p.classList.add('bad');
     p.focus();
@@ -1290,6 +1309,7 @@ document.getElementById('f').addEventListener('submit', function(ev){
   }
   pe.style.display = 'none';
   p.classList.remove('bad');
+  f.setAttribute('data-valid', '1');
   phone = normalizePhone(phone);
   // 🔴 עודכן 15.09.2026 יחד עם הסרת שאלת הסינון מהטופס (ראה ההערה ליד הטופס).
   //   היו כאן שני דגלים ושלושה עמודי תודה, וכולם נגזרו מהתשובה לשאלה שכבר לא

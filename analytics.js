@@ -186,12 +186,62 @@
       }, true);
     });
 
-    // תחילת מילוי הטופס. פוקוס ראשון על שדה כלשהו בטופס.
+    // תחילת מילוי הטופס + מדידה ברמת השדה (נוסף 18.10.2026).
+    // למה: ב-v4 נספרו 119 "התחילו טופס" מול 9 שליחות. בדיקת page_events הראתה
+    // שכל 125 הנוטשים (12-18.10) נראים כמו זחלנים: form_start 23-28 שניות אחרי
+    // הכניסה, בלי שום גלילה ובלי לחיצה, ואפס אירועים אחריו, ובפרצים שתואמים
+    // לרגעי יצירת המודעות במטא. אדם לא יכול להגיע לשדה בתחתית הדף בלי לגלול.
+    // לכן כל אירוע טופס נושא עכשיו הקשר שמאפשר להפריד אדם ממכונה:
+    //   ui  = 1 אם היה מגע/לחיצה/מקש אמיתי (isTrusted) לפני האירוע
+    //   sc  = עומק הגלילה המקסימלי עד אותו רגע, באחוזים
+    //   t   = שניות מהכניסה לדף
+    //   fld = איזה שדה (n שם · p טלפון)
+    // ואירועים חדשים: field_focus / field_filled לכל שדה בנפרד, ו-form_invalid
+    // (r = name_empty / phone_bad) כשהשליחה נעצרת בוולידציה.
+    // form_submit עדיין נורה על ניסיון השליחה, עכשיו עם valid=1/0.
     safe(function () {
       var f = document.getElementById('f');
       if (!f) return;
-      f.addEventListener('focusin', function () { send('form_start'); }, { once: true });
-      f.addEventListener('submit', function () { send('form_submit'); });
+      var T0 = Date.now(), maxSc = 0, ui = 0, seen = {};
+      function onAct(e) { if (e && e.isTrusted) ui = 1; }
+      ['pointerdown', 'touchstart', 'keydown'].forEach(function (t) {
+        document.addEventListener(t, onAct, { capture: true, passive: true });
+      });
+      window.addEventListener('scroll', function () {
+        var doc = document.documentElement, max = doc.scrollHeight - doc.clientHeight;
+        if (max > 0) maxSc = Math.max(maxSc, Math.round(100 * (window.scrollY || doc.scrollTop) / max));
+      }, { passive: true });
+      function ctx(extra) {
+        var o = { ui: ui, sc: maxSc, t: Math.round((Date.now() - T0) / 1000) };
+        for (var k in (extra || {})) o[k] = extra[k];
+        return o;
+      }
+      // פעם אחת לכל מפתח (לא לכל שם אירוע), כדי ששני השדות יימדדו בנפרד.
+      function once(key, name, extra) {
+        if (seen[key]) return;
+        seen[key] = true;
+        dispatch(name, ctx(extra), false);
+      }
+      window.ecFormTrack = function (name, extra) { once(name + ':' + JSON.stringify(extra || {}), name, extra); };
+      f.addEventListener('focusin', function (e) {
+        var id = (e.target && e.target.id) || '';
+        if (!sent.form_start) { sent.form_start = true; dispatch('form_start', ctx({ fld: id }), true); }
+        if (id === 'n' || id === 'p') once('ff:' + id, 'field_focus', { fld: id });
+      });
+      f.addEventListener('focusout', function (e) {
+        var el = e.target, id = (el && el.id) || '';
+        if ((id === 'n' || id === 'p') && String(el.value || '').trim()) once('fl:' + id, 'field_filled', { fld: id });
+      });
+      // עד שני form_submit לביקור: ניסיון שנפסל (valid=0) ושליחה תקינה (valid=1).
+      // לפיקסל נשלח רק הראשון, כמו קודם.
+      f.addEventListener('submit', function () {
+        var v = f.getAttribute('data-valid') === '1' ? 1 : 0;
+        if (seen['fs:' + v]) return;
+        seen['fs:' + v] = true;
+        var first = !sent.form_submit;
+        sent.form_submit = true;
+        dispatch('form_submit', ctx({ valid: v }), first);
+      });
     });
 
     // עומק גלילה. שני ספים בלבד, מספיק כדי לראות אם הכותרת מחזיקה.

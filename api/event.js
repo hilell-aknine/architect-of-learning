@@ -35,6 +35,8 @@ const TABLE = 'page_events';
 const ALLOWED = new Set([
   'view', 'cta_click', 'video_play', 'video_click', 'scroll_50', 'scroll_90',
   'form_start', 'form_submit', 'wa_click',
+  // ברמת השדה (18.10.2026): איפה בתוך הטופס נעצרים. הפירוט ב-extra.fld / extra.r.
+  'field_focus', 'field_filled', 'form_invalid',
   'video_ready', 'video_start', 'video_hb', 'video_progress', 'video_pause', 'video_end'
 ]);
 
