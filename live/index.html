@@ -286,14 +286,15 @@
         btn1.disabled = false;
         btn1.textContent = '📲 שלח לי קישור כניסה עכשיו';
         if (res.status === 401){ badPasscodeHint(stage1); return; }
+        if (res.status === 429){ stage1.innerHTML = '<span class="bad">יותר מדי ניסיונות. נסה שוב בעוד עשר דקות.</span>'; return; }
         if (!res.json.ok){
           stage1.innerHTML = '<span class="bad">נכשל:</span> <span class="mono">' + JSON.stringify(res.json).slice(0,300) + '</span>';
           return;
         }
-        var waLine = res.json.sent
-          ? '<span class="ok">✓ נשלח בוואטסאפ אמיתי ל-972549116092. תבדוק את הטלפון עכשיו.</span>'
-          : '<span class="bad">הוואטסאפ לא נשלח (' + (res.json.sendError||'') + ')</span> — אבל הקישור עצמו אמיתי, פתח אותו ישירות:';
-        stage1.innerHTML = waLine + '<a class="mono" href="' + res.json.link + '" target="_blank" style="display:block;color:var(--ember);text-decoration:underline;">' + res.json.link + '</a>';
+        // הקישור עצמו לא חוזר לדפדפן (סשן אמיתי). הוא מגיע רק בוואטסאפ.
+        stage1.innerHTML = res.json.sent
+          ? '<span class="ok">✓ נשלח בוואטסאפ אמיתי. תבדוק את הטלפון עכשיו.</span>'
+          : '<span class="bad">הוואטסאפ לא נשלח, ולכן אין קישור להציג. נסה שוב בעוד רגע.</span> <span class="mono">' + String(res.json.sendError||'').slice(0,200).replace(/[<>&]/g,'') + '</span>';
       })
       .catch(function(e){
         btn1.disabled = false;
@@ -434,6 +435,7 @@
         btn6.disabled = false;
         btn6.textContent = '🗄️ כתוב + קרא + נקה מול המסד עכשיו';
         if (res.status === 401){ badPasscodeHint(stage6); return; }
+        if (res.status === 429){ stage6.innerHTML = '<span class="bad">יותר מדי ניסיונות. נסה שוב בעוד עשר דקות.</span>'; return; }
         if (!res.json.ok){
           stage6.innerHTML = '<span class="bad">נכשל:</span> <span class="mono">' + JSON.stringify(res.json).slice(0,300) + '</span>';
           return;

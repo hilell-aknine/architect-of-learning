@@ -20,6 +20,45 @@
 //
 // Never hardcode a fallback for LIVE_FEATURES_PASSCODE — if it's not configured, the
 // endpoint refuses to run rather than silently accept any caller.
+//
+// 🔒 הוקשח 21.10.2026:
+//   - הקישור (סשן אמיתי של חשבון הדמו) נשלח רק בוואטסאפ. הוא לא חוזר בגוף התשובה,
+//     כי מי שמחזיק את קוד הגישה לא אמור לקבל ממנו כניסה לחשבון.
+//   - השוואת קוד הגישה בזמן קבוע (גיבוב SHA-256 + timingSafeEqual).
+//   - הגבלת ניסיונות לכל IP, בזיכרון המופע (אותו דפוס כמו api/video-report.js):
+//     10 קודים שגויים בעשר דקות = חסימה, ו-10 קישורים בעשר דקות לכל היותר.
+//     הגנה סבירה ולא הרמטית: מופע חדש של הפונקציה מתחיל ממונה ריק.
+
+import crypto from 'node:crypto';
+
+function safeEqual(a, b) {
+  const ha = crypto.createHash('sha256').update(String(a)).digest();
+  const hb = crypto.createHash('sha256').update(String(b)).digest();
+  return ha.length === hb.length && crypto.timingSafeEqual(ha, hb);
+}
+
+const RL_WINDOW_MS = 10 * 60 * 1000;
+const FAIL_MAX = 10;
+const SEND_MAX = 10;
+const failHits = new Map();
+const sendHits = new Map();
+
+function clientIp(req) {
+  const xf = req.headers?.['x-forwarded-for'];
+  if (typeof xf === 'string' && xf) return xf.split(',')[0].trim();
+  return req.headers?.['x-real-ip'] || req.socket?.remoteAddress || 'unknown';
+}
+function overLimit(map, ip, max) {
+  const v = map.get(ip);
+  return !!v && Date.now() - v.start < RL_WINDOW_MS && v.n >= max;
+}
+function bump(map, ip) {
+  const now = Date.now();
+  if (map.size > 5000) for (const [k, v] of map) if (now - v.start > RL_WINDOW_MS) map.delete(k);
+  const v = map.get(ip);
+  if (!v || now - v.start > RL_WINDOW_MS) map.set(ip, { start: now, n: 1 });
+  else v.n += 1;
+}
 
 function cleanEnv(v) {
   return (v == null ? '' : String(v)).trim().replace(/^=+/, '').trim();
@@ -45,10 +84,19 @@ export default async function handler(req, res) {
   if (!passcode) {
     return res.status(500).json({ error: 'server_not_configured', detail: 'LIVE_FEATURES_PASSCODE missing' });
   }
+  const ip = clientIp(req);
+  if (overLimit(failHits, ip, FAIL_MAX)) {
+    return res.status(429).json({ error: 'too_many_attempts' });
+  }
   const supplied = cleanEnv(req.headers['x-live-passcode']);
-  if (supplied !== passcode) {
+  if (!supplied || !safeEqual(supplied, passcode)) {
+    bump(failHits, ip);
     return res.status(401).json({ error: 'bad_passcode' });
   }
+  if (overLimit(sendHits, ip, SEND_MAX)) {
+    return res.status(429).json({ error: 'too_many_links' });
+  }
+  bump(sendHits, ip);
 
   const SUPABASE_URL = cleanEnv(process.env.SUPABASE_URL);
   const SERVICE_KEY = cleanEnv(process.env.SUPABASE_SERVICE_ROLE_KEY);
@@ -67,7 +115,8 @@ export default async function handler(req, res) {
     }, 10000);
     const genJson = await genResp.json().catch(() => null);
     if (!genResp.ok || !genJson?.action_link) {
-      return res.status(502).json({ error: 'supabase_generate_link_failed', detail: genJson });
+      // בלי detail: תשובת generate_link מכילה גם email_otp ו-hashed_token.
+      return res.status(502).json({ error: 'supabase_generate_link_failed', status: genResp.status });
     }
 
     // 2. Resolve it server-side: GoTrue answers with a 303 whose Location carries
@@ -111,7 +160,8 @@ export default async function handler(req, res) {
       sendError = 'green_api_not_configured';
     }
 
-    return res.status(200).json({ ok: true, sent, sendError, link: finalLink });
+    // finalLink לא חוזר כאן בכוונה: הוא סשן אמיתי, והערוץ היחיד שלו הוא הוואטסאפ.
+    return res.status(200).json({ ok: true, sent, sendError });
   } catch (e) {
     return res.status(500).json({ error: 'unexpected', detail: e.message });
   }

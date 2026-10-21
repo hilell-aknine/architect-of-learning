@@ -9,6 +9,38 @@
 //
 // REQUIRED env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, LIVE_FEATURES_PASSCODE
 // (same as live-magic-link.js — see that file's header for the full list / rationale).
+//
+// 🔒 הוקשח 21.10.2026 (כמו live-magic-link.js): השוואת קוד הגישה בזמן קבוע,
+// ו-10 קודים שגויים בעשר דקות לכל IP = חסימה (בזיכרון המופע).
+
+import crypto from 'node:crypto';
+
+function safeEqual(a, b) {
+  const ha = crypto.createHash('sha256').update(String(a)).digest();
+  const hb = crypto.createHash('sha256').update(String(b)).digest();
+  return ha.length === hb.length && crypto.timingSafeEqual(ha, hb);
+}
+
+const RL_WINDOW_MS = 10 * 60 * 1000;
+const FAIL_MAX = 10;
+const failHits = new Map();
+
+function clientIp(req) {
+  const xf = req.headers?.['x-forwarded-for'];
+  if (typeof xf === 'string' && xf) return xf.split(',')[0].trim();
+  return req.headers?.['x-real-ip'] || req.socket?.remoteAddress || 'unknown';
+}
+function tooManyFails(ip) {
+  const v = failHits.get(ip);
+  return !!v && Date.now() - v.start < RL_WINDOW_MS && v.n >= FAIL_MAX;
+}
+function noteFail(ip) {
+  const now = Date.now();
+  if (failHits.size > 5000) for (const [k, v] of failHits) if (now - v.start > RL_WINDOW_MS) failHits.delete(k);
+  const v = failHits.get(ip);
+  if (!v || now - v.start > RL_WINDOW_MS) failHits.set(ip, { start: now, n: 1 });
+  else v.n += 1;
+}
 
 function cleanEnv(v) {
   return (v == null ? '' : String(v)).trim().replace(/^=+/, '').trim();
@@ -32,7 +64,13 @@ export default async function handler(req, res) {
 
   const passcode = cleanEnv(process.env.LIVE_FEATURES_PASSCODE);
   if (!passcode) return res.status(500).json({ error: 'server_not_configured', detail: 'LIVE_FEATURES_PASSCODE missing' });
-  if (cleanEnv(req.headers['x-live-passcode']) !== passcode) return res.status(401).json({ error: 'bad_passcode' });
+  const ip = clientIp(req);
+  if (tooManyFails(ip)) return res.status(429).json({ error: 'too_many_attempts' });
+  const supplied = cleanEnv(req.headers['x-live-passcode']);
+  if (!supplied || !safeEqual(supplied, passcode)) {
+    noteFail(ip);
+    return res.status(401).json({ error: 'bad_passcode' });
+  }
 
   const SUPABASE_URL = cleanEnv(process.env.SUPABASE_URL);
   const SERVICE_KEY = cleanEnv(process.env.SUPABASE_SERVICE_ROLE_KEY);

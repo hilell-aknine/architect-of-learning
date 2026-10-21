@@ -17,3 +17,11 @@ index-legacy.html
 
 fix-engine.js
 fixes-*.json
+
+# secrets & local junk (נוסף 21.10.2026)
+.env
+.env.*
+*.log
+*.bak
+*.bak*
+.vercel/
