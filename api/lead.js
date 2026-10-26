@@ -345,38 +345,22 @@ export default async function handler(req, res) {
         ? phoneDigits
         : '972' + phoneDigits.replace(/^0+/, '');
 
-      // Vercel functions run in UTC. Stamp Israel time explicitly or the hour is wrong.
-      const stamp = new Intl.DateTimeFormat('he-IL', {
-        timeZone: 'Asia/Jerusalem',
-        day: 'numeric', month: 'numeric',
-        hour: '2-digit', minute: '2-digit'
-      }).format(new Date());
+      // 26.10.2026 (הלל): ההתראה פושטה לשלושה דברים בלבד: שם, טלפון עם קישור לפתיחת שיחה,
+      // והאם צפה בסרטון. שורת המודעה, העסק, התלמידים והשעה הוסרו בכוונה.
+      // שורת המודעה גם הייתה שבורה: היא חיפשה utm_content ב-referrer, שמכיל רק m.facebook.com,
+      // ולכן הציגה תמיד "landing-simple". ה-utm המלא עדיין נשמר בשורה במסד.
+      const watchedLine = page === 'experience'
+        ? 'צפה בסרטון: אין סרטון בדף הזה (החוויה)'
+        : (videoWatchedPct > 0
+            ? `צפה בסרטון: כן, ${videoWatchedPct}%` + (videoCompleted ? ' (עד הסוף)' : '')
+            : 'צפה בסרטון: לא (0%)');
 
-      // Which ad brought them. The browser sends the full UTM string in the referer header.
-      const adMatch = /utm_content=([^&\s]+)/.exec(referrer || '');
-      let adName = adSource;
-      if (adMatch) {
-        try { adName = decodeURIComponent(adMatch[1]); } catch { adName = adMatch[1]; }
-      }
-
-      const lines = [
-        'הילל, ליד חדש 🟢',
-        'בניית פורטלים',
-        '',
+      const message = [
+        'ליד חדש 🟢',
         name,
-        phone
-      ];
-      if (business) lines.push(`עסק: ${business}`);
-      if (students) lines.push(`תלמידים: ${students}`);
-      lines.push(`${stamp} · ${adName}`);
-      lines.push(
-        `צפה ב-${videoWatchedPct}% מהסרטון` +
-          (videoCompleted ? ' (סיים את כל הסרטון)' : '') +
-          (videoSeconds ? ` · ${Math.round(videoSeconds)} שניות` : '')
-      );
-      lines.push('');
-      lines.push(`פתח שיחה: https://wa.me/${waDigits}`);
-      const message = lines.join('\n');
+        `${phone} · https://wa.me/${waDigits}`,
+        watchedLine
+      ].join('\n');
 
       try {
         // A disconnected Green API instance still answers 200 with a valid-looking idMessage,
@@ -433,38 +417,10 @@ export default async function handler(req, res) {
       }
     }
 
-    // ---------- 3a. kick off enrichment (best-effort, never blocks the lead) ----------
-    // The enricher looks the person up and sends Hillel a SECOND WhatsApp with who they are.
-    // It lives on Fly because the alert above must stay instant — speed-to-lead beats detail.
-    // ⚠️ ROOT CAUSE FOUND live 2026-08-30: lead-enricher-hillel.fly.dev runs with
-    // auto_stop_machines=stop / min_machines_running=0, so it fully sleeps between leads.
-    // Live-measured cold start: 4.74s for a bare GET /health. This block used to abort at
-    // 4000ms — SHORTER than the cold start itself — so on a cold machine (the normal case,
-    // since leads arrive sporadically) the POST to /enrich was killed before the Fly proxy
-    // even finished waking the machine. Result verified against campaign_leads: every one of
-    // the last 13 leads (2026-08-20 through today) had enrichment/enriched_at/enrich_error ALL
-    // null — the request never reached the Node handler, so neither the 2nd WhatsApp nor the
-    // DB write-back ever ran. This call only needs to survive long enough to receive the 202
-    // ack (the enricher does the actual work async on its own after that), so 12s covers a
-    // cold start plus margin without materially lengthening this handler's own runtime.
-    const enrichUrl = cleanEnv(process.env.ENRICH_URL);
-    const enrichToken = cleanEnv(process.env.ENRICH_TOKEN);
-    if (enrichUrl && enrichToken) {
-      try {
-        await fetchWithTimeout(
-          enrichUrl,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-enrich-token': enrichToken },
-            body: JSON.stringify({ id: leadId, name, phone })
-          },
-          12000
-        );
-      } catch (e) {
-        // An enrichment miss costs context, not the lead. Log and move on.
-        console.error('[lead] enrich trigger failed', e && e.message, 'lead_id:', leadId);
-      }
-    }
+    // ---------- 3a. enrichment: removed 26.10.2026 (הלל) ----------
+    // הקריאה ל-lead-enricher-hillel.fly.dev נותקה. נמדד 26.10: הוא סימן "זוהה בוודאות"
+    // ב-14 מתוך 14 לידים, גם כשזה היה אדם אחר. הלל: "שיגיע רק שם וטלפון והאם צפה בסרטון".
+    // להחזרה: git revert של ה-commit הזה (או שחזור הבלוק מההיסטוריה). ENRICH_URL/ENRICH_TOKEN ב-Vercel כבר לא נקראים.
 
     // ---------- 3c. Meta Conversions API — the server's own Lead event ----------
     // WHY THIS EXISTS: the browser already fires fbq('track','Lead') on thank-you.html, but that
