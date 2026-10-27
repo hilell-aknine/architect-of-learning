@@ -113,9 +113,11 @@
   }
   .nolist li{display:inline-flex;align-items:center;gap:14px}
   .nolist li + li::before{content:"·";color:var(--ink-faint);opacity:.6;font-weight:400}
+  /* 27.10.2026, בקשת הלל: גם בטלפון שורה אחת (במקום שלוש שורות בטור), כדי שהסרטון
+     יעלה למסך הראשון. גופן קטן יותר ומרווח צר יותר כדי שזה ייכנס ב-390px. */
   @media(max-width:460px){
-    .nolist{flex-direction:column;align-items:center;gap:5px}
-    .nolist li + li::before{content:none}
+    .nolist{flex-wrap:nowrap;gap:8px;font-size:.9rem;white-space:nowrap}
+    .nolist li{gap:8px}
   }
 
   /* ===== רמז ההנעה מתחת לסרטון, נוסף 23.09.2026 =====
@@ -494,7 +496,7 @@ fbq('track','PageView',{},{eventID:window.EC_PV_ID});
          לפני/אחרי מלקוח שמוכיחים סכום, וכדי לא להסתבך עם כללי מטא על הבטחת הכנסה. -->
     <p class="hero-sub">18 דקות שיראו לך 9 דרכים מוכחות שיכולות להכניס לך עוד אלפי ועד עשרות אלפי שקלים מהלקוחות שכבר קנו ממך.</p>
     <ul class="nolist">
-      <li>בלי להוסיף כסף על שיווק</li>
+      <li>בלי כסף על שיווק</li>
       <li>בלי מכירות</li>
       <li>בלי לצלם עוד תוכן</li>
     </ul>
