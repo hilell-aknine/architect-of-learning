@@ -119,6 +119,11 @@
     .nolist{flex-wrap:nowrap;gap:8px;font-size:.9rem;white-space:nowrap}
     .nolist li{gap:8px}
   }
+  /* טלפונים צרים במיוחד (340px ומטה נמדד 27.10): השורה נגעה בקצוות, אז מקטינים עוד קצת. */
+  @media(max-width:359px){
+    .nolist{font-size:.82rem;gap:6px}
+    .nolist li{gap:6px}
+  }
 
   /* ===== רמז ההנעה מתחת לסרטון, נוסף 23.09.2026 =====
      רם, 35:47: "לחץ על Play. ואז איזה חץ למטה כזה אייקון חץ למטה."
