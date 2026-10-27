@@ -231,7 +231,9 @@
      (חוסך כ-1MB וכ-2-3 שניות בטעינה הראשונה, בדיוק איפה שהמודעה נוחתת). */
   .ytf{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:#000;cursor:pointer;display:block}
   .ytf img{width:100%;height:100%;object-fit:cover;display:block}
-  .ytf span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  /* 27.10.2026: הכפתור זז מהמרכז לפינה הימנית-תחתונה, מתחת לטקסט. בטמבנייל החדש
+     (הלל עם טלפון, v5/thumb-01) המרכז נופל בדיוק על הפנים שלו. */
+  .ytf span{position:absolute;top:77%;left:79%;transform:translate(-50%,-50%);
     width:68px;height:48px;border-radius:12px;background:rgba(20,17,13,.78);
     display:flex;align-items:center;justify-content:center;transition:background .18s}
   .ytf:hover span,.ytf:focus-visible span{background:var(--ember)}
@@ -541,10 +543,10 @@ fbq('track','PageView',{},{eventID:window.EC_PV_ID});
           <!-- ה-src יושב כאן ב-HTML מ-12.10.2026 (קודם הוזרק מסקריפט). המקור לעריכת הטמבנייל
                יושב מחוץ לתיקיית הפריסה, בשורש הפרויקט:
                לקוחות\בניית פורטלים מקצועים\vsl-thumb-source.html
-               🔄 27.10.2026: הוחלף בתמונה 02 מתוך 10 שנוצרו ב-gpt-image-2 (בחירת הלל), לפי
+               🔄 27.10.2026: הוחלף בתמונה v5/thumb-01 (בחירת הלל, אחרי 3 סבבים) מ-gpt-image-2, לפי
                רם: פנים מדברות למצלמה + "קנו את התוכן הדיגיטלי ונעלמו. כמה כסף זה עולה לך?".
                המקור והחלופות: C:\AtomicBusiness\ExpertCloneContent\vsl-thumb-2026-10-27\v2\
-               (thumb-02.png, נחתך ל-16:9 מ-y=60). vsl-thumb-source.html כבר לא המקור. -->
+               (v5/thumb-01.png, נחתך ל-16:9 מ-y=60; הפנים לפי הסלפים ב-refs-real). vsl-thumb-source.html כבר לא המקור. -->
           <img id="vthumb" src="assets/vsl-thumb-960.webp"
                srcset="assets/vsl-thumb-640.webp 640w, assets/vsl-thumb-960.webp 960w, assets/vsl-thumb-1280.webp 1280w"
                sizes="(max-width:660px) calc(100vw - 40px), 620px"
