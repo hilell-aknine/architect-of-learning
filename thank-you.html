@@ -189,11 +189,11 @@ src="https://www.facebook.com/tr?id=2132323570952002&ev=Lead&noscript=1" alt="" 
     </section>
 
     <div class="vid-block">
-      <h2>עד שאני חוזר אליך, תן לזה שמונה דקות</h2>
-      <p>זו הדגמה חיה של מערכת קורסים אמיתית, מבפנים. אם תראה אותה לפני שנדבר, השיחה בינינו תתחיל כבר מהמקום המעניין.</p>
+      <h2>עד שאני חוזר אליך, הנה הדרכה</h2>
+      <p>18 דקות שיעזרו לך להבין מה אני עושה ואם זה רלוונטי עבורך.</p>
       <div class="vid" id="vwrap">
-        <button class="ytf" id="ytf" type="button" aria-label="נגן את ההדגמה החיה, שמונה דקות וארבעים שניות">
-          <img src="https://i.ytimg.com/vi/bF0atlGw0T4/maxresdefault.jpg" width="1280" height="720" alt="הדגמה חיה של מערכת קורסים" />
+        <button class="ytf" id="ytf" type="button" aria-label="נגן את ההדרכה, 18 דקות">
+          <img src="https://i.ytimg.com/vi/NTg-3B6fshU/maxresdefault.jpg" width="1280" height="720" alt="איך לגרום ללקוחות שלך לסיים את הקורס ולהמליץ עליך" />
           <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
         </button>
       </div>
@@ -293,9 +293,23 @@ src="https://www.facebook.com/tr?id=2132323570952002&ev=Lead&noscript=1" alt="" 
 // חזית הסרטון. הנגן האמיתי נטען רק בלחיצה, כך שעמוד התודה נשאר קל
 // ולא מוריד כמגה בייט של יוטיוב למי שלא לחץ בכלל.
 document.getElementById('ytf').addEventListener('click', function(){
+  // מדידה: כמה לידים מפעילים את הסרטון אחרי שהשאירו פרטים (נוסף 5.11.2026).
+  // המכנה הוא form_submit. אפס מידע מזהה, ומכבד את אותה הסכמה של analytics.js.
+  try {
+    if (localStorage.getItem('cookie_consent_v2') !== 'essential') {
+      var ev = JSON.stringify({
+        event: 'video_click', page: 'thank-you',
+        sid: localStorage.getItem('ec_sid') || '',
+        variant: localStorage.getItem('ec_variant') || '',
+        extra: { vid: 'NTg-3B6fshU' }
+      });
+      if (navigator.sendBeacon) navigator.sendBeacon('/api/event', new Blob([ev], { type: 'application/json' }));
+      else fetch('/api/event', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: ev, keepalive: true }).catch(function(){});
+    }
+  } catch (e) {}
   document.getElementById('vwrap').innerHTML =
-    '<iframe src="https://www.youtube.com/embed/bF0atlGw0T4?rel=0&modestbranding=1&playsinline=1&hl=he&autoplay=1" ' +
-    'title="הדגמה חיה · 8:40" ' +
+    '<iframe src="https://www.youtube.com/embed/NTg-3B6fshU?rel=0&modestbranding=1&playsinline=1&hl=he&autoplay=1" ' +
+    'title="איך לגרום ללקוחות שלך לסיים את הקורס ולהמליץ עליך · 17:57" ' +
     'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
     'allowfullscreen></iframe>';
 });
