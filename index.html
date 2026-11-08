@@ -231,20 +231,38 @@
 
   /* כיתוב ההפעלה מעל הסרטון. רם, 28:21: "כיתוב קטן למעלה מעל הסרטון,
      כמו לחץ על הפליי תפעיל את הרמקול. זה משהו שעוזר קצת בצפיות." */
-  .vhint{margin-top:22px;margin-bottom:-6px;font-size:.92rem;color:var(--ink-soft);opacity:.9}
+  /* 8.11.2026: הכיתוב הוגדל והוכהה. באפור קטן הוא נבלע, ובנובמבר רק 10 מתוך 122
+     סשנים לחצו פליי. עכשיו הוא אומר מה מקבלים (סרטון, 18 דקות) וצמוד לסרטון. */
+  .vhint{margin-top:22px;margin-bottom:-14px;font-size:1.02rem;font-weight:800;color:var(--ink)}
+  .vhint b{color:var(--ember)}
   .video{margin-top:24px;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
   .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   /* חזית סרטון: תמונה + כפתור נגן. הנגן האמיתי נטען רק בלחיצה
      (חוסך כ-1MB וכ-2-3 שניות בטעינה הראשונה, בדיוק איפה שהמודעה נוחתת). */
   .ytf{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:#000;cursor:pointer;display:block}
   .ytf img{width:100%;height:100%;object-fit:cover;display:block}
-  /* 27.10.2026: הכפתור זז מהמרכז לפינה הימנית-תחתונה, מתחת לטקסט. בטמבנייל החדש
-     (הלל עם טלפון, v5/thumb-01) המרכז נופל בדיוק על הפנים שלו. */
-  .ytf span{position:absolute;top:77%;left:79%;transform:translate(-50%,-50%);
-    width:68px;height:48px;border-radius:12px;background:rgba(20,17,13,.78);
-    display:flex;align-items:center;justify-content:center;transition:background .18s}
-  .ytf:hover span,.ytf:focus-visible span{background:var(--ember)}
-  .ytf span svg{width:22px;height:22px;fill:#fff;margin-inline-start:3px}
+  /* 8.11.2026: כפתור פליי עגול וגדול במרכז, בכתום של הדף. הכפתור הקודם (27.10) ישב
+     בפינה הימנית-תחתונה, משולש לבן קטן על רקע כהה שנבלע בתמונה, ובנובמבר רק 10 מתוך
+     122 סשנים לחצו עליו. כל התמונה היא הכפתור (#ytf), העיגול רק מסמן איפה לוחצים.
+     במרכז מדויק (50%) הוא כיסה את "ונעלמו" ו"לך?" שבתמונה, ולכן top:78%: ממורכז לרוחב,
+     מתחת לכותרת שבתמונה ומימין לפנים.
+     ה-id והמבנה לא השתנו, ולכן video_click ו-video_play נורים בדיוק כמו קודם. */
+  .ytf span{position:absolute;top:78%;left:50%;transform:translate(-50%,-50%);
+    width:clamp(72px,15vw,104px);height:clamp(72px,15vw,104px);border-radius:50%;
+    background:var(--ember-2);border:3px solid rgba(255,255,255,.92);
+    box-shadow:0 10px 28px -6px rgba(0,0,0,.55),0 0 0 0 rgba(226,87,15,.55);
+    display:flex;align-items:center;justify-content:center;
+    transition:background .18s,transform .18s;animation:vplay-pulse 2.2s ease-out infinite}
+  .ytf:hover span,.ytf:focus-visible span{background:var(--ember);transform:translate(-50%,-50%) scale(1.07)}
+  /* margin-left ולא inline-start: בדף RTL ה-inline-start היה מזיז את המשולש שמאלה, הפוך ממרכוז אופטי. */
+  .ytf span svg{width:44%;height:44%;fill:#fff;margin-left:9%}
+  .ytf:focus-visible{outline:none}
+  .ytf:focus-visible span{outline:3px solid #fff;outline-offset:4px;box-shadow:0 0 0 7px var(--ink),0 10px 28px -6px rgba(0,0,0,.55)}
+  @keyframes vplay-pulse{
+    0%{box-shadow:0 10px 28px -6px rgba(0,0,0,.55),0 0 0 0 rgba(226,87,15,.55)}
+    70%{box-shadow:0 10px 28px -6px rgba(0,0,0,.55),0 0 0 18px rgba(226,87,15,0)}
+    100%{box-shadow:0 10px 28px -6px rgba(0,0,0,.55),0 0 0 0 rgba(226,87,15,0)}}
+  @media (prefers-reduced-motion:reduce){.ytf span{animation:none;transition:none}}
 
   /* ===== ראיות מוצר על במה כהה =====
      קודם ארבע תמונות קטנות על אותו נייר קרם כמו כל השאר, כלומר
@@ -547,9 +565,10 @@ fbq('track','PageView',{},{eventID:window.EC_PV_ID});
     <div id="vsec">
       <!-- רם, 28:21: "כיתוב קטן למעלה מעל הסרטון, כמו לחץ על הפליי
            תפעיל את הרמקול. זה משהו שעוזר קצת בצפיות." -->
-      <p class="vhint">▶ לחץ על הפליי והפעל את הרמקול</p>
+      <!-- 8.11.2026: "▶ לחץ על הפליי והפעל את הרמקול" הוחלף. 18 דקות = 17:57 (1077 שנ' ב-page_events). -->
+      <p class="vhint"><b>▶</b> צפה בסרטון · 18 דקות</p>
       <div class="video" id="vwrap">
-        <button class="ytf" id="ytf" type="button" aria-label="נגן את הסרטון">
+        <button class="ytf" id="ytf" type="button" aria-label="הפעל את הסרטון, 18 דקות">
           <!-- ה-src יושב כאן ב-HTML מ-12.10.2026 (קודם הוזרק מסקריפט). המקור לעריכת הטמבנייל
                יושב מחוץ לתיקיית הפריסה, בשורש הפרויקט:
                לקוחות\בניית פורטלים מקצועים\vsl-thumb-source.html
